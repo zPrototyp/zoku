@@ -1,0 +1,32 @@
+/* Fullscreen semi-transparent backdrop */
+.overlay-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
+/* Centered modal box */
+.overlay-modal {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  width: 360px;
+  max-width: 90%;
+  max-height: 90%;
+  /* overflow-y: auto; */
+  z-index: 1000;
+  background-color: var(--highlight);
+  color: black;
+  padding: 10px;
+  border-radius: 10px;
+  font-family: var(--fontBody);
+}
+.tooltip-img {
+    width: 40px;
+}

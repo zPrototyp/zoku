@@ -1,0 +1,155 @@
+export const valueProfiles = {
+  Guardian: {
+    imgSrc: "/src/assets/images/Beskyddaren.svg",
+    title: "Guardian",
+    kanji: "守",
+    subtitle: "The dependable protector",
+    text: [
+      "Du är den fasta punkten i en rörlig värld.",
+      "Du bär ansvar med stolthet.",
+    ],
+    listHeader: "What defines you:",
+    list: [
+      "Pliktkänsla som ryggrad",
+      "Stabilitet i gruppen",
+      "Tradition som för vidare värden",
+      "Ansvar som grund för förtroende",
+    ],
+    consumerHeader: "You consume with your heart:",
+    consumerText: "Du väljer det som skapar lugn, trygghet och välmående – för dig och dina nära. Kvalitet över tid, inte status över substans. Du bygger hem och vardag med omsorg.",
+  },
+  Adventurer: {
+    imgSrc: "/src/assets/images/Aventyraren.svg",
+    title: "Adventurer",
+    kanji: "冒",
+    subtitle: "The fearless explorer",
+    text: [
+      "Du jagar inte trygghet – du jagar liv.",
+      "Det oprövade drar dig, det okända lockar. För dig är varje steg framåt en chans att växa.",
+    ],
+    listHeader: "What defines you:",
+    list: [
+      "Frihet att följa din egen kompass",
+      "Nyfikenhet som aldrig försvinner",
+      "Mod att kasta dig ut utan garantier",
+      "Autenticitet som aldrig kompromissar",
+    ],
+    consumerHeader: "You consume like you live:",
+    consumerText: "En flygbiljett, en ryggsäck, en ny app – allt du konsumerar är portaler till nästa upplevelse. Du ser produkter som passager, inte saker. Varumärken som ger dig frihet, inspiration och spontanitet vinner ditt hjärta. Du är ofta först med att testa nya digitala verktyg som berikar resan – bokstavligen eller mentalt."
+  },
+  Traditionalist: {
+    imgSrc: "/src/assets/images/Bevararen.svg",
+    title: "Traditionalist",
+    kanji: "伝",
+    subtitle: "The loyal tradition-bearer",
+    text: [
+      "Du vet att nytt inte alltid betyder bättre.",
+      "Du hedrar det som fungerar.",
+    ],
+    listHeader: "What defines you:",
+    list: [
+      "Kontinuitet som skapar stabilitet",
+      "Lojalitet som levnadsprincip",
+      "Funktionalitet före form",
+      "Respekt för det beprövade",
+    ],
+    consumerHeader:"You consume with trust:",
+    consumerText: "Du väljer det du redan litar på. Du gillar varumärken med historia, hantverk och konsekvens. Du bygger ditt liv på det som visat sig hålla – inte på det som lyser tillfälligt.",
+  },
+
+  Advocate: {
+    imgSrc: "/src/assets/images/Forkampen.svg",
+    title: "Advocate",
+    kanji: "護",
+    subtitle: "The empathetic activist",
+    text: [
+      "Du är den som står kvar när andra går.",
+      "Den som höjer rösten när andra tystnar.",
+    ],
+    listHeader: "What defines you:",
+    list: [
+      "Rättvisa i handling, inte bara ord",
+      "Lojalitet som rör sig åt båda håll",
+      "Mod att konfrontera orättvisor",
+      "Gemenskap som inkluderar alla",
+    ],
+    consumerHeader:"You consume like you fight:",
+    consumerText: "Du letar efter principer – inte trender. För dig är varje köp ett bevis på vad du tror på. Du väljer varumärken som visar ryggrad, inte bara vision. Du värdesätter mänsklighet över marknadsandelar.",
+  },
+  Idealist: {
+    imgSrc: "/src/assets/images/Idealisten.svg",
+    title: "Idealist",
+    kanji: "理",
+    subtitle: "The visionary humanist",
+    text: [
+      "Du accepterar inte världen som den är – du formar den som den borde vara.",
+    ],
+    listHeader: "What defines you:",
+    list: [
+      "Vision som leder dig framåt",
+      "Empati som formar dina val",
+      "Integritet som aldrig böjs",
+      "Hopp som vägrar ge upp",
+    ],
+    consumerHeader:"You consume with purpose:",
+    consumerText: "För dig är ett köp ett ställningstagande. Du letar efter varumärken som står för något. Genom ditt konsumtionsval bygger du den framtid du tror på. Du är ofta den som inspirerar andra att tänka efter – och tänka om.",
+  },
+  Achiever: {
+    imgSrc: "/src/assets/images/Segraren.svg",
+    title: "Achiever",
+    kanji: "達",
+    subtitle: "The goal-oriented winner",
+    text: [
+      "Du är inte här för att delta – du är här för att vinna.",
+      "Ditt fokus är knivskarpt, dina ambitioner gränslösa.", 
+    ],
+    listHeader: "What defines you:",
+    list: [
+      "Resultat framför ursäkter",
+      "Precision i varje beslut",
+      "Prestation som livsstil",
+      "Konkurrenskraft som motor",
+],
+    consumerHeader:"You consume with demands:",
+    consumerText: "Allt du använder måste hålla samma nivå som du själv. Du investerar i verktyg, kläder och teknologier som ger dig en edge. Du väljer inte för att imponera – du väljer för att vinna.",
+  },
+  Strategist: {
+    imgSrc: "/src/assets/images/Strategen.svg",
+    title: "Strategist",
+    kanji: "策",
+    subtitle: "The clever tactician",
+    text: [
+      "Din framtid bygger inte på tur – du bygger den på logik.",
+    ],
+    listHeader: "What defines you:",
+    list: [
+      "Skärpa i tanke och verktyg",
+      "Planering som skapar utrymme",
+      "Effektivitet som frigör tid",
+      "Struktur som möjliggör flexibilitet",
+    ],
+    consumerHeader:"You consume with strategy:",
+    consumerText: "Du väljer produkter som fungerar direkt och länge. Varje köp ska optimera något i ditt system. Du är en tidshackare som gillar struktur, data och intelligenta lösningar.",
+  },
+  Caregiver: {
+    imgSrc: "/src/assets/images/Vardgivaren.svg",
+    title: "Caregiver",
+    kanji: "愛",
+    subtitle: "The safe protector",
+    text: [
+      "Du är hjärtat i varje rum.",
+      "Den som håller ihop när andra faller isär.", 
+    ],
+    listHeader: "What defines you:",
+    list: [
+      "Omtanke som genomsyrar allt du gör",
+      "Trygghet som lugnar andra",
+      "Stabilitet som skapar tillit",
+      "Värme som gör livet mjukt",
+    ],
+    consumerHeader:"You consume with your heart:",
+    consumerText: "Du väljer det som skapar lugn, trygghet och välmående – för dig och dina nära. Kvalitet över tid, inte status över substans. Du bygger hem och vardag med omsorg.",
+  },
+  };
+
+  

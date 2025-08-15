@@ -1,0 +1,35 @@
+.footer-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0; /* Ensure it starts from the left edge */
+  width: 100%; /* Full width */
+  height: 70px; /* Adjust height as needed */
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  /* padding: 20px 0; */
+  background: transparent;
+  z-index: 999;
+  pointer-events: none; /* optional: lets clicks pass through if only visual */
+}
+
+.footer-circle {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: var(--alt);
+  text-align: center;
+  line-height: 80px;
+  font-family: var(--fontHeading);
+  font-size: 1.5rem;
+  text-decoration: none;
+  color: var(--darkContrast);
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  transition: all 0.2s ease-in-out;
+  pointer-events: auto; /* re-enable interaction on the button */
+}
+
+.footer-circle:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}

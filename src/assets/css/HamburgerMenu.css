@@ -1,0 +1,91 @@
+/* Container to hold everything in place */
+.hamburger-container {
+  position: relative;
+}
+
+/* Circular Menu Button */
+.menu-button {
+  position: fixed;
+  top: 10px;
+  right: 30px;
+  width: 50px;
+  height: 42px;
+  background-color: var(--highlight);
+  border-radius: 21px / 25px; /* oval shape */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 1001;
+  transition: background-color 0.3s;
+}
+
+.menu-button:hover {
+  background-color:  var(--alt);
+}
+
+.bar {
+  width: 25px;
+  height: 3px;
+  background-color: var(--highlightContrast);
+  margin: 3px 0;
+  transition: 0.3s ease;
+}
+
+/* Animate the bars into an 'X' when open */
+.menu-button.open .top {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.menu-button.open .middle {
+  opacity: 0;
+}
+
+.menu-button.open .bottom {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Sliding Panel */
+.menu-panel {
+  position: fixed;
+  top: 0;
+  right: -300px; /* hidden by default */
+  width: 250px;
+  height: 90vh;
+  background-color: var(--alt);
+  padding-top: 80px;
+  padding-left: 20px;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5);
+  transition: right 0.4s ease;
+  z-index: 1000;
+  background-image: url('../assets/images/flowers.png');
+  background-position: left calc(0px) bottom calc(20px);
+  background-repeat: no-repeat;
+  background-size: 214px 136px;
+}
+
+.menu-panel.slide-in {
+  right: 0;
+}
+
+/* Links */
+.nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.nav-links li a {
+  color: black;
+  font-family: 'Roboto', sans-serif;
+  text-decoration: none;
+  font-size: 1.2em;
+}
+
+.nav-links li a:hover {
+  color: var(--dark);
+}

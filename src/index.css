@@ -1,0 +1,27 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--background);
+
+}
+#root {
+  font-family: var(--fontBody);
+  color: black;
+}
+
+header {
+  padding: 0 24px;
+}
+main {
+  /* min-height:90vh; Adjust for footer height */
+  
+}
+.layout {
+  margin: 0 auto;
+  max-width: 500px;
+  background-image: url(assets/images/shoji-border.svg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top center;
+  min-height: 100%; /* Let it grow */
+}

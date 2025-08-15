@@ -1,0 +1,721 @@
+/*************** General stylings *********************/
+:root {
+  --background: #FDFBF2;
+  --alt: #ECDCCD;
+  --highlight: #E1CA9C  ;
+  --highlightOp50: rgba(225, 202, 156, 0.5)  ;
+  --highlightContrast: #6C798B;
+  --highlightContrastLt: #9BB6E0  ;
+  --dark: #DB9292;
+  --darkContrast: #6B8673;
+  --darkContrastLt: #91DBAD;
+  --fontHeading: "Estonia", cursive;
+  --fontBody: "MuseoModerno", sans-serif;
+  --fontNav: "Roboto", sans-serif;
+
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--fontHeading);
+  font-weight: 500;
+}
+h1 {
+  font-size: 36px;
+}
+h2 {
+  font-size: 32px;
+}
+h3 {
+  font-size: 28px;
+}
+.logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+}
+.small-logo{
+  background-color: var(--alt);
+  border-radius: 50%;
+  width: 100px;
+  height: 37px;
+  box-shadow: 2px 2px 4px var(--highlightContrast);
+}
+main {
+  position: relative; /* Required to position the pseudo-element */
+  z-index: 1; /* Make sure this stays above background layers */
+}
+main::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -20px;
+  width: 259px;
+  height: 164px;
+  background-image: url('src/assets/images/flowers.png'); 
+  background-size: contain;
+  background-repeat: no-repeat;
+  transform: rotate(180deg);
+  opacity: 0.2;
+  pointer-events: none; /* ensures it doesn't block clicks */
+  z-index: -1;   /* places the image behind main content*/
+}
+a {
+  text-decoration: none;
+  color: var(--darkContrast);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+button {
+  background-color: var(--background);
+  font-family: var(--fontHeading);
+  margin: 0.5em;
+  border: none;
+  padding: 10px 20px;
+  font-size: 40px;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  /* Drop shadow */
+  box-shadow: 2px 2px 4px var(--highlightContrast);
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Added transition for hover effects */
+}
+button.active {
+  background-color: var(--alt);
+}
+button:hover {
+  box-shadow: 2px 2px 4px var(--highlightContrastLt);  
+  transform: scale(1.05); /* Slight scale effect on hover */
+}
+button a {
+  text-decoration: none;
+  color: black;
+}
+
+.mask150 {
+  width: auto;
+  height: 150px;
+}
+.mask100 {
+  width: auto;
+  height: 100px;
+}
+.mask80 {
+  width: auto;
+  height: 80px;
+}
+.mask60 {
+  width: auto;
+  height: 60px;
+}
+/*************** END General stylings *********************/
+/*************** General Page stylings *********************/
+.layout {
+  padding-bottom: 80px;
+}      
+/* Use on Div to wrap all page content */
+.page-content {
+  padding: 0 24px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+/* Move down the first header on the page if it is not a logo etc */
+.page-content>h1 {
+  padding-top:50px;
+  margin-bottom: 20px;
+}
+
+/*************** END General Page stylings *********************/
+
+/*************** Start Page stylings *********************/
+
+.circle-layout {
+  background-color: var(--alt);
+  margin-top: 20px;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  /* top: 50%; */
+  left: 50%; 
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 1;
+  
+}
+.sp-questionsBox{
+  width: 100%;
+}
+.sp-question {
+  font-size: 36px;
+  margin: 0;
+  margin-bottom: 0.3em;
+  
+}
+
+/* Common image styles for startpage icons */
+.circle-layout img {
+  position: absolute;
+  width: auto;
+  height: 80px;
+  object-fit: cover;
+  z-index: 0;
+  opacity: 0.5;
+}
+.circle-layout img:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+/* Top */
+.top-left {
+  top: calc(50% - 190px);  /* 411/2 + 100/2 */
+  left: calc(50% - 100px);
+}
+
+.top-right {
+  top: calc(50% - 190px);
+  left: calc(50% + 40px);
+}
+
+/* Right */
+.right-top {
+  top: calc(50% - 205px + 100px); /* offset from top of center */
+  left: calc(50% + 70px);       /* 311/2 + 50 */
+}
+
+.right-bottom {
+  top: calc(50% + 20px);         /* offset from center down */
+  left: calc(50% + 70px);
+}
+
+/* Bottom */
+.bottom-right {
+  bottom: calc(50% - 190px);
+  left: calc(50%  + 40px);
+}
+
+.bottom-left {
+  bottom: calc(50% - 190px);
+  left: calc(50% - 100px);
+}
+
+/* Left */
+.left-bottom {
+  top: calc(50% + 20px);
+  left: calc(50% - 140px);
+}
+
+.left-top {
+  top: calc(50% - 205px + 100px);
+  left: calc(50% - 140px);
+}
+.sp-quizButtonBox {
+  margin-top: 2em;
+}
+.circle-layout p {
+  position: absolute;
+  text-align: center;
+  font-size: 12px;
+  color: var(--darkContrast);
+  z-index: 1;
+}
+.xTop {
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.xBottom {
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.yLeft {
+  top: 45%;
+  left: 30px;
+  transform: translatex(-50%);
+}
+.yRight {
+  top: 45%;
+  right: 30px;
+  transform: translateX(50%);
+}
+/*************** END Start Page stylings *********************/
+
+
+/*************** AboutUs.jsx stylings *********************/
+.aboutprofileBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+[class^="aboutProfile-"] {
+  width: 48%;
+  margin: 0 auto;
+  background-color: var(--alt);
+  border-radius: 10px;
+  min-height: 150px;
+  position: relative; /* Required for the pseudo-elements */
+  z-index: 0;
+  font-size: 0.8em;  
+}
+[class^="aboutProfile-"]::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto 150px;
+  opacity: 0.2;
+  z-index: -1;
+}
+
+.aboutProfile-Adventurer::before {
+  background-image: url('src/assets/images/Aventyraren.svg');
+}
+.aboutProfile-Guardian::before {
+  background-image: url('src/assets/images/Beskyddaren.svg');
+}
+.aboutProfile-Traditionalist::before {
+  background-image: url('src/assets/images/Bevararen.svg');
+}
+.aboutProfile-Advocate::before {
+  background-image: url('src/assets/images/Forkampen.svg');
+}
+.aboutProfile-Idealist::before {
+  background-image: url('src/assets/images/Idealisten.svg');
+}
+.aboutProfile-Achiever::before {
+  background-image: url('src/assets/images/Segraren.svg');
+}
+.aboutProfile-Strategist::before {
+  background-image: url('src/assets/images/Strategen.svg');
+}
+.aboutProfile-Caregiver::before {
+  background-image: url('src/assets/images/Vardgivaren.svg');
+}
+
+
+
+/*************** END AboutUs.jsx stylings *********************/
+
+/*************** Tribes.jsx stylings *********************/
+
+.tribes-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2em;
+  padding: 0 0.5em;
+}
+.tribe-card {
+  display: grid;
+  grid-template-columns: 70px 100px auto;
+  column-gap: 0.5em;
+  width: 100%;
+  margin: 0 0.5em;
+  padding: 0.5em 0;
+  border-radius: 10px;
+  background-color: var(--alt);
+  /* display: flex;
+  flex-direction: row; */
+  align-items: center;
+  font-size: 0.6em;
+}
+.tribe-card:hover {
+  background-color: var(--highlight);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+.tribe-card > img {
+  grid-column: 1/2;
+  margin: 0 auto;
+}
+.tribe-card > h2 {
+  grid-column: 2/3;
+  margin: 0 auto;
+}
+.tribe-card > p {
+  grid-column: 3/4;
+  text-align: left;
+  overflow: auto;
+}
+
+.zokuProfilePopup{
+  font-size: 12px;
+}
+.zokuProfilePopup::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('src/assets/images/ZokuTitle.svg');
+  background-size: 90% auto;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.1;
+  pointer-events: none; /* ensures it doesn't block clicks */
+}
+.zokuProfilePopup > h3 {
+    margin: 0;
+}
+.zokuProfilePopup > p {
+ margin-top: 0;
+  
+}
+.zokuProfilePopupHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+}
+.zokuProfilePopup > ul {
+  text-align: left;
+}
+.zokuProfilePopup button {
+  margin: 0.5em 0;
+}
+/*************** END Tribes.jsx stylings *********************/
+
+/*************** ResultPage.jsx stylings *********************/
+.result-page
+{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  font-family: sans-serif;
+}
+
+/*************** END ResultPage.jsx stylings *********************/
+
+/***************  FeedPage.jsx stylings *********************/
+.feed {
+  max-width: 450px;
+  margin: 0 0.5em;
+}
+.feed-sort-options {
+  display: grid;
+  grid-template-columns: 40% auto;
+  gap: 10px;
+  background-color: var(--highlightOp50);
+  width: 350px;
+  margin: 0.5em auto;
+  padding: 0.5em;
+  border-radius: 10px;
+}
+.feed-sort-options > label {
+  font-size: 0.8em;
+  text-align: left;
+}
+.feed-sort-options > select {
+  font-size: 0.8em;
+  padding: 0.2em;
+  border-radius: 5px;
+  border: none;
+  background-color: var(--background);
+  color: var(--darkContrast);
+}
+
+.feedpage-brand {
+  position: relative;
+  background: var(--background);
+  /* width: 350px; */
+  height: 140px;
+  border-radius: 10px 10px 0 0;
+  padding: 0;
+  margin: 0 auto 1em auto;
+  box-shadow: 2px 2px 4px var(--highlightContrast);
+  overflow: hidden;
+}
+.like-overlay {
+  width: 42px;
+  height: 60px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-radius: 0 10px 0 0;
+  z-index: 10;             /* sit above sibling content */
+  background-color: var(--highlightOp50);
+  cursor: pointer;         /* indicate clickability */
+  white-space: nowrap;     /* prevent wrapping */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  color: black;
+}
+.feedpage-brand>img{
+  width: 120%;
+  align-items: center;
+  transform: translateY(-40%);
+}
+.feedpage-celeb {
+  display: grid;
+  grid-template-columns: 90px auto;
+  grid-template-rows: repeat(4, 1fr);
+  background: var(--alt);
+  width: 360px;
+  height: 150px;
+  border-radius: 10px;
+  padding: 0;
+  margin: 1em auto;
+  box-shadow: 2px 2px 4px var(--highlightContrast);
+  overflow: hidden;
+}
+.feedpage-celeb > img{
+  margin: 0.5em;
+  grid-column: 1/2;
+  grid-row: 1/5;
+  width: 85px;
+}
+.feedpage-celeb > p{
+  margin: 0;
+  grid-column: 2/3;
+}
+.expand-feed-brand > button{
+  background: transparent;
+  width: 100px;
+  height: 35px;
+  z-index: 10;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--darkContrast);
+  font-size: 2em;
+}
+.feedpage-brand>p {
+  position: absolute;
+  top: 0;
+  color: white;
+  background: var(--darkContrast);
+  padding: 0 0.2em;
+}
+.expanded-feed_img {
+  width: 100%;
+  border-radius: 10px;
+}
+.expanded-brand {
+  position: relative;
+}
+/* To place sharing icon on the image in the expanded brand */
+.expanded-brand-image-share {
+  position: relative; 
+}
+
+/*************** END FeedPage.jsx stylings *********************/
+/*************** Profile Page stylings *********************/
+
+.secondary-container {
+  width: 100%;
+  display: grid;
+  grid-template-rows: auto auto;
+  /* grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); */
+  grid-template-columns: 50% 50%;
+  gap: 0;
+  justify-content: center;
+  justify-items: center;              /* center circles in their columns */
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+.secondary-card-circle {
+  grid-row: 1;
+}
+
+.secondary-icons {
+  grid-row: 2;                         /* second row */
+  grid-column: 2 / -1;                  /* span all columns */
+  display: flex;
+  justify-items: flex-end;
+  justify-content: flex-end;           /* right-align */
+  gap: 1.5rem;
+  padding-top: 1rem;
+}
+
+.clickable-icon {
+  font-size: 24px;
+  color: var(--darkContrast);
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.clickable-icon:hover {
+  color: var(--highlightContrastLt);
+  transform: scale(1.2);
+}
+.hidden-brand-admin {
+position: relative;
+border: 1px solid var(--darkContrast);
+border-radius: 10px;
+padding: 0 0.3em;
+margin-bottom: 0.3em;
+font-family: var(--fontNav);
+text-align: left;
+}
+.wardrobe-section {
+  position: relative; /* to position the hidden brands toggle */
+}
+.hidden-brand-admin h4 {
+  font-family: var(--fontNav);
+  text-decoration: underline;
+}
+.unhideBtn {
+  float: right;
+  margin-top: 0.3em;
+}
+
+.hidden-brands-toggle {
+  position: absolute;
+  right: 2em;
+  top: 0.5em;
+}
+/*************** END Profile Page stylings *********************/
+/*************** Desktop overrides (≥ 1024px) *****************/
+@media (min-width: 1024px) {
+  /* Typography on desktop */
+  h1 { font-size: 44px; }
+  h2 { font-size: 36px; }
+  h3 { font-size: 30px; }
+
+  /* Page container */
+  .page-content {
+    max-width: 1100px;
+    padding: 0 32px;
+    text-align: left; /* more natural on desktop */
+  }
+  .page-content > h1 {
+    padding-top: 64px;
+    margin-bottom: 28px;
+  }
+
+  /* Buttons: desktop scale */
+  button {
+    font-size: 18px;
+    padding: 10px 16px;
+    border-radius: 8px;
+  }
+
+  /* Start page dial a bit larger on desktop */
+  .circle-layout {
+    width: 480px;
+    height: 480px;
+    margin-top: 32px;
+  }
+  .circle-layout img { height: 96px; }
+
+  /* Result page wider center column */
+  .result-page {
+    max-width: 1200px;
+    padding: 2.5rem 2rem;
+  }
+
+  /* Feed controls stretch and align */
+  .feed-sort-options {
+    width: 100%;
+    max-width: 520px;
+    grid-template-columns: 200px 1fr;
+    margin: 1rem 0;
+  }
+
+  /* Feed list can breathe more */
+  .feed {
+    max-width: 900px;
+    margin: 0;
+  }
+
+  /* Celebrity teaser on feed a bit wider/taller */
+  .feedpage-celeb {
+    width: 540px;
+    height: 180px;
+    grid-template-columns: 120px auto;
+    grid-template-rows: auto auto auto auto;
+  }
+  .feedpage-celeb > img {
+    width: 110px;
+  }
+
+  /* Profile: secondary cards side by side, toolbar to the right */
+  .secondary-container {
+    grid-template-columns: 320px 320px;
+    grid-template-rows: auto auto;
+    justify-content: center;
+    gap: 1rem 2rem;
+  }
+  .secondary-icons {
+    grid-column: 1 / -1;     /* span both columns */
+    justify-content: flex-end;
+    padding-top: 0.5rem;
+    gap: 2rem;
+  }
+  .clickable-icon { font-size: 26px; }
+
+  /* Hidden brands admin block spacing on desktop */
+  .hidden-brands-toggle {
+    right: 0;
+    top: -0.25em;
+  }
+
+  /* Floating cogwheel button (no background), bottom-right */
+  .cogwheel-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 56px;
+    height: 56px;
+    display: grid;
+    place-items: center;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    cursor: pointer;
+    z-index: 1000;
+    padding: 0;
+  }
+  .cogwheel-btn:hover {
+    transform: scale(1.06);
+  }
+  .cogwheel-btn:active {
+    transform: scale(0.98);
+  }
+  /* Optional subtle shadow on the icon itself */
+  .cogwheel-btn svg {
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+  }
+
+  /* Brand card & expanded image tweaks */
+  .expanded-feed_img {
+    border-radius: 12px;
+  }
+}
+/*************** End Desktop overrides (≥ 1024px) *****************/

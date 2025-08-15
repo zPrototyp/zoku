@@ -1,0 +1,79 @@
+.card
+{
+  background-color: var(--highlightOp50);
+  border-radius: 10px;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  position: relative;
+  max-width: 100%;
+}
+.primary-card {
+  position: relative; /* needed for sharing icons */
+  width: 100%;  
+}
+
+.card-header
+{
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.mask
+{
+  object-fit: contain;
+}
+
+.large-mask
+{
+  width: 100px;
+  height: 100px;
+  opacity: 1;
+}
+
+.faint-mask
+{
+  width: 75px;
+  height: 75px;
+  opacity: 0.2;
+}
+
+.card-title h3
+{
+  margin: 0;
+  font-size: 3.5rem;
+}
+
+.card-body h4 {
+  font-size: 2rem;
+  margin-top: 1.2rem;
+  margin-bottom: 0.6rem;
+}
+
+.card-title strong
+{
+  display: block;
+  margin-top: 0.3rem;
+}
+
+.card-body.preview
+{
+  margin-top: 1rem;
+}
+
+.card-body.full-info
+{
+  margin-top: 1rem;
+}
+
+.card-toggle
+{
+  text-align: center;
+  margin-top: 0.5rem;
+  font-size: 1.25rem;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+}

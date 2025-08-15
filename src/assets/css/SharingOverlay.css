@@ -1,0 +1,40 @@
+.share-profile {
+  position: absolute;
+  right: 0.5em;
+  bottom: 0.5em;
+  padding: 0.5em;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  align-items: flex-end;
+}
+.brand-share {
+    bottom: 0;
+    right: 0;
+    margin: 0;
+    padding: 0.5em;
+    border-radius: 10px 10px 0 10px;
+}
+.share-button {
+      background-color: var(--highlightOp50);
+}
+.share-profile.expanded {
+  z-index: 999;
+  width: 200px;
+  background-color: var(--highlight);
+}
+.share-profile > .clickable-icon {
+  font-size: 36px;
+  color: black;
+}
+.share-icons {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+  padding-top: 1em;
+}
+.share-icon {
+  font-size: 36px;
+  color: black;
+}

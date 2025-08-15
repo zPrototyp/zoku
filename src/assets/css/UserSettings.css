@@ -1,0 +1,72 @@
+.user-settings-panel {
+  width: min(720px, 96vw);
+  max-height: 90vh;
+  overflow: auto;
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.user-settings-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.user-settings-close {
+  background: transparent;
+  border: none;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.user-settings-card {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+  background: #fff;
+}
+
+.user-settings-form {
+  display: grid;
+  gap: 12px;
+}
+
+.user-settings-label {
+  display: grid;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.user-settings-input {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  outline: none;
+}
+
+.user-settings-input:focus {
+  border-color: #888;
+}
+
+.user-settings-submit {
+  margin-top: 4px;
+}
+
+.user-settings-message {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.user-settings-message.ok {
+  color: green;
+}
+
+.user-settings-message.err {
+  color: #b00020;
+}
