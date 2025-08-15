@@ -19,7 +19,7 @@ import FBShareProfiles from "./Pages/FBShareProfiles";
 
 function App() { 
   return (
-    <RouterBrowswer basename={process.env.PUBLIC_URL}>
+    <Router basename={process.env.PUBLIC_URL}>
       <Routes>
         <Route element={<Layout />}>
           <Route path="/test" element={<TestPage />} />
@@ -40,7 +40,7 @@ function App() {
 
         </Route>
       </Routes>
-    </RouterBrowswer>
+    </Router>
   );
 }
 
