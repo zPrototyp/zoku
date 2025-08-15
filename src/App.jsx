@@ -1,6 +1,6 @@
 
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, HashRouter, Routes, Route, Link } from "react-router-dom";
 import TestPage from "./Pages/TestPage";
 import StartPage from "./Pages/StartPage";
 import Layout from "./Components/Layout";
@@ -19,7 +19,8 @@ import FBShareProfiles from "./Pages/FBShareProfiles";
 
 function App() { 
   return (
-    <Router basename={process.env.PUBLIC_URL}>
+    // <Router basename={process.env.PUBLIC_URL}>
+    <HashRouter>
       <Routes>
         <Route element={<Layout />}>
           <Route path="/test" element={<TestPage />} />
@@ -40,7 +41,7 @@ function App() {
 
         </Route>
       </Routes>
-    </Router>
+    </HashRouter>
   );
 }
 
