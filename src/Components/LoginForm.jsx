@@ -4,6 +4,8 @@ import { useAtom } from "jotai";
 import { authTokenAtom } from "../Atoms/AuthAtom";
 import { guestTokenAtom } from "../Atoms/GuestTokenAtom";
 
+const AZURE_API = import.meta.env.VITE_AZURE_API;
+
 function LoginForm()
 {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -24,7 +26,7 @@ function LoginForm()
 
     try
     {
-      const res = await fetch("/api/auth/login",
+      const res = await fetch(`${AZURE_API}/auth/login`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },

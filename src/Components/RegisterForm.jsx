@@ -4,6 +4,8 @@ import { useAtom } from 'jotai'
 import { guestTokenAtom } from '../Atoms/GuestTokenAtom'
 import { valueProfileAtom } from '../Atoms/ValueProfileAtom'
 
+const AZURE_API = import.meta.env.VITE_AZURE_API;
+
 function RegisterForm () {
   const [profile, setProfile] = useAtom(valueProfileAtom);
 
@@ -33,7 +35,7 @@ function RegisterForm () {
     }
 
     try {
-      const res = await fetch('/api/guest/register', {
+      const res = await fetch(`${AZURE_API}/guest/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
