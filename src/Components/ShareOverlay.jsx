@@ -26,12 +26,12 @@ export function ShareOverlay({personality, profile, testValues, brand}){
         const deepLink = `instagram-stories://share?source_application=your.app.id&backgroundImage=${backgroundImageUrl}`;
         const fallback = "https://www.instagram.com/";
         // Try to open Instagram Stories
-        window.open(deepLink, "_blank", "width=600,height=400");
+        window.open(deepLink, "_blank", "width=600,height=900");
 
         console.log(sharedImage, deepLink)
         // Fallback after 800ms
         setTimeout(() => {
-            window.open(fallback, "_blank", "width=600,height=400");
+            window.open(fallback, "_blank", "width=600,height=900");
         }, 800);
         setExpanded(false);
     };
@@ -54,7 +54,7 @@ export function ShareOverlay({personality, profile, testValues, brand}){
         
         console.log(facebookUrl);
 
-        window.open(facebookUrl, "_blank", "width=600,height=400");
+        window.open(facebookUrl, "_blank", "width=600,height=900");
         setExpanded(false);
     }
 
