@@ -19,9 +19,9 @@ import FBShareProfiles from "./Pages/FBShareProfiles";
 
 function App() { 
   return (
-    // <Router basename={process.env.PUBLIC_URL}>
+    <Router basename={process.env.PUBLIC_URL}>
     
-    <Router basename="/zoku">
+     {/* <Router basename="/zoku"> */}
     {/* <HashRouter> */}
       <Routes>
         <Route element={<Layout />}>
