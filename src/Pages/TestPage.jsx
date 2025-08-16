@@ -70,7 +70,7 @@ function TestPage () {
   // Get guest token if not logged in and no session token
   useEffect(() => {
     if (!authToken && !sessionToken) {
-      fetch('/api/guest/start-session', {
+      fetch(`${AZURE_API}/guest/start-session`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
       })
