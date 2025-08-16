@@ -19,7 +19,7 @@ import FBShareProfiles from "./Pages/FBShareProfiles";
 
 function App() { 
   return (
-    <Router basename="https://zprototyp.github.io/zoku">
+    <Router basename="/zoku">
     
      {/* <Router basename="/zoku"> */}
     {/* <HashRouter> */}
