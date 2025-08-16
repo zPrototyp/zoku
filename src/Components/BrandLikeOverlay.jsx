@@ -7,6 +7,9 @@ import { feedListAtom } from '../Atoms/FeedListAtom.jsx';
 import '../assets/css/BrandCarousel.css';
 import { CiCircleRemove } from "react-icons/ci";
 
+
+const AZURE_API = import.meta.env.VITE_AZURE_API;
+
 export function BrandLikeOverlay({ brand }) {
   const [token] = useAtom(authTokenAtom);
   const [brandList, setBrandList] = useAtom(feedListAtom);
@@ -15,7 +18,7 @@ export function BrandLikeOverlay({ brand }) {
 
   const sendInteraction = (userAction) => {
     // console.log("Brand before update:", brandList.find(b => b.id === brand.id));
-    token && fetch("/api/user/brands/interactions", {
+    token && fetch(`${AZURE_API}}/user/brands/interactions`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

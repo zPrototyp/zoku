@@ -1,4 +1,5 @@
 import { NavLink } from "react-router";
+import zokuTitle from '../assets/images/ZokuTitle.svg';
 
 export default function AboutUs() {
     return (
@@ -6,7 +7,7 @@ export default function AboutUs() {
             {/* Logo here */}
             <NavLink to="/" className="nav-link">
                 <h1>
-                <img src="src/assets/images/ZokuTitle.svg" alt="Logo" className="logo" />
+                <img src={zokuTitle} alt="Logo" className="logo" />
                 <span className="sr-only">Zoku</span>
                 </h1>
             </NavLink>

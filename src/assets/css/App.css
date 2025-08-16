@@ -294,28 +294,28 @@ button a {
 }
 
 .aboutProfile-Adventurer::before {
-  background-image: url('assets/Aventyraren.svg');
+  background-image: url('../images/Aventyraren.svg');
 }
 .aboutProfile-Guardian::before {
-  background-image: url('assets/Beskyddaren.svg');
+  background-image: url('../images/Beskyddaren.svg');
 }
 .aboutProfile-Traditionalist::before {
-  background-image: url('assets/Bevararen.svg');
+  background-image: url('../images/Bevararen.svg');
 }
 .aboutProfile-Advocate::before {
-  background-image: url('assets/Forkampen.svg');
+  background-image: url('../images/Forkampen.svg');
 }
 .aboutProfile-Idealist::before {
-  background-image: url('assets/Idealisten.svg');
+  background-image: url('../images/Idealisten.svg');
 }
 .aboutProfile-Achiever::before {
-  background-image: url('../assets/Segraren.svg');
+  background-image: url('../images/Segraren.svg');
 }
 .aboutProfile-Strategist::before {
-  background-image: url('../assets/Strategen.svg');
+  background-image: url('../images/Strategen.svg');
 }
 .aboutProfile-Caregiver::before {
-  background-image: url('../assets/Vardgivaren.svg');
+  background-image: url('../images/Vardgivaren.svg');
 }
 
 
