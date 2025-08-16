@@ -10,7 +10,7 @@ import "../assets/css/CelebrityDial.css";
 import { sortedListAtom } from '../Atoms/SortedListAtom.jsx';
 import { brandCategories } from '../assets/uiData/brand_categories_se.js';
 import CelebrityCard from '../Components/CelebrityCard.jsx';
-
+const AZURE_API = import.meta.env.VITE_AZURE_API;
 export default function FeedPage() {
     {/* x Fetch the list of possible matches from backend = feedList */}
     {/* x Print out drop-down menu to change sorting */}
@@ -33,7 +33,7 @@ export default function FeedPage() {
             try
             {
                 const count = 50;
-                const res = await fetch(`/api/user/celebrities/matches?count=${count}`,
+                const res = await fetch(`${AZURE_API}/user/celebrities/matches?count=${count}`,
                 {
                     headers:
                     {
@@ -58,7 +58,7 @@ export default function FeedPage() {
                     throw new Error(`Celeb matches failed: ${res.status} ${txt}`);
                 }
 
-                const resAll = await fetch(`/api/celebrities`,
+                const resAll = await fetch(`${AZURE_API}/celebrities`,
                 {
                     headers: { "Content-Type": "application/json" },
                 });
@@ -93,7 +93,7 @@ export default function FeedPage() {
         // Fetch the feed list from the backend, bearer token in header
         const variations = 3;
         setFeed(null);
-        fetch(`/api/user/brands/recommendations?Category=all&Variations=${variations}&ExcludeLiked=true&ExcludeHidden=true`, {
+        fetch(`${AZURE_API}/user/brands/recommendations?Category=all&Variations=${variations}&ExcludeLiked=true&ExcludeHidden=true`, {
             method: "GET",
             headers: { "Content-Type": "application/json",  
                 'Authorization': `Bearer ${token}` }
