@@ -26,7 +26,7 @@ function Layout() {
     <header>
       <nav className="main-nav">
         <NavLink to="/" className="nav-link">
-          <img className="small-logo" src="/small-title.svg" alt="Zoku Logo" />
+          <img className="small-logo" src="/zoku/small-title.svg" alt="Zoku Logo" />
         </NavLink>
       </nav>
         <HamburgerMenu />
