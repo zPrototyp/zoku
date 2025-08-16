@@ -51,7 +51,7 @@ main::before {
   right: -20px;
   width: 259px;
   height: 164px;
-  background-image: url('src/assets/images/flowers.png'); 
+  background-image: url('flowers.png'); 
   background-size: contain;
   background-repeat: no-repeat;
   transform: rotate(180deg);
@@ -294,28 +294,28 @@ button a {
 }
 
 .aboutProfile-Adventurer::before {
-  background-image: url('src/assets/images/Aventyraren.svg');
+  background-image: url('src/assets/Aventyraren.svg');
 }
 .aboutProfile-Guardian::before {
-  background-image: url('src/assets/images/Beskyddaren.svg');
+  background-image: url('src/assets/Beskyddaren.svg');
 }
 .aboutProfile-Traditionalist::before {
-  background-image: url('src/assets/images/Bevararen.svg');
+  background-image: url('src/assets/Bevararen.svg');
 }
 .aboutProfile-Advocate::before {
-  background-image: url('src/assets/images/Forkampen.svg');
+  background-image: url('src/assets/Forkampen.svg');
 }
 .aboutProfile-Idealist::before {
-  background-image: url('src/assets/images/Idealisten.svg');
+  background-image: url('src/assets/Idealisten.svg');
 }
 .aboutProfile-Achiever::before {
-  background-image: url('src/assets/images/Segraren.svg');
+  background-image: url('./assets/Segraren.svg');
 }
 .aboutProfile-Strategist::before {
-  background-image: url('src/assets/images/Strategen.svg');
+  background-image: url('./assets/Strategen.svg');
 }
 .aboutProfile-Caregiver::before {
-  background-image: url('src/assets/images/Vardgivaren.svg');
+  background-image: url('./assets/Vardgivaren.svg');
 }
 
 
