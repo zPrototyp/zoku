@@ -4,7 +4,7 @@ import { valueProfiles } from "../assets/uiData/zoku_profiles_se";
 function FBShareProfiles(){
     const {profile, changeY, compassionX} = useParams();
     const {title, subtitle, consumerText} = valueProfiles[profile]
-    const url="https://www.example.com"
+    const url="https://zprototyp.github.io/zoku/#/"
     const zoku_profile_img = `/zoku_${profile}.png`;
     // console.log(title, subtitle, consumerText);
     return (
