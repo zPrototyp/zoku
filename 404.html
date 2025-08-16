@@ -1,25 +1,18 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <title>Redirecting...</title>
-    <script>
-      // Capture full route (path + search + hash)
-      var redirect =
-        "/" +
-        window.location.pathname.split("/").slice(2).join("/") +
-        window.location.search +
-        window.location.hash;
-
-      sessionStorage.setItem("redirect", redirect);
-
-      // Force load of index.html
-    //   window.location.replace("/zoku/");
-
-    </script>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/zoku/assets/Mask-DPzkV3BE.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zoku</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Estonia&family=MuseoModerno:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script type="module" crossorigin src="/zoku/assets/index-B0-OYGKX.js"></script>
+    <link rel="stylesheet" crossorigin href="/zoku/assets/index-Cs1vyc-B.css">
   </head>
   <body>
-    <p>Redirecting...</p>
-    <p> go to zoku/share/Achiever?changeY=22&compassionX=88 -- shows the profile, saves the coords, links to test</p>
+    <div id="root"></div>
+    
   </body>
 </html>
