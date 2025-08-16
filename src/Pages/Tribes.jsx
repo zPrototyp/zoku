@@ -51,7 +51,7 @@ export default function Tribes() {
         {activeModal && (
           <div className="zokuProfilePopup">
             <div className="zokuProfilePopupHeader">
-                <img className="mask100" src={valueProfiles[activeModal].imgSrc} alt={valueProfiles[activeModal].title} />
+                <img className="mask100" src={ZokuMasks[activeModal]} alt={valueProfiles[activeModal].title} />
                 <h2>{valueProfiles[activeModal].title} </h2>            
                 <h2>{valueProfiles[activeModal].kanji} </h2>
             </div>
