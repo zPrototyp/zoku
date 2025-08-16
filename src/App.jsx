@@ -20,8 +20,8 @@ import FBShareProfiles from "./Pages/FBShareProfiles";
 function App() { 
   return (
    
-     {/* <Router basename="/zoku"> */}
-    <HashRouter>
+    <Router basename="/zoku">
+    
       <Routes>
         <Route element={<Layout />}>
           <Route path="/test" element={<TestPage />} />
@@ -38,12 +38,11 @@ function App() {
           <Route path="/compare" element={<CompareProfilesPage />}/>
           
         {/* Routes to share to fb - one per personality */}
-        <Route path="/share/:profile/:changeY/:compassionX" element={<FBShareProfiles />} />
+        <Route path="/share" element={<FBShareProfiles />} />
 
         </Route>
       </Routes>
-    </HashRouter>
-    // </Router>
+    </Router>
   );
 }
 

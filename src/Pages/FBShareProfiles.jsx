@@ -1,9 +1,15 @@
-import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { valueProfiles } from "../assets/uiData/zoku_profiles_se";
 import { ZokuMasks } from "../assets/uiData/PersonalityImages";
 
 function FBShareProfiles(){
-    const {profile, changeY, compassionX} = useParams();
+    const [searchParams] = useSearchParams();
+
+    const profile = searchParams.get("profile");
+    const changeY = searchParams.get("changeY");
+    const compassionX = searchParams.get("compassionX");
+    const fb = searchParams.get('fbclid');
+
     const {title, subtitle, consumerText} = valueProfiles[profile]
     const url="https://zprototyp.github.io/zoku/"
     const zoku_profile_img = `/zoku_${profile}.png`;
