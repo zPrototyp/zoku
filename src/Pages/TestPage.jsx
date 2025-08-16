@@ -47,7 +47,7 @@ function TestPage () {
   }, [profile])
   useEffect(()=>{
     friendValues.changeVsTradition > 0 && friendValues.compassionVsAmbition > 0 && (
-      fetch(`${AZURE_API}/guest/personality-result`, {
+      fetch(`${AZURE_API}/api/guest/personality-result`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -70,7 +70,7 @@ function TestPage () {
   // Get guest token if not logged in and no session token
   useEffect(() => {
     if (!authToken && !sessionToken) {
-      fetch('https://zokubackend-atd8fhadcvaaf0he.swedencentral-01.azurewebsites.net/guest/start-session', {
+      fetch('https://zokubackend-atd8fhadcvaaf0he.swedencentral-01.azurewebsites.net/api/guest/start-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
       })
