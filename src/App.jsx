@@ -19,10 +19,9 @@ import FBShareProfiles from "./Pages/FBShareProfiles";
 
 function App() { 
   return (
-    <Router basename="/zoku">
-    
+   
      {/* <Router basename="/zoku"> */}
-    {/* <HashRouter> */}
+    <HashRouter>
       <Routes>
         <Route element={<Layout />}>
           <Route path="/test" element={<TestPage />} />
@@ -43,8 +42,8 @@ function App() {
 
         </Route>
       </Routes>
-    {/* </HashRouter> */}
-    </Router>
+    </HashRouter>
+    // </Router>
   );
 }
 
