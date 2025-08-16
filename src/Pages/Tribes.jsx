@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import OverlayModal from "../Components/OverlayModal";
 import { valueProfiles } from "../assets/uiData/zoku_profiles_se";
+import { ZokuMasks } from "../assets/uiData/PersonalityImages";
 export default function Tribes() {
     const [activeModal, setActiveModal] = useState(null);
     const closeModal = () => setActiveModal(null);
@@ -26,7 +27,7 @@ export default function Tribes() {
          (
             <div className="tribe-card" key={index}
             onClick={() => setActiveModal(profile)}>
-                <img className="mask60" src={valueProfiles[profile]?.imgSrc} alt={profile} />
+                <img className="mask60" src={ZokuMasks[profile]} alt={profile} />
                 <h2>{valueProfiles[profile]?.title}</h2>
                 <p>{valueProfiles[profile]?.subtitle}</p>
             </div>
