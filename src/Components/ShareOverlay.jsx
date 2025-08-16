@@ -44,7 +44,7 @@ export function ShareOverlay({personality, profile, testValues, brand}){
             shareUrl=`${url}/${profile.imageUrl ? profile.imageUrl :`dummy-brand_${profile.category}.jpg`}`;
             quote=`Varumärket ${profile.name} matchar mina värderingar till ${profile.matchPercentage}%`;
         } else {
-            shareUrl = `${url}/share/${personality.name}/${testValues?.changeVsTradition}/${testValues?.compassionVsAmbition}`; // URL you're sharing
+            shareUrl = `${url}/share/?personality=${personality.name}&changeY=${testValues?.changeVsTradition}&compassionX=${testValues?.compassionVsAmbition}`; // URL you're sharing
             quote =  `Jag är ${personality.matchPercentage}% ${profile.title} - vad är din Zoku?`; // short text block
         }
 
