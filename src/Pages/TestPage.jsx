@@ -18,7 +18,7 @@ import ComparisonProfileView from '../Components/ComparisonProfileView.jsx'
   const AZURE_API = import.meta.env.VITE_AZURE_API;
 
 function TestPage () {
-  console.log(AZURE_API);
+  
   const [position, setPosition] = useState({ x: 50, y: 50 })
   const navigate = useNavigate()
 
