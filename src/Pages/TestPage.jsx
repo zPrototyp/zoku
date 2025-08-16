@@ -15,9 +15,10 @@ import { useSearchParams } from 'react-router-dom';
 import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
 import ComparisonProfileView from '../Components/ComparisonProfileView.jsx'
 // Given a link "http://zoku.se/test?changeY=70&compassionX=82" We can collect the values and compare.
-const AZURE_API = import.meta.env.AZURE_API;
+  const AZURE_API = import.meta.env.VITE_AZURE_API;
 
 function TestPage () {
+  console.log(AZURE_API);
   const [position, setPosition] = useState({ x: 50, y: 50 })
   const navigate = useNavigate()
 
@@ -70,7 +71,7 @@ function TestPage () {
   // Get guest token if not logged in and no session token
   useEffect(() => {
     if (!authToken && !sessionToken) {
-      fetch('https://zokubackend-atd8fhadcvaaf0he.swedencentral-01.azurewebsites.net/api/guest/start-session', {
+      fetch(`${AZURE_API}/api/guest/start-session`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
       })
@@ -102,7 +103,7 @@ function TestPage () {
     if (authToken) {
       // Logged-in user -> update profile
       try {
-        const res = await fetch('/api/user/personality', {
+        const res = await fetch(`${AZURE_API}/api/user/personality`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
