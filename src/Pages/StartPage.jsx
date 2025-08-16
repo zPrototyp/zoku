@@ -69,7 +69,7 @@ export default function StartPage() {
             <div className="zokuProfilePopupHeader">
               
                 <img className="mask80" 
-                src={valueProfiles[activeModal].imgSrc} 
+                src={ZokuMasks[activeModal]} 
                 alt={valueProfiles[activeModal].title} />
                 <h3>{valueProfiles[activeModal].title} {valueProfiles[activeModal].kanji} </h3>
             </div>
