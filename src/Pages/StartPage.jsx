@@ -3,7 +3,7 @@ import { useState } from "react";
 import OverlayModal from "../Components/OverlayModal";
 import {valueProfiles} from "../assets/uiData/zoku_profiles_se.js";
 import { ZokuMasks } from "../assets/uiData/PersonalityImages.js";
-import zokuTitle from "/src/assets/images/ZokuTitle.svg";
+import zokuTitle from "../assets/images/ZokuTitle.svg";
 
 export default function StartPage() {
   const [activeModal, setActiveModal] = useState(null);
