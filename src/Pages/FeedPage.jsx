@@ -10,6 +10,7 @@ import "../assets/css/CelebrityDial.css";
 import { sortedListAtom } from '../Atoms/SortedListAtom.jsx';
 import { brandCategories } from '../assets/uiData/brand_categories_se.js';
 import CelebrityCard from '../Components/CelebrityCard.jsx';
+import { ZokuMasks } from '../assets/uiData/PersonalityImages.js';
 const AZURE_API = import.meta.env.VITE_AZURE_API;
 export default function FeedPage() {
     {/* x Fetch the list of possible matches from backend = feedList */}
@@ -134,7 +135,7 @@ export default function FeedPage() {
     return (
         <div className="page-content">
             <div className="feed-page-user-details">
-                <h1><img className="mask80" src={valueProfiles[valueProfile.primaryPersonality.name].imgSrc} alt={valueProfiles[valueProfile.primaryPersonality.name]?.title} />
+                <h1><img className="mask80" src={ZokuMasks[valueProfile.primaryPersonality.name]} alt={valueProfiles[valueProfile.primaryPersonality.name]?.title} />
                     {valueProfiles[valueProfile.primaryPersonality.name]?.title}
                      {valueProfiles[valueProfile.primaryPersonality.name]?.kanji}
                 </h1>
