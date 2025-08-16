@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { valueProfiles } from "../assets/uiData/zoku_profiles_se";
+import { ZokuMasks } from "../assets/uiData/PersonalityImages";
 
 function FBShareProfiles(){
     const {profile, changeY, compassionX} = useParams();
@@ -20,6 +21,7 @@ function FBShareProfiles(){
         <p>{consumerText}</p>
         <a href={`${url}/test?changeY=${changeY}&compassionX=${compassionX}`}>
         <img src={zoku_profile_img} />
+        <img src={ZokuMasks[profile]} />
         </a>
 
     </div>
