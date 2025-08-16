@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { PersonalityImages, PersonalityImageNameMap } from "../assets/uiData/PersonalityImages";
+import { PersonalityImages, PersonalityImageNameMap, ZokuMasks } from "../assets/uiData/PersonalityImages";
 import { valueProfiles } from "../assets/uiData/zoku_profiles_se";
 import "../assets/css/CelebrityDial.css";
 
@@ -46,15 +46,15 @@ function resolveMaskImage(entity)
   if (!entity) return PersonalityImages.Mask;
 
   const primaryName = entity?.primaryPersonality?.name;
-  if (primaryName && valueProfiles[primaryName]?.imgSrc)
+  if (primaryName)
   {
-    return valueProfiles[primaryName].imgSrc;
+    return ZokuMasks[primaryName];
   }
 
   const primaryType = entity?.personalityProfile?.primary?.type;
-  if (primaryType && valueProfiles[primaryType]?.imgSrc)
+  if (primaryType)
   {
-    return valueProfiles[primaryType].imgSrc;
+    return ZokuMasks[primaryType];
   }
 
   const keyCandidate =
