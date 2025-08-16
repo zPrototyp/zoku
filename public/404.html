@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>Redirecting...</title>
-   <script>
-  if (sessionStorage.getItem("redirect")) {
-    var redirect = sessionStorage.getItem("redirect");
-    sessionStorage.removeItem("redirect");
-    window.history.replaceState(null, null, redirect);
-  }
+    <script>
+      // Capture full route (path + search + hash)
+      var redirect =
+        "/" +
+        window.location.pathname.split("/").slice(2).join("/") +
+        window.location.search +
+        window.location.hash;
 
-  // --- Strip fbclid param if present ---
-  const url = new URL(window.location.href);
-  if (url.searchParams.has("fbclid")) {
-    url.searchParams.delete("fbclid");
-    window.history.replaceState({}, document.title, url.pathname + url.search + url.hash);
-  }
-</script>
+      sessionStorage.setItem("redirect", redirect);
+
+      // Force load of index.html
+      window.location.replace("/zoku/");
+    </script>
   </head>
   <body>
     <p>Redirecting...</p>
