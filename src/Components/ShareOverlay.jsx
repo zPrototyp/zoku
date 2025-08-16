@@ -8,7 +8,7 @@ import { useNavigate } from "react-router";
 export function ShareOverlay({personality, profile, testValues, brand}){
     const [expanded, setExpanded] = useState(false);
     const navigate = useNavigate();
-    const url = "http://localhost:5173";
+    const url = "https://zprototyp.github.io/zoku/#/";
     
 
     const shareInstagramStory = () => {
