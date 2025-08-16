@@ -51,7 +51,7 @@ main::before {
   right: -20px;
   width: 259px;
   height: 164px;
-  background-image: url('./flowers.png'); 
+  background-image: url('../assets/images/flowers.png'); 
   background-size: contain;
   background-repeat: no-repeat;
   transform: rotate(180deg);

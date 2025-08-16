@@ -59,7 +59,7 @@
   box-shadow: -2px 0 10px rgba(0, 0, 0, 0.5);
   transition: right 0.4s ease;
   z-index: 1000;
-  background-image: url('./flowers.png');
+  background-image: url('../assets/images/flowers.png');
   background-position: left calc(0px) bottom calc(20px);
   background-repeat: no-repeat;
   background-size: 214px 136px;
