@@ -10,12 +10,13 @@ function PersonalityCard({ personality, profile, highlight, testValues })
   const [expanded, setExpanded] = useState(false);
   
   if (!personality || !profile) return null;
-
+  console.log(personality)
+  console.log(`ZokuMasks.${personality.name}`);
   return (
     <div className={`card ${highlight ? "primary-card" : "secondary-card"}`}>
       <div className="card-header">
         <img
-          src={ZokuMasks.personality.name}
+          src={ZokuMasks.Achiever}
           alt={profile.title}
           className={`mask ${highlight ? "large-mask" : "faint-mask"}`}
         />
