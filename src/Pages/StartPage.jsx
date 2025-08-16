@@ -2,6 +2,8 @@ import {NavLink} from "react-router";
 import { useState } from "react";
 import OverlayModal from "../Components/OverlayModal";
 import {valueProfiles} from "../assets/uiData/zoku_profiles_se.js";
+import { ZokuMasks } from "../assets/uiData/PersonalityImages.js";
+import zokuTitle from "src/assets/images/ZokuTitle.svg";
 
 export default function StartPage() {
   const [activeModal, setActiveModal] = useState(null);
@@ -12,7 +14,7 @@ export default function StartPage() {
       {/* Logo here */}
       <NavLink to="/">
         <h1>
-          <img src="src/assets/images/ZokuTitle.svg" alt="Logo" className="logo" />
+          <img src={zokuTitle} alt="Logo" className="logo" />
           <span className="sr-only">Zoku</span>
         </h1>
       </NavLink>
@@ -30,27 +32,27 @@ export default function StartPage() {
         <p className="yRight">Ambition</p>
 
         {/* Top edge */}
-        <img src="src/assets/images/Idealisten.svg" className="top-left" 
+        <img src={ZokuMasks[Idealist]} className="top-left" 
           title="Idealisten" onClick={() => setActiveModal("Idealist")} />
-        <img src="src/assets/images/Aventyraren.svg" className="top-right" 
+        <img src={ZokuMasks[Adventurer]} className="top-right" 
           title="Äventyraren" onClick={() => setActiveModal("Adventurer")} />
 
         {/* Right edge */}
-        <img src="src/assets/images/Segraren.svg" className="right-top" 
+        <img src={ZokuMasks[Achiever]} className="right-top" 
           title="Segraren" onClick={() => setActiveModal("Achiever")} />
-        <img src="src/assets/images/Strategen.svg" className="right-bottom" 
+        <img src={ZokuMasks[Strategist]} className="right-bottom" 
           title="Strategen" onClick={() => setActiveModal("Strategist")} />
 
         {/* Bottom edge */}
-        <img src="src/assets/images/Bevararen.svg" className="bottom-right" 
+        <img src={ZokuMasks[Traditionalist]} className="bottom-right" 
           title="Bevararen" onClick={() => setActiveModal("Traditionalist")} />
-        <img src="src/assets/images/Beskyddaren.svg" className="bottom-left" 
+        <img src={ZokuMasks[Guardian]} className="bottom-left" 
           title="Beskyddaren" onClick={() => setActiveModal("Guardian")} />
 
         {/* Left edge */}
-        <img src="src/assets/images/Forkampen.svg" className="left-top" 
+        <img src={ZokuMasks[Advocate]} className="left-top" 
           title="Förkämpen" onClick={() => setActiveModal("Advocate")} />
-        <img src="src/assets/images/Vardgivaren.svg" className="left-bottom" 
+        <img src={ZokuMasks[Caregiver]} className="left-bottom" 
           title="Vårdgivaren" onClick={() => setActiveModal("Caregiver")} />
  
       </div>

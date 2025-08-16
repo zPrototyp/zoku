@@ -32,3 +32,24 @@ export const PersonalityImageNameMap =
   "Strategist": "Strategen",
   "Caregiver": "Vardgivaren"
 };
+
+
+import Guardian from "../images/Beskyddaren.svg";
+import Adventurer from "../images/Aventyraren.svg";
+import Traditionalist from "../images/Bevararen.svg";
+import Advocate from "../images/Forkampen.svg";
+import Idealist from "../images/Idealisten.svg";
+import Achiever from "../images/Segraren.svg";
+import Strategist from "../images/Strategen.svg";
+import Caregiver from "../images/Vardgivaren.svg";
+export const ZokuMasks = {
+  Mask,
+  Guardian,
+  Adventurer,
+  Traditionalist,
+  Advocate,
+  Idealist,
+  Achiever,
+  Strategist,
+  Caregiver
+}
