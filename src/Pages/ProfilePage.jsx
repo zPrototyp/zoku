@@ -14,8 +14,7 @@ import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
 import { testValuesAtom } from "../Atoms/TestValuesAtom";
 import UserSettings from "../Components/UserSettings";
 
-// import { MdOutlinePlaylistRemove } from "react-icons/md";
-// import HiddenBrands from "../Components/HiddenBrands";
+const AZURE_API = import.meta.env.VITE_AZURE_API;
 
 function ProfilePage() {
   const [profile, setProfile] = useAtom(valueProfileAtom);
@@ -59,9 +58,9 @@ function ProfilePage() {
     setProfile(null);
     if (!token) return;
 
-    safeFetchJson("/api/user/personality", setProfile);
-    safeFetchJson("/api/user/brands/collection", setBrands);
-    safeFetchJson("/api/user/personality/history", setHistory);    
+    safeFetchJson(`${AZURE_API}/user/personality`, setProfile);
+    safeFetchJson(`${AZURE_API}/user/brands/collection`, setBrands);
+    safeFetchJson(`${AZURE_API}/user/personality/history`, setHistory);    
 
   }, [token]);
 
@@ -80,7 +79,7 @@ function ProfilePage() {
       setShowHidden(false);
       return;
     }
-    const hidden = await safeFetchJson("api/user/brands/hidden", setHiddenBrands);
+    const hidden = await safeFetchJson(`${AZURE_API}/user/brands/hidden`, setHiddenBrands);
     if (hidden.length > 0) {
       setShowHidden(true);
     } else {
@@ -153,17 +152,9 @@ function ProfilePage() {
               title="Visa historik"
               onClick={() => setShowHistory(true)}
             />
-            {/* <MdOutlinePlaylistRemove
-                className="clickable-icon"
-                title="Visa gömda varumärken"
-                onClick={() => handleShowHidden()}
-              /> */}
           </div>
         </div>
 
-        {/* {showHidden
-          ? <HiddenBrands brandList={hiddenBrands} setShow={setShowHidden} />
-          : <BrandWardrobe brands={brands} />} */}
         <BrandWardrobe
           brands={brands}
           showHidden={showHidden}

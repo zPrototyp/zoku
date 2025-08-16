@@ -11,7 +11,9 @@ import { sortedListAtom } from '../Atoms/SortedListAtom.jsx';
 import { brandCategories } from '../assets/uiData/brand_categories_se.js';
 import CelebrityCard from '../Components/CelebrityCard.jsx';
 import { ZokuMasks } from '../assets/uiData/PersonalityImages.js';
+
 const AZURE_API = import.meta.env.VITE_AZURE_API;
+
 export default function FeedPage() {
     {/* x Fetch the list of possible matches from backend = feedList */}
     {/* x Print out drop-down menu to change sorting */}
