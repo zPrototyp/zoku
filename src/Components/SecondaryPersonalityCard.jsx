@@ -7,13 +7,13 @@ function SecondaryPersonalityCard({ personality, profile })
   const [expanded, setExpanded] = useState(false);
 
   if (!profile) return null;
-
+  const profileImg = ZokuMasks[personality.name];
   return (
     <div
       className={`secondary-card-circle ${expanded ? "expanded" : ""}`}
       onClick={() => setExpanded(!expanded)}
     >
-      <img src={ZokuMasks.personality} alt={profile.title} className="mask-background" />
+      <img src={profileImg} alt={profile.title} className="mask-background" />
       <div className="circle-content">
         <div className="kanji">{profile.kanji}</div>
         <div className="match">{personality.matchPercentage}%</div>
