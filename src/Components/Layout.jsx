@@ -4,7 +4,7 @@ import { useAtom } from 'jotai';
 import { authTokenAtom } from '../Atoms/AuthAtom.jsx';
 import '../assets/css/App.css';
 import '../assets/css/FooterNav.css';
-
+import smallLogo from '/src/assets/images/small-title.svg';
 
 function FooterNav() {
   const [authToken, setAuthToken] = useAtom(authTokenAtom);
@@ -26,7 +26,7 @@ function Layout() {
     <header>
       <nav className="main-nav">
         <NavLink to="/" className="nav-link">
-          <img className="small-logo" src="/zoku/small-title.svg" alt="Zoku Logo" />
+          <img className="small-logo" src={smallLogo} alt="Zoku Logo" />
         </NavLink>
       </nav>
         <HamburgerMenu />
