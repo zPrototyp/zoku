@@ -18,7 +18,7 @@ export function BrandLikeOverlay({ brand }) {
 
   const sendInteraction = (userAction) => {
     // console.log("Brand before update:", brandList.find(b => b.id === brand.id));
-    token && fetch(`${AZURE_API}}/user/brands/interactions`, {
+    token && fetch(`${AZURE_API}/user/brands/interactions`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
