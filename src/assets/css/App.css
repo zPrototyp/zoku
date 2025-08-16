@@ -373,7 +373,7 @@ button a {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('src/assets/images/ZokuTitle.svg');
+  background-image: url('../images/ZokuTitle.svg');
   background-size: 90% auto;
   background-position: center;
   background-repeat: no-repeat;
