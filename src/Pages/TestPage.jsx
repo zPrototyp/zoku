@@ -48,7 +48,7 @@ function TestPage () {
   }, [profile])
   useEffect(()=>{
     friendValues.changeVsTradition > 0 && friendValues.compassionVsAmbition > 0 && (
-      fetch(`${AZURE_API}/api/guest/personality-result`, {
+      fetch(`${AZURE_API}/guest/personality-result`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -71,7 +71,7 @@ function TestPage () {
   // Get guest token if not logged in and no session token
   useEffect(() => {
     if (!authToken && !sessionToken) {
-      fetch(`${AZURE_API}/api/guest/start-session`, {
+      fetch(`${AZURE_API}/guest/start-session`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
       })
@@ -103,7 +103,7 @@ function TestPage () {
     if (authToken) {
       // Logged-in user -> update profile
       try {
-        const res = await fetch(`${AZURE_API}/api/user/personality`, {
+        const res = await fetch(`${AZURE_API}/user/personality`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',

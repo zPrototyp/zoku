@@ -13,6 +13,7 @@ import { comparisonValueAtom } from '../Atoms/ComparisonValueAtom.jsx'
 import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
 import CelebrityComparisonDial from '../Components/CelebrityComparisonDial.jsx'
 import BrandCards from '../Components/BrandCards'
+const AZURE_API = import.meta.env.VITE_AZURE_API;
 
 function ResultPage () {
   const [testValues, setTestValues] = useAtom(testValuesAtom)
@@ -38,7 +39,7 @@ function ResultPage () {
       return
 
     testValues.changeVsTradition > 0 &&
-      fetch('/api/guest/personality-result', {
+      fetch(`${AZURE_API}/guest/personality-result`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -67,7 +68,7 @@ function ResultPage () {
           setLoading(false)
         })
 
-    fetch('/api/guest/brand-matches', {
+    fetch(`${AZURE_API}/guest/brand-matches`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
