@@ -8,7 +8,7 @@ import zokuTitle from "/src/assets/images/ZokuTitle.svg";
 export default function StartPage() {
   const [activeModal, setActiveModal] = useState(null);
   const closeModal = () => setActiveModal(null);
-  
+  console.log(ZokuMasks);
   return (
     <div className="page-content">
       {/* Logo here */}
@@ -38,21 +38,21 @@ export default function StartPage() {
           title="Äventyraren" onClick={() => setActiveModal("Adventurer")} />
 
         {/* Right edge */}
-        <img src={ZokuMasks[Achiever]} className="right-top" 
+        <img src={ZokuMasks.Achiever} className="right-top" 
           title="Segraren" onClick={() => setActiveModal("Achiever")} />
-        <img src={ZokuMasks[Strategist]} className="right-bottom" 
+        <img src={ZokuMasks.Strategist} className="right-bottom" 
           title="Strategen" onClick={() => setActiveModal("Strategist")} />
 
         {/* Bottom edge */}
-        <img src={ZokuMasks[Traditionalist]} className="bottom-right" 
+        <img src={ZokuMasks.Traditionalist} className="bottom-right" 
           title="Bevararen" onClick={() => setActiveModal("Traditionalist")} />
-        <img src={ZokuMasks[Guardian]} className="bottom-left" 
+        <img src={ZokuMasks.Guardian} className="bottom-left" 
           title="Beskyddaren" onClick={() => setActiveModal("Guardian")} />
 
         {/* Left edge */}
-        <img src={ZokuMasks[Advocate]} className="left-top" 
+        <img src={ZokuMasks.Advocate} className="left-top" 
           title="Förkämpen" onClick={() => setActiveModal("Advocate")} />
-        <img src={ZokuMasks[Caregiver]} className="left-bottom" 
+        <img src={ZokuMasks.Caregiver} className="left-bottom" 
           title="Vårdgivaren" onClick={() => setActiveModal("Caregiver")} />
  
       </div>
