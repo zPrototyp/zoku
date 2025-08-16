@@ -1,6 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import { valueProfiles } from "../assets/uiData/zoku_profiles_se";
 import { ZokuMasks } from "../assets/uiData/PersonalityImages";
+import { Link } from "react-router-dom";
 
 function FBShareProfiles(){
     const [searchParams] = useSearchParams();
@@ -23,12 +24,15 @@ function FBShareProfiles(){
     
         
         <p>{`Jag är ${title} - ${subtitle}.`}</p> 
-        <p>Vad är du?</p>
         <p>{consumerText}</p>
-        <a href={`${url}/test?changeY=${changeY}&compassionX=${compassionX}`}>
-        <img src={zoku_profile_img} />
-        <img src={ZokuMasks[profile]} />
-        </a>
+        <p>Vad är du? Jämför oss</p>
+        <Link to={`/test?changeY=${changeY}&compassionX=${compassionX}`}>
+        
+        
+        <img className="mask100" src={ZokuMasks[profile]} />
+        
+
+        </Link>
 
     </div>
     )
