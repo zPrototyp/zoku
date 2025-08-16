@@ -15,6 +15,7 @@ import { useSearchParams } from 'react-router-dom';
 import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
 import ComparisonProfileView from '../Components/ComparisonProfileView.jsx'
 // Given a link "http://zoku.se/test?changeY=70&compassionX=82" We can collect the values and compare.
+const AZURE_API = import.meta.env.AZURE_API;
 
 function TestPage () {
   const [position, setPosition] = useState({ x: 50, y: 50 })
@@ -46,7 +47,7 @@ function TestPage () {
   }, [profile])
   useEffect(()=>{
     friendValues.changeVsTradition > 0 && friendValues.compassionVsAmbition > 0 && (
-      fetch('/api/guest/personality-result', {
+      fetch(`${AZURE_API}/guest/personality-result`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
