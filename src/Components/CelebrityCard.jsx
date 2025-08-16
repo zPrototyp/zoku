@@ -148,7 +148,7 @@ export default function CelebrityCard({ celeb, user, celebBrands = [] })
                 className="primaryMask"
 
 
-                src={ZokuMasks[pProf.name]}
+                src={ZokuMasks[primary.name]}
 
 
                 alt={pProf.title}
