@@ -13,9 +13,9 @@ import { comparisonValueAtom } from '../Atoms/ComparisonValueAtom.jsx'
 import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
 import CelebrityComparisonDial from '../Components/CelebrityComparisonDial.jsx'
 import BrandCards from '../Components/BrandCards'
-const AZURE_API = import.meta.env.VITE_AZURE_API;
 
 function ResultPage () {
+  const AZURE_API = import.meta.env.VITE_AZURE_API;
   const [testValues, setTestValues] = useAtom(testValuesAtom)
   const location = useLocation()
   const navigate = useNavigate()
