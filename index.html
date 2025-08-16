@@ -12,22 +12,6 @@
   <body>
     <div id="root"></div>
     
-    <script>
-  // Restore redirect from 404.html if present
-  if (sessionStorage.getItem("redirect")) {
-    var redirect = sessionStorage.getItem("redirect");
-    sessionStorage.removeItem("redirect");
-    window.history.replaceState(null, null, redirect);
-  }
-
-  // Remove fbclid from URL if present
-  const url = new URL(window.location.href);
-  if (url.searchParams.has("fbclid")) {
-    url.searchParams.delete("fbclid");
-    window.history.replaceState({}, document.title, url.pathname + url.search + url.hash);
-  }
-</script>
-    
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
