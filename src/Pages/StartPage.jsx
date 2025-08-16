@@ -8,7 +8,7 @@ import zokuTitle from "../assets/images/ZokuTitle.svg";
 export default function StartPage() {
   const [activeModal, setActiveModal] = useState(null);
   const closeModal = () => setActiveModal(null);
-  // console.log(ZokuMasks);
+  
   return (
     <div className="page-content">
       {/* Logo here */}
