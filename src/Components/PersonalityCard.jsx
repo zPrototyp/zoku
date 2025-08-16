@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import "../assets/css/App.css";
 import "../assets/css/PersonalityCard.css";
-import { ZokuMasks } from "../assets/uiData/PersonalityImages.js";
+import { ZokuMasks } from "../assets/uiData/PersonalityImages";
 import { ShareOverlay } from "./ShareOverlay";
 
 
 function PersonalityCard({ personality, profile, highlight, testValues })
 {
   const [expanded, setExpanded] = useState(false);
-
+  
   if (!personality || !profile) return null;
 
   return (
     <div className={`card ${highlight ? "primary-card" : "secondary-card"}`}>
       <div className="card-header">
         <img
-          src={ZokuMasks.personality}
+          src={ZokuMasks.personality.name}
           alt={profile.title}
           className={`mask ${highlight ? "large-mask" : "faint-mask"}`}
         />
