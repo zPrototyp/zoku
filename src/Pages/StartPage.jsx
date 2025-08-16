@@ -32,9 +32,9 @@ export default function StartPage() {
         <p className="yRight">Ambition</p>
 
         {/* Top edge */}
-        <img src={ZokuMasks[Idealist]} className="top-left" 
+        <img src={ZokuMasks.Idealist} className="top-left" 
           title="Idealisten" onClick={() => setActiveModal("Idealist")} />
-        <img src={ZokuMasks[Adventurer]} className="top-right" 
+        <img src={ZokuMasks.Adventurer} className="top-right" 
           title="Äventyraren" onClick={() => setActiveModal("Adventurer")} />
 
         {/* Right edge */}
