@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../assets/css/SecondaryPersonalityCard.css";
+import { ZokuMasks } from "../assets/uiData/PersonalityImages.js";
 
 function SecondaryPersonalityCard({ personality, profile })
 {
@@ -12,7 +13,7 @@ function SecondaryPersonalityCard({ personality, profile })
       className={`secondary-card-circle ${expanded ? "expanded" : ""}`}
       onClick={() => setExpanded(!expanded)}
     >
-      <img src={profile.imgSrc} alt={profile.title} className="mask-background" />
+      <img src={ZokuMasks.personality} alt={profile.title} className="mask-background" />
       <div className="circle-content">
         <div className="kanji">{profile.kanji}</div>
         <div className="match">{personality.matchPercentage}%</div>

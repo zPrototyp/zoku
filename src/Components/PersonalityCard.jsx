@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../assets/css/App.css";
 import "../assets/css/PersonalityCard.css";
+import { ZokuMasks } from "../assets/uiData/PersonalityImages.js";
 import { ShareOverlay } from "./ShareOverlay";
 
 
@@ -14,7 +15,7 @@ function PersonalityCard({ personality, profile, highlight, testValues })
     <div className={`card ${highlight ? "primary-card" : "secondary-card"}`}>
       <div className="card-header">
         <img
-          src={profile.imgSrc}
+          src={ZokuMasks.personality}
           alt={profile.title}
           className={`mask ${highlight ? "large-mask" : "faint-mask"}`}
         />
