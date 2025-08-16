@@ -15,7 +15,7 @@ import { useSearchParams } from 'react-router-dom';
 import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
 import ComparisonProfileView from '../Components/ComparisonProfileView.jsx'
 // Given a link "http://zoku.se/test?changeY=70&compassionX=82" We can collect the values and compare.
-  const AZURE_API = import.meta.env.VITE_AZURE_API;
+const AZURE_API = import.meta.env.VITE_AZURE_API;
 
 function TestPage () {
   
