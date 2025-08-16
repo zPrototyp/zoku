@@ -22,7 +22,7 @@ const HamburgerMenu = () => {
     setFeedList(null);
     setValueProfile(null);
     setIsOpen(false)
-    window.location.href = "/"; // Redirect to home page
+    window.location.href = "/zoku/"; // Redirect to home page
   };
 
  return (
