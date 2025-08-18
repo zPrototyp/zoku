@@ -13,6 +13,7 @@ import { comparisonValueAtom } from '../Atoms/ComparisonValueAtom.jsx'
 import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
 import CelebrityComparisonDial from '../Components/CelebrityComparisonDial.jsx'
 import BrandCards from '../Components/BrandCards'
+import { calculateMatchPercentage } from '../Services/type-calculation.js'
 const AZURE_API = import.meta.env.VITE_AZURE_API;
 
 function ResultPage () {
@@ -55,13 +56,6 @@ function ResultPage () {
         .then(data => {
           setResult(data.data)
           setLoading(false)
-          // console.log('Resultat:', data.data)
-                // Guest -> go to result page unless we're doing a comparison
-          // if (friendValues.changeVsTradition || friendValues.compassionVsAmbition) {
-          //   // If we have friend's values, navigate to comparison page
-          //   navigate('/compare');
-          // }
-          // Left out to make space for dial
         })
         .catch(() => {
           setError('Kunde inte hämta resultat.')
@@ -92,18 +86,6 @@ function ResultPage () {
       })
   }, [testValues, sessionToken])
 
-  if (loading)
-    return (
-      <div className='result-page'>
-        <p>Laddar resultat...</p>
-      </div>
-    )
-  if (error)
-    return (
-      <div className='result-page'>
-        <p style={{ color: 'red' }}>{error}</p>
-      </div>
-    )
 
   const { primaryPersonality, secondaryPersonality, thirdPersonality } = result
 
@@ -133,12 +115,28 @@ function ResultPage () {
           })
     : null
 
+// Match percentage
+const friendMatch = hasFriendVals ? calculateMatchPercentage(dialA, dialB) : 0;
+
+  if (loading)
+    return (
+      <div className='result-page'>
+        <p>Laddar resultat...</p>
+      </div>
+    )
+  if (error)
+    return (
+      <div className='result-page'>
+        <p style={{ color: 'red' }}>{error}</p>
+      </div>
+    )
+
   return (
     <div className='result-page'>
       {/* Comparison dial */}
       {hasFriendVals && dialA && dialB && (
         <div className="comparison-inline" style={{ marginBottom: '1.25rem' }}>
-          <h2 style={{ marginBottom: '.5rem' }}>Jämförelse</h2>
+          <h2 style={{ marginBottom: '.5rem' }}>Jämförelse - {friendMatch}% matchning</h2>
           <CelebrityComparisonDial a={dialA} b={dialB} aLabel="Du" bLabel="Vän" size={260} />
         </div>
       )}
