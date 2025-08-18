@@ -2,7 +2,7 @@ import { valueProfiles } from "../assets/uiData/zoku_profiles_se";
 import SecondaryPersonalityCard from "./SecondaryPersonalityCard";
 
 function ComparisonProfileView({profile}){
-    console.log(profile);
+    // console.log(profile);
     return (<>
     
 
