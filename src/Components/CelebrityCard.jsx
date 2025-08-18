@@ -33,7 +33,6 @@ export default function CelebrityCard({ celeb, user, celebBrands = [] })
   const primary = celeb?.personalityProfile?.primary ?? null;
   const secondary = celeb?.personalityProfile?.secondary ?? null;
   const third = celeb?.personalityProfile?.third ?? null;
-
   const pProf = useMemo(() => getProfileSafe(primary?.type), [primary?.type]);
   const sProf = useMemo(() => getProfileSafe(secondary?.type), [secondary?.type]);
   const tProf = useMemo(() => getProfileSafe(third?.type), [third?.type]);
@@ -138,6 +137,7 @@ export default function CelebrityCard({ celeb, user, celebBrands = [] })
         </div>
       )}
 
+
       {/* Personalities */}
       {expanded && (
         <div className="celebExpanded">
@@ -148,7 +148,7 @@ export default function CelebrityCard({ celeb, user, celebBrands = [] })
                 className="primaryMask"
 
 
-                src={ZokuMasks[primary.type]}
+                src={ZokuMasks[primary?.type]}
 
 
                 alt={pProf.title}
