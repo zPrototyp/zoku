@@ -4,20 +4,26 @@ import "../assets/css/SharingOverlay.css";
 
 import { FaSquareFacebook , FaInstagram , FaTiktok } from "react-icons/fa6";
 import { useNavigate } from "react-router";
+
+import { useAtomValue } from "jotai";
+import { authTokenAtom } from "../Atoms/AuthAtom";
+import { guestTokenAtom } from "../Atoms/GuestTokenAtom";
 import { API_ShareProfile } from "../Services/API";
 
 export function ShareOverlay({personality, profile, testValues, brand}){
     const [expanded, setExpanded] = useState(false);
     const navigate = useNavigate();
     const url = "https://zprototyp.github.io/zoku";
-    
+    const token = useAtomValue(authTokenAtom);
+    const sessionToken = useAtomValue(guestTokenAtom);
+    const bearer = token || sessionToken;
 
     const shareInstagramStory = () => {
         let sharedImage="";
         if (brand){
             sharedImage = `${url}/${profile.imageUrl ? profile.imageUrl :`dummy-brand_${profile.category}.jpg`}`;
                     
-        } else {
+        } else {    
             sharedImage =  `${url}/zoku_${personality.name}.png`;
         }
         const backgroundImageUrl = encodeURIComponent(
@@ -39,7 +45,7 @@ export function ShareOverlay({personality, profile, testValues, brand}){
 
     function handleFbShare(){
         // send to backend
-        const res = API_ShareProfile("facebook");
+        const res = API_ShareProfile("facebook", bearer);
         console.log(res);
         let shareUrl="";
         let quote="";
