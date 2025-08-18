@@ -104,8 +104,6 @@ export default function FeedPage() {
         .then((res) => {
             if (!res.ok) {
                 alert('Kunde inte hämta feed-lista.');
-                // setToken(null);
-                // setFeed(null);
                 throw new Error("Request failed");
             }
             return res.json();
@@ -121,7 +119,6 @@ export default function FeedPage() {
 
     const sortList = (option) => {
         setSortOption(option);
-        // console.log('sorting', feed);
         switch (option) {
             case "all":
                 setSortedFeed(feed);
@@ -130,21 +127,20 @@ export default function FeedPage() {
                 setSortedFeed([...feed].filter(brand => brand.category == option))
                 break;
         }
-        // console.log('sorted', sortedFeed);
-
     };
 
     return (
-        <div className="page-content">
-            <div className="feed-page-user-details">
-                <h1><img className="mask80" src={ZokuMasks[valueProfile.primaryPersonality.name]} alt={valueProfiles[valueProfile.primaryPersonality.name]?.title} />
-                    {valueProfiles[valueProfile.primaryPersonality.name]?.title}
-                     {valueProfiles[valueProfile.primaryPersonality.name]?.kanji}
-                </h1>
-                <h3>{valueProfiles[valueProfile.primaryPersonality.name]?.consumerHeader}</h3>
-                <p>{valueProfiles[valueProfile.primaryPersonality.name]?.consumerText}</p>
-            </div>
-           
+    <div className="page-content">
+
+        <div className="feed-page-user-details">
+            <h1><img className="mask80" src={ZokuMasks[valueProfile.primaryPersonality.name]} alt={valueProfiles[valueProfile.primaryPersonality.name]?.title} />
+                {valueProfiles[valueProfile.primaryPersonality.name]?.title}
+                    {valueProfiles[valueProfile.primaryPersonality.name]?.kanji}
+            </h1>
+            <h3>{valueProfiles[valueProfile.primaryPersonality.name]?.consumerHeader}</h3>
+            <p>{valueProfiles[valueProfile.primaryPersonality.name]?.consumerText}</p>
+        </div>
+        
 
         {randomCelebrity && (
             <CelebrityCard
@@ -166,6 +162,6 @@ export default function FeedPage() {
 
         {sortedFeed && <div className="feed"><BrandCards brandList={sortedFeed} /></div>}
 
-        </div>
+    </div>
     );
 }
