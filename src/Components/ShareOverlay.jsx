@@ -45,8 +45,8 @@ export function ShareOverlay({personality, profile, testValues, brand}){
 
     function handleFbShare(){
         // send to backend
-        const res = API_shareProfile("facebook", bearer);
-        console.log(res);
+        API_shareProfile("facebook", bearer);
+        
         let shareUrl="";
         let quote="";
         if (brand) {
