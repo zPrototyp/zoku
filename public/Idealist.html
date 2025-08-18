@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Estonia&family=MuseoModerno:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="zoku.css">
   <meta charset="UTF-8">
   <title>Share Idealist</title>
 
           <!-- placeholders -->
-  <meta property="og:title" content="Jag är Idealisten - Den visionära humanisten." id="og-title">
+  <meta property="og:title" content="Jag är Idealisten - Den visionära humanisten" id="og-title">
   <meta property="og:description" content="För dig är ett köp ett ställningstagande. Du letar efter varumärken som står för något. Genom ditt konsumtionsval bygger du den framtid du tror på. Du är ofta den som inspirerar andra att tänka efter – och tänka om." id="og-desc">
   <meta property="og:image" content="zoku_Idealist.png" id="og-image">
   <meta property="og:url" content="/#/test?changeY=50&compassionX=50" id="og-url">
 
 </head>
 <body>
-  <h1 id="title">Jag är Idealisten - Den visionära humanisten.</h1>
-<img src="Idealisten.svg" alt="Idealisten" width="100">
-<p>
-  För dig är ett köp ett ställningstagande. Du letar efter varumärken som står för något. Genom ditt konsumtionsval bygger du den framtid du tror på. Du är ofta den som inspirerar andra att tänka efter – och tänka om.
-</p>
-
-<h3><a id="link" href="#">Vad är du? Jämför oss</a></h3>  
+  <div id="fb-share-page">
+    <h1 id="title">Jag är Idealisten - Den visionära humanisten</h1>
+    <a id="link" href="#">
+      <img src="zoku_Idealist.png" alt="Idealisten" />
+    </a>
+  </div>
 
   <script>
     // Get query params from current URL
@@ -29,17 +32,12 @@
     const profile = "Idealist"; 
     const url = `zoku/#/test?changeY=${changeY}&compassionX=${compassionX}`;
 
-    // Update visible content
-    
     // Update meta tags
     document.getElementById("og-url").setAttribute("content", url);
 
     // Use them to build a link (example to React route)
-    
     const reactUrl = `/zoku/#/test?changeY=${changeY}&compassionX=${compassionX}`;
     document.getElementById("link").href = reactUrl;
-
-
   </script>
 </body>
 </html>

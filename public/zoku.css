@@ -1,0 +1,32 @@
+:root {
+  --fontHeading: "Estonia", cursive;
+  --fontBody: "MuseoModerno", sans-serif;
+}
+#fb-share-page{
+  margin: 0 auto;
+  max-width: 500px;
+  min-height: 100%; /* Let it grow */
+  font-family: var(--fontBody);
+  color: black;
+  position: relative; /* Required to position the pseudo-element */
+  z-index: 1; /* Make sure this stays above background layers */
+}
+#fb-share-page h1{
+  font-size: var(--fontHeading);
+}
+
+#fb-share-page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -20px;
+  width: 259px;
+  height: 164px;
+  background-image: url(flowers.png); 
+  background-size: contain;
+  background-repeat: no-repeat;
+  transform: rotate(180deg);
+  opacity: 0.2;
+  pointer-events: none; /* ensures it doesn't block clicks */
+  z-index: -1;   /* places the image behind main content*/
+}

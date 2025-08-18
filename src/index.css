@@ -25,21 +25,3 @@ main {
   background-position: top center;
   min-height: 100%; /* Let it grow */
 }
-:root {
-  --fontHeading: "Estonia", cursive;
-  --fontBody: "MuseoModerno", sans-serif;
-}
-#fb-share-page{
-  margin: 0 auto;
-  max-width: 500px;
-  background-image: url(assets/images/shoji-border.svg);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: top center;
-  min-height: 100%; /* Let it grow */
-  font-family: var(--fontBody);
-  color: black;
-}
-#fb-share-page h1{
-  font-size: var(--fontHeading);
-}

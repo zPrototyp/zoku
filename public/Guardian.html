@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Estonia&family=MuseoModerno:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="zoku.css">
   <meta charset="UTF-8">
   <title>Share Beskyddaren</title>
 
           <!-- placeholders -->
-  <meta property="og:title" content="Jag är Beskyddaren - Den pålitliga väktaren." id="og-title">
+  <meta property="og:title" content="Jag är Beskyddaren - Den pålitliga väktaren" id="og-title">
   <meta property="og:description" content="Du väljer det som skapar lugn, trygghet och välmående – för dig och dina nära. Kvalitet över tid, inte status över substans. Du bygger hem och vardag med omsorg." id="og-desc">
   <meta property="og:image" content="zoku_Guardian.png" id="og-image">
   <meta property="og:url" content="/#/test?changeY=50&compassionX=50" id="og-url">
 
 </head>
 <body>
-  <h1 id="title">Jag är Beskyddaren - Den pålitliga väktaren.</h1>
-<img src="Beskyddaren.svg" alt="Beskyddaren" width="100">
-<p>
-  Du väljer det som skapar lugn, trygghet och välmående – för dig och dina nära. Kvalitet över tid, inte status över substans. Du bygger hem och vardag med omsorg.
-</p>
+  <div id="fb-share-page"></div>
+    <h1 id="title">Jag är Beskyddaren - Den pålitliga väktaren</h1>
 
-<h3><a id="link" href="#">Vad är du? Jämför oss</a></h3>  
-
+    <a id="link" href="#">
+      <img src="zoku_Guardian.png" alt="Beskyddaren" />
+    </a>
+<img src="zoku_Guardian.png" alt="Beskyddaren" />
   <script>
     // Get query params from current URL
     const params = new URLSearchParams(window.location.search);
@@ -29,17 +32,12 @@
     const profile = "Guardian"; 
     const url = `zoku/#/test?changeY=${changeY}&compassionX=${compassionX}`;
 
-    // Update visible content
-    
     // Update meta tags
     document.getElementById("og-url").setAttribute("content", url);
 
     // Use them to build a link (example to React route)
-    
     const reactUrl = `/zoku/#/test?changeY=${changeY}&compassionX=${compassionX}`;
     document.getElementById("link").href = reactUrl;
-
-
   </script>
 </body>
 </html>
