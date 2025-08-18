@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Estonia&family=MuseoModerno:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
   <meta charset="UTF-8">
   <title>Share Achiever</title>
 
@@ -9,15 +13,24 @@
   <meta property="og:description" content="Allt du använder måste hålla samma nivå som du själv. Du investerar i verktyg, kläder och teknologier som ger dig en edge. Du väljer inte för att imponera – du väljer för att vinna." id="og-desc">
   <meta property="og:image" content="zoku_Achiever.png" id="og-image">
   <meta property="og:url" content="/#/test?changeY=50&compassionX=50" id="og-url">
-
+  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="src/assets/css/App.css">
 </head>
 <body>
-  <h1 id="title"></h1>
-<img src="Segraren.svg" alt="Segraren" width="100">
-<p>Allt du använder måste hålla samma nivå som du själv. Du investerar i verktyg, kläder och teknologier som ger dig en edge. Du väljer inte för att imponera – du väljer för att vinna.</p>
+  <div id="root">
+    <div class="layout">
+    <div  class="page-content">
+  <h1 id="title">Jag är Segraren - Den målmedvetna vinnarskallen.</h1>
+<!-- <img src="Segraren.svg" alt="Segraren" width="100"> -->
+<!-- <p>Allt du använder måste hålla samma nivå som du själv. Du investerar i verktyg, kläder och teknologier som ger dig en edge. Du väljer inte för att imponera – du väljer för att vinna.</p> -->
+<a id="link" href="#">
 
-<h3><a id="link" href="#">Vad är du? Jämför oss</a></h3>  
+  <img src="zoku_Achiever.png" alt="Segraren" />
 
+
+<button style="display:none">Vad är du? Jämför oss</button>  
+</a>
+</div>
   <script>
     // Get query params from current URL
     const params = new URLSearchParams(window.location.search);
@@ -37,5 +50,7 @@
 
 
   </script>
+  </div>
+  </div>
 </body>
 </html>
