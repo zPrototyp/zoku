@@ -8,7 +8,7 @@ import { useNavigate } from "react-router";
 import { useAtomValue } from "jotai";
 import { authTokenAtom } from "../Atoms/AuthAtom";
 import { guestTokenAtom } from "../Atoms/GuestTokenAtom";
-import { API_ShareProfile } from "../Services/API";
+import { API_shareProfile } from "../Services/API";
 
 export function ShareOverlay({personality, profile, testValues, brand}){
     const [expanded, setExpanded] = useState(false);
@@ -45,7 +45,7 @@ export function ShareOverlay({personality, profile, testValues, brand}){
 
     function handleFbShare(){
         // send to backend
-        const res = API_ShareProfile("facebook", bearer);
+        const res = API_shareProfile("facebook", bearer);
         console.log(res);
         let shareUrl="";
         let quote="";
