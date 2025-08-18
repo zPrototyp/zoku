@@ -176,7 +176,7 @@ export default function CelebrityCard({ celeb, user, celebBrands = [] })
           )}
 
           {/* Secondary */}
-          <div className="secondaryGrid">
+          <div className="secondary-container">
             {sProf && secondary && (
               <SecondaryPersonalityCard
                 personality={{
