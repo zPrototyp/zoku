@@ -28,6 +28,19 @@ export default function BrandCards({ brandList }) {
         return acc;
       }, {});
   
+      // hook to update the active modal
+      useEffect(() => {
+        if (!activeModal || !brandList) return;
+        
+        const updatedBrand = brandList.find((b) => b.id === activeModal.id);
+        if (updatedBrand && updatedBrand !== activeModal) {
+          setActiveModal(updatedBrand);
+        }
+        if (!updatedBrand) {
+          setActiveModal(null); // or show a message
+        }
+      }, [brandList, activeModal]);
+      
   // Carousel component to print brands per category
 const BrandCarousel = ({ brands, category }) => {
   const [index, setIndex] = useState(0);
