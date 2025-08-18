@@ -115,8 +115,6 @@ function ResultPage () {
           })
     : null
 
-// Match percentage
-const friendMatch = hasFriendVals ? calculateMatchPercentage(dialA, dialB) : 0;
 
   if (loading)
     return (
@@ -136,7 +134,7 @@ const friendMatch = hasFriendVals ? calculateMatchPercentage(dialA, dialB) : 0;
       {/* Comparison dial */}
       {hasFriendVals && dialA && dialB && (
         <div className="comparison-inline" style={{ marginBottom: '1.25rem' }}>
-          <h2 style={{ marginBottom: '.5rem' }}>Jämförelse - {friendMatch}% matchning</h2>
+          <h2 style={{ marginBottom: '.5rem' }}>Jämförelse</h2>
           <CelebrityComparisonDial a={dialA} b={dialB} aLabel="Du" bLabel="Vän" size={260} />
         </div>
       )}
