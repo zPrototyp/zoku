@@ -87,34 +87,6 @@ function ResultPage () {
   }, [testValues, sessionToken])
 
 
-  const { primaryPersonality, secondaryPersonality, thirdPersonality } = result
-
-  // Comparison between "new" user and "shared" user
-  const hasFriendVals =
-    typeof friendValues?.compassionVsAmbition === 'number' &&
-    typeof friendValues?.changeVsTradition === 'number' &&
-    (friendValues.compassionVsAmbition > 0 || friendValues.changeVsTradition > 0)
-
-  // New
-  const dialA = hasFriendVals ?
-  {
-    name: 'Du',
-    compassionVsAmbition: result.compassionVsAmbition,
-    changeVsTradition: result.changeVsTradition,
-    primaryPersonality: result.primaryPersonality
-  } : null
-
-// Shared
-  const dialB = hasFriendVals
-    ? (friendProfile
-        ? { name: 'Vän', ...friendProfile }
-        : {
-            name: 'Vän',
-            compassionVsAmbition: friendValues.compassionVsAmbition,
-            changeVsTradition: friendValues.changeVsTradition
-          })
-    : null
-
 
   if (loading)
     return (
@@ -128,6 +100,36 @@ function ResultPage () {
         <p style={{ color: 'red' }}>{error}</p>
       </div>
     )
+
+
+  const { primaryPersonality, secondaryPersonality, thirdPersonality } = result
+
+  // Comparison between "new" user and "shared" user
+  const hasFriendVals =
+    typeof friendValues?.compassionVsAmbition === 'number' &&
+    typeof friendValues?.changeVsTradition === 'number' &&
+    (friendValues.compassionVsAmbition > 0 || friendValues.changeVsTradition > 0)
+
+  // New
+  const dialA = hasFriendVals ?
+  {
+    name: 'Du',
+    compassionVsAmbition: result?.compassionVsAmbition,
+    changeVsTradition: result?.changeVsTradition,
+    primaryPersonality: result?.primaryPersonality
+  } : null
+
+// Shared
+  const dialB = hasFriendVals
+    ? (friendProfile
+        ? { name: 'Vän', ...friendProfile }
+        : {
+            name: 'Vän',
+            compassionVsAmbition: friendValues.compassionVsAmbition,
+            changeVsTradition: friendValues.changeVsTradition
+          })
+    : null
+
 
   return (
     <div className='result-page'>
