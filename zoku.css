@@ -5,10 +5,6 @@
 #fb-share-page{
   margin: 0 auto;
   max-width: 500px;
-  background-image: url(shoji-border.svg);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: top center;
   min-height: 100%; /* Let it grow */
   font-family: var(--fontBody);
   color: black;
