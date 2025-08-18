@@ -1,6 +1,6 @@
 
 import React from "react";
-import { BrowserRouter as Router, HashRouter, Routes, Route, Link } from "react-router-dom";
+import { HashRouter as Router, Routes, Route, Link } from "react-router-dom";
 import TestPage from "./Pages/TestPage";
 import StartPage from "./Pages/StartPage";
 import Layout from "./Components/Layout";
