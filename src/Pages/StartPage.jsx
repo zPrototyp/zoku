@@ -12,11 +12,7 @@ export default function StartPage() {
 
   searchParams.get('changeY') ? parseInt(searchParams.get('changeY')) : 0;
   searchParams.get('compassionX') ? parseInt(searchParams.get('compassionX')) : 0;
-  const testUrl = () =>{
-    if(changeY>0)
-      return `/test?changeY=${changeY}&compassionX=${compassionX}`
-    return '/test/'
-  }
+
   return (
     <div className="page-content">
       {/* Logo here */}
@@ -67,7 +63,7 @@ export default function StartPage() {
       
       <div className="sp-quizButtonBox">
         <button className="active">
-          <NavLink to={testUrl} className="nav-link">Vad är min zoku?</NavLink>
+          <NavLink to="/test" className="nav-link">Vad är min zoku?</NavLink>
           </button>
       </div>
 

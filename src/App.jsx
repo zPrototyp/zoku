@@ -20,7 +20,8 @@ import FBShareProfiles from "./Pages/FBShareProfiles";
 function App() { 
   return (
    
-    <Router basename="/zoku">
+    // <Router basename="/zoku">
+    <Router>
     
       <Routes>
         <Route element={<Layout />}>
