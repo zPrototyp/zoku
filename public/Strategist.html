@@ -2,19 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Share Achiever</title>
+  <title>Share Strategen</title>
 
           <!-- placeholders -->
-  <meta property="og:title" content="Jag är Segraren - Den målmedvetna vinnarskallen." id="og-title">
-  <meta property="og:description" content="Allt du använder måste hålla samma nivå som du själv. Du investerar i verktyg, kläder och teknologier som ger dig en edge. Du väljer inte för att imponera – du väljer för att vinna." id="og-desc">
-  <meta property="og:image" content="zoku_Achiever.png" id="og-image">
+  <meta property="og:title" content="Jag är Strategen - Den smarta kontrollmästaren." id="og-title">
+  <meta property="og:description" content="Du väljer produkter som fungerar direkt och länge. Varje köp ska optimera något i ditt system. Du är en tidshackare som gillar struktur, data och intelligenta lösningar." id="og-desc">
+  <meta property="og:image" content="zoku_Strategist.png" id="og-image">
   <meta property="og:url" content="/#/test?changeY=50&compassionX=50" id="og-url">
 
 </head>
 <body>
-  <h1 id="title"></h1>
-<img src="Segraren.svg" alt="Segraren" width="100">
-<p>Allt du använder måste hålla samma nivå som du själv. Du investerar i verktyg, kläder och teknologier som ger dig en edge. Du väljer inte för att imponera – du väljer för att vinna.</p>
+  <h1 id="title">Jag är Strategen - Den smarta kontrollmästaren.</h1>
+<img src="Strategen.svg" alt="Strategen" width="100">
+<p>
+  Du väljer produkter som fungerar direkt och länge. Varje köp ska optimera något i ditt system. Du är en tidshackare som gillar struktur, data och intelligenta lösningar.
+</p>
 
 <h3><a id="link" href="#">Vad är du? Jämför oss</a></h3>  
 
@@ -24,9 +26,11 @@
     const changeY = params.get("changeY");
     const compassionX = params.get("compassionX");
 
-    const profile = "Achiever"; // since this page is Achiever.html
+    const profile = "Strategist"; 
     const url = `zoku/#/test?changeY=${changeY}&compassionX=${compassionX}`;
 
+    // Update visible content
+    
     // Update meta tags
     document.getElementById("og-url").setAttribute("content", url);
 
