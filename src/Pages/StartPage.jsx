@@ -4,11 +4,20 @@ import OverlayModal from "../Components/OverlayModal";
 import {valueProfiles} from "../assets/uiData/zoku_profiles_se.js";
 import { ZokuMasks } from "../assets/uiData/PersonalityImages.js";
 import zokuTitle from "../assets/images/ZokuTitle.svg";
-
+import { useSearchParams } from 'react-router-dom';
 export default function StartPage() {
   const [activeModal, setActiveModal] = useState(null);
   const closeModal = () => setActiveModal(null);
-  
+  const [searchParams] = useSearchParams();
+
+  searchParams.get('changeY') ? parseInt(searchParams.get('changeY')) : 0;
+  searchParams.get('compassionX') ? parseInt(searchParams.get('compassionX')) : 0;
+  const testUrl = () =>{
+    if(changeY>0)
+      return `/test?changeY=${changeY}&compassionX=${compassionX}`
+    } 
+    return '/test/'
+  }
   return (
     <div className="page-content">
       {/* Logo here */}
@@ -59,7 +68,7 @@ export default function StartPage() {
       
       <div className="sp-quizButtonBox">
         <button className="active">
-          <NavLink to="/test" className="nav-link">Vad är min zoku?</NavLink>
+          <NavLink to={testUrl} className="nav-link">Vad är min zoku?</NavLink>
           </button>
       </div>
 
