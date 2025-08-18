@@ -15,7 +15,6 @@ export default function StartPage() {
   const testUrl = () =>{
     if(changeY>0)
       return `/test?changeY=${changeY}&compassionX=${compassionX}`
-    } 
     return '/test/'
   }
   return (
