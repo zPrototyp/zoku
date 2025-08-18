@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Share Äventyraren</title>
+
+          <!-- placeholders -->
+  <meta property="og:title" content="Jag är Äventyraren - Den orädda upptäckaren." id="og-title">
+  <meta property="og:description" content="En flygbiljett, en ryggsäck, en ny app – allt du konsumerar är portaler till nästa upplevelse. Du ser produkter som passager, inte saker. Varumärken som ger dig frihet, inspiration och spontanitet vinner ditt hjärta. Du är ofta först med att testa nya digitala verktyg som berikar resan – bokstavligen eller mentalt." id="og-desc">
+  <meta property="og:image" content="zoku_Idealist.png" id="og-image">
+  <meta property="og:url" content="/#/test?changeY=50&compassionX=50" id="og-url">
+
+</head>
+<body>
+  <h1 id="title">Jag är Äventyraren - Den orädda upptäckaren</h1>
+<img src="Aventyraren.svg" alt="Äventyraren" width="100">
+<p>
+En flygbiljett, en ryggsäck, en ny app – allt du konsumerar är portaler till nästa upplevelse. Du ser produkter som passager, inte saker. Varumärken som ger dig frihet, inspiration och spontanitet vinner ditt hjärta. Du är ofta först med att testa nya digitala verktyg som berikar resan – bokstavligen eller mentalt.
+</p>
+
+<h3><a id="link" href="#">Vad är du? Jämför oss</a></h3>  
+
+  <script>
+    // Get query params from current URL
+    const params = new URLSearchParams(window.location.search);
+    const changeY = params.get("changeY");
+    const compassionX = params.get("compassionX");
+
+    const profile = "Adventurer"; 
+    const url = `zoku/#/test?changeY=${changeY}&compassionX=${compassionX}`;
+
+    // Update visible content
+    
+    // Update meta tags
+    document.getElementById("og-url").setAttribute("content", url);
+
+    // Use them to build a link (example to React route)
+    
+    const reactUrl = `/zoku/#/test?changeY=${changeY}&compassionX=${compassionX}`;
+    document.getElementById("link").href = reactUrl;
+
+
+  </script>
+</body>
+</html>

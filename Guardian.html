@@ -2,19 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Share Achiever</title>
+  <title>Share Beskyddaren</title>
 
           <!-- placeholders -->
-  <meta property="og:title" content="Jag är Segraren - Den målmedvetna vinnarskallen." id="og-title">
-  <meta property="og:description" content="Allt du använder måste hålla samma nivå som du själv. Du investerar i verktyg, kläder och teknologier som ger dig en edge. Du väljer inte för att imponera – du väljer för att vinna." id="og-desc">
-  <meta property="og:image" content="zoku_Achiever.png" id="og-image">
+  <meta property="og:title" content="Jag är Beskyddaren - Den pålitliga väktaren." id="og-title">
+  <meta property="og:description" content="Du väljer det som skapar lugn, trygghet och välmående – för dig och dina nära. Kvalitet över tid, inte status över substans. Du bygger hem och vardag med omsorg." id="og-desc">
+  <meta property="og:image" content="zoku_Guardian.png" id="og-image">
   <meta property="og:url" content="/#/test?changeY=50&compassionX=50" id="og-url">
 
 </head>
 <body>
-  <h1 id="title"></h1>
-<img src="Segraren.svg" alt="Segraren" width="100">
-<p>Allt du använder måste hålla samma nivå som du själv. Du investerar i verktyg, kläder och teknologier som ger dig en edge. Du väljer inte för att imponera – du väljer för att vinna.</p>
+  <h1 id="title">Jag är Beskyddaren - Den pålitliga väktaren.</h1>
+<img src="Beskyddaren.svg" alt="Beskyddaren" width="100">
+<p>
+  Du väljer det som skapar lugn, trygghet och välmående – för dig och dina nära. Kvalitet över tid, inte status över substans. Du bygger hem och vardag med omsorg.
+</p>
 
 <h3><a id="link" href="#">Vad är du? Jämför oss</a></h3>  
 
@@ -24,9 +26,11 @@
     const changeY = params.get("changeY");
     const compassionX = params.get("compassionX");
 
-    const profile = "Achiever"; // since this page is Achiever.html
+    const profile = "Guardian"; 
     const url = `zoku/#/test?changeY=${changeY}&compassionX=${compassionX}`;
 
+    // Update visible content
+    
     // Update meta tags
     document.getElementById("og-url").setAttribute("content", url);
 
