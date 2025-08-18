@@ -4,6 +4,7 @@ import "../assets/css/SharingOverlay.css";
 
 import { FaSquareFacebook , FaInstagram , FaTiktok } from "react-icons/fa6";
 import { useNavigate } from "react-router";
+import { API_ShareProfile } from "../Services/API";
 
 export function ShareOverlay({personality, profile, testValues, brand}){
     const [expanded, setExpanded] = useState(false);
@@ -37,6 +38,9 @@ export function ShareOverlay({personality, profile, testValues, brand}){
     };
 
     function handleFbShare(){
+        // send to backend
+        const res = API_ShareProfile("facebook");
+        console.log(res);
         let shareUrl="";
         let quote="";
         if (brand) {
