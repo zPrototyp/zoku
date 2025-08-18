@@ -136,7 +136,7 @@ function ResultPage () {
       {/* Comparison dial */}
       {hasFriendVals && dialA && dialB && (
         <div className="comparison-inline" style={{ marginBottom: '1.25rem' }}>
-          <h2 style={{ marginBottom: '.5rem' }}>Jämförelse {calculateMatchPercentage(friendValues, testValues)}%</h2>
+          <h2 style={{ marginBottom: '.5rem' }}>Jämförelse {calculateMatchPercentage(friendValues, testValues)}% match</h2>
           <CelebrityComparisonDial a={dialA} b={dialB} aLabel="Du" bLabel="Vän" size={260} />
         </div>
       )}
