@@ -142,7 +142,7 @@ function ResultPage () {
       {/* Primary Personality Card */}
       <PersonalityCard
         personality={primaryPersonality}
-        profile={valueProfiles[primaryPersonality.name]}
+        profile={valueProfiles[primaryPersonality?.name]}
         testValues={testValues}
         highlight
       />
@@ -151,11 +151,11 @@ function ResultPage () {
       <div className='secondary-container'>
         <SecondaryPersonalityCard
           personality={secondaryPersonality}
-          profile={valueProfiles[secondaryPersonality.name]}
+          profile={valueProfiles[secondaryPersonality?.name]}
         />
         <SecondaryPersonalityCard
           personality={thirdPersonality}
-          profile={valueProfiles[thirdPersonality.name]}
+          profile={valueProfiles[thirdPersonality?.name]}
         />
       </div>
 
