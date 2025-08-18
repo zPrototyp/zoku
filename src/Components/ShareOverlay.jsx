@@ -23,15 +23,15 @@ export function ShareOverlay({personality, profile, testValues, brand}){
             sharedImage
         );
     
-        const deepLink = `instagram-stories://share?source_application=your.app.id&backgroundImage=${backgroundImageUrl}`;
+        const deepLink = `instagram-stories://share?source_application=zoku&backgroundImage=${backgroundImageUrl}`;
         const fallback = "https://www.instagram.com/";
         // Try to open Instagram Stories
-        window.open(deepLink, "_blank", "width=600,height=900");
+        window.location.href = deepLink ;
 
         console.log(sharedImage, deepLink)
         // Fallback after 800ms
         setTimeout(() => {
-            window.open(fallback, "_blank", "width=600,height=900");
+             window.location.href = fallback;
         }, 800);
         setExpanded(false);
     };
@@ -52,7 +52,7 @@ export function ShareOverlay({personality, profile, testValues, brand}){
             shareUrl
         )}&quote=${encodeURIComponent(quote)}`;
         
-        console.log(facebookUrl);
+        // console.log(facebookUrl);
 
         window.open(facebookUrl, "_blank", "width=600,height=900");
         setExpanded(false);
@@ -75,9 +75,9 @@ export function ShareOverlay({personality, profile, testValues, brand}){
                     className="clickable-icon share-icon"
                     onClick={()=>shareInstagramStory()}
                     />
-                <FaTiktok 
+                {/* <FaTiktok 
                     title="Dela på TikTok"
-                    className="clickable-icon share-icon" />
+                    className="clickable-icon share-icon" /> */}
             </div>            
         ) }
         <FaShareAlt
