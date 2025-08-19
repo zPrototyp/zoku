@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useAtom } from 'jotai';
+import { useAtom, useAtomValue } from 'jotai';
 import { valueProfiles } from '../assets/uiData/zoku_profiles_se';
 import { feedListAtom } from '../Atoms/FeedListAtom.jsx';
 import { valueProfileAtom } from '../Atoms/ValueProfileAtom.jsx';
@@ -11,6 +11,7 @@ import { sortedListAtom } from '../Atoms/SortedListAtom.jsx';
 import { brandCategories } from '../assets/uiData/brand_categories_se.js';
 import CelebrityCard from '../Components/CelebrityCard.jsx';
 import { ZokuMasks } from '../assets/uiData/PersonalityImages.js';
+import { API_userSafeFetchJson } from '../Services/API.jsx';
 
 const AZURE_API = import.meta.env.VITE_AZURE_API;
 
@@ -22,9 +23,9 @@ export default function FeedPage() {
     const [sortOption, setSortOption] = useState("all"); // Default sort 
     const [feed, setFeed] = useAtom(feedListAtom);
     const [sortedFeed, setSortedFeed] = useAtom(sortedListAtom);
-    const [valueProfile, setValueProfile] = useAtom(valueProfileAtom);
-    const [token, setToken] = useAtom(authTokenAtom);
-    const [testValues, setTestValues] = useAtom(testValuesAtom);
+    const valueProfile = useAtomValue(valueProfileAtom);
+    const token = useAtomValue(authTokenAtom);
+    const testValues = useAtomValue(testValuesAtom);
     const [randomCelebrity, setRandomCelebrity] = useState(null);
 
     useEffect(() =>
@@ -96,25 +97,18 @@ export default function FeedPage() {
         // Fetch the feed list from the backend, bearer token in header
         const variations = 3;
         setFeed(null);
-        fetch(`${AZURE_API}/user/brands/recommendations?Category=all&Variations=${variations}&ExcludeLiked=true&ExcludeHidden=true`, {
-            method: "GET",
-            headers: { "Content-Type": "application/json",  
-                'Authorization': `Bearer ${token}` }
-        })
-        .then((res) => {
-            if (!res.ok) {
-                alert('Kunde inte hämta feed-lista.');
-                throw new Error("Request failed");
-            }
-            return res.json();
-        })
-        .then((data) => {
-            setFeed(data.data);
-            setSortedFeed(data.data);
-        })
-        .catch((error) => {
+        try {
+            API_userSafeFetchJson(
+                token, 
+                `user/brands/recommendations?Category=all&Variations=${variations}&ExcludeLiked=true&ExcludeHidden=true`,
+                 (data) => {
+                setFeed(data);
+                setSortedFeed(data);
+                }); 
+        }
+        catch (error) {
             console.error("Error fetching feed list:", error);
-        });
+        }
     },[]);
 
     const sortList = (option) => {
