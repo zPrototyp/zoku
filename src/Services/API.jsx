@@ -1,6 +1,7 @@
 
 const AZURE_API = import.meta.env.VITE_AZURE_API;
 
+// Function to send share interaction to API can be used by guest or authenticated users
 export const API_shareProfile = async (platform, bearer) => {
 
     if (!bearer || !platform) return;
@@ -29,7 +30,9 @@ export const API_shareProfile = async (platform, bearer) => {
     }
 };
 
+// Used to fetch personality for guests, and friend profiles.
 export const API_guestGetPersonality = async (bearer, testValues, onSuccess) => {
+    
     if (!bearer) return;
     const res = await fetch(`${AZURE_API}/guest/personality-result`, {
         method: 'POST',
@@ -37,7 +40,7 @@ export const API_guestGetPersonality = async (bearer, testValues, onSuccess) => 
         body: JSON.stringify({
             changeVsTradition: testValues.changeVsTradition,
             compassionVsAmbition: testValues.compassionVsAmbition,
-            sessionToken: bearer
+            sessionToken:  bearer
         })
     })
     
@@ -51,7 +54,7 @@ export const API_guestGetPersonality = async (bearer, testValues, onSuccess) => 
 
     return data.data;
 }
-
+// RESULT PAGE  - matching brands for guest profile.
 export const API_guestGetBrandMatches = async (bearer, testValues, onSuccess, category, variations) => {
     if (!bearer) return;
     const res = await fetch(`${AZURE_API}/guest/brand-matches`, {
@@ -75,7 +78,7 @@ export const API_guestGetBrandMatches = async (bearer, testValues, onSuccess, ca
 
 }
 
-// api call used on load and for mid-render
+// PROFILE & FEED PAGE - api call used to fetch data
   export const API_userSafeFetchJson = async (token, url, onSuccess) => {
       const res = await fetch(`${AZURE_API}/${url}`, {
       headers: {
@@ -95,3 +98,30 @@ export const API_guestGetBrandMatches = async (bearer, testValues, onSuccess, ca
       return data.data;
     }
 }
+//   BRAND INTERACTION - used to send interaction to API
+export const API_brandInteraction = async (userAction, brandId, token) => {
+    if (!userAction || !brandId || !token) return;
+  
+    // Check if the user is authenticated
+    token && fetch(`${AZURE_API}/user/brands/interactions`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            brandId: brandId,  
+            action: userAction
+        })
+    })
+    .then(res => {
+        if (!res.ok) {
+            throw new Error(`Failed to record interaction: ${userAction}`, res.data);
+        }
+        return res.json();
+    })
+    .then(data => {return data.data})
+    .catch(error => {
+        console.error("Error updating interaction:", error);
+    });
+  }
