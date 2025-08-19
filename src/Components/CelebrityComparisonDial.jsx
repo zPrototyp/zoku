@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { PersonalityImages, PersonalityImageNameMap, ZokuMasks } from "../assets/uiData/PersonalityImages";
-import { valueProfiles } from "../assets/uiData/zoku_profiles_se";
 import "../assets/css/CelebrityDial.css";
 
 const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
