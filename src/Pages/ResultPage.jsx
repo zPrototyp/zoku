@@ -14,6 +14,7 @@ import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
 import CelebrityComparisonDial from '../Components/CelebrityComparisonDial.jsx'
 import BrandCards from '../Components/BrandCards'
 import { calculateMatchPercentage } from '../Services/type-calculation.js'
+import { API_guestGetPersonality } from '../Services/API.jsx'
 const AZURE_API = import.meta.env.VITE_AZURE_API;
 
 function ResultPage () {
@@ -39,28 +40,19 @@ function ResultPage () {
     )
       return
 
-    testValues.changeVsTradition > 0 &&
-      fetch(`${AZURE_API}/guest/personality-result`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          changeVsTradition: testValues.changeVsTradition,
-          compassionVsAmbition: testValues.compassionVsAmbition,
-          sessionToken: sessionToken
-        })
-      })
-        .then(res => {
-          if (!res.ok) throw new Error('Request failed')
-          return res.json()
-        })
-        .then(data => {
-          setResult(data.data)
-          setLoading(false)
-        })
-        .catch(() => {
-          setError('Kunde inte hämta resultat.')
-          setLoading(false)
-        })
+    if (testValues.changeVsTradition > 0) {
+      setLoading(true);
+      try {
+        // Fetch personality data using the API helper function
+        API_guestGetPersonality(sessionToken, testValues, setResult);
+      } catch (err) {
+        console.error('Error fetching personality data:', err);
+        setError('Kunde inte hämta resultat.');
+        setLoading(false);
+        return;
+      }
+      setLoading(false)
+    }
 
     fetch(`${AZURE_API}/guest/brand-matches`, {
       method: 'POST',
@@ -73,9 +65,9 @@ function ResultPage () {
         variations: 3
       })
     })
-      .then(result => {
-        if (!result.ok) throw new Error('Brand matches request failed')
-        return result.json()
+      .then(res => {
+        if (!res.ok) throw new Error('Brand matches request failed')
+        return res.json()
       })
       .then(data => {
         setFeedList(data.data) // Update the feedList atom with brand matchess
@@ -84,6 +76,7 @@ function ResultPage () {
       .catch(error => {
         console.error('Error fetching brand matches:', error)
       })
+
   }, [testValues, sessionToken])
 
 

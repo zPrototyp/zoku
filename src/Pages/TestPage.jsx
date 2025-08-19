@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import PersonalityDial from '../Components/PersonalityDial'
 import ValueInfoTooltip from '../Components/ValueInfoTooltip'
 import { useAtom } from 'jotai'
@@ -10,10 +10,10 @@ import { testValuesAtom } from '../Atoms/TestValuesAtom.jsx'
 import { comparisonValueAtom } from '../Atoms/ComparisonValueAtom.jsx'
 import '../assets/css/App.css'
 
-// Start coding to make a comparison with a friend's Identity
-import { useSearchParams } from 'react-router-dom';
 import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
 import ComparisonProfileView from '../Components/ComparisonProfileView.jsx'
+import { API_guestGetPersonality } from '../Services/API.jsx'
+
 // Given a link "http://zoku.se/test?changeY=70&compassionX=82" We can collect the values and compare.
 const AZURE_API = import.meta.env.VITE_AZURE_API;
 
@@ -32,13 +32,18 @@ function TestPage () {
   const [friendValues, setFriendValues] = useAtom(comparisonValueAtom);
   const [comparisonProfile, setComparisonProfile] = useAtom(comparisonProfileAtom);
 
-  // If test values exist (from profile or result), use those as starting position
+  // If friend values are provided in the URL, set them on load
+  useEffect(() => {
+    if (searchParams.get('changeY') && searchParams.get('compassionX')) {
+      setFriendValues({
+        changeVsTradition: parseInt(searchParams.get('changeY')),
+        compassionVsAmbition: parseInt(searchParams.get('compassionX'))
+      });
+    }
+  }, [searchParams, setFriendValues]);
+
+  // If test values exist (from a profile), use those as starting position
   useEffect(() => {    
-  // If friend values are provided in the URL, set them
-  setFriendValues({
-      changeVsTradition: searchParams.get('changeY') ? parseInt(searchParams.get('changeY')) : 0,
-      compassionVsAmbition: searchParams.get('compassionX') ? parseInt(searchParams.get('compassionX')) : 0
-    });
     if (profile) {      
       setPosition({
         x: profile.compassionVsAmbition,
@@ -46,26 +51,17 @@ function TestPage () {
       })
     } 
   }, [profile])
+
+  // If friend values are set, Fetch their profile to display comparison
   useEffect(()=>{
-    friendValues.changeVsTradition > 0 && friendValues.compassionVsAmbition > 0 && (
-      fetch(`${AZURE_API}/guest/personality-result`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          changeVsTradition: friendValues.changeVsTradition,
-          compassionVsAmbition: friendValues.compassionVsAmbition,
-          sessionToken: sessionToken
-        })
-         }).then(res => {
-          if (!res.ok) throw new Error('Request failed')
-          return res.json()
-        })
-        .then(data => {
-          setComparisonProfile(data.data)
-        }).catch(err=>{
-          console.error('Kunde inte hämta resultat.');
-        })
-      )
+    if (friendValues?.changeVsTradition > 0 && friendValues?.compassionVsAmbition > 0) {
+      try {
+        API_guestGetPersonality(sessionToken, friendValues, setComparisonProfile);
+      } catch (err) {
+        console.error('Error fetching comparison profile:', err); 
+      }
+      console.log('Comparison profile:', comparisonProfile);
+    }
   },[friendValues]);
 
   // Get guest token if not logged in and no session token

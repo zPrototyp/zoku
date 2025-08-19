@@ -28,3 +28,27 @@ export const API_shareProfile = async (platform, bearer) => {
         console.error("Error recording sharing:", error);
     }
 };
+
+export const API_guestGetPersonality = async (bearer, testValues, onSuccess) => {
+    if (!bearer) return;
+    const res = await fetch(`${AZURE_API}/guest/personality-result`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            changeVsTradition: testValues.changeVsTradition,
+            compassionVsAmbition: testValues.compassionVsAmbition,
+            sessionToken: bearer
+        })
+    })
+    
+    if (!res.ok) throw new Error('Request failed')
+        
+    const data = await res.json();
+    
+    if (!data.success) throw new Error('Failed to fetch profile data');
+    
+    onSuccess(data.data);
+
+    return data.data;
+
+}
