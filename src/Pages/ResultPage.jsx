@@ -14,7 +14,7 @@ import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
 import CelebrityComparisonDial from '../Components/CelebrityComparisonDial.jsx'
 import BrandCards from '../Components/BrandCards'
 import { calculateMatchPercentage } from '../Services/type-calculation.js'
-import { API_guestGetPersonality } from '../Services/API.jsx'
+import { API_guestGetBrandMatches, API_guestGetPersonality } from '../Services/API.jsx'
 const AZURE_API = import.meta.env.VITE_AZURE_API;
 
 function ResultPage () {
@@ -51,31 +51,18 @@ function ResultPage () {
         setLoading(false);
         return;
       }
+    
+    // Fetch brand matches using the API helper function
+      try {
+        API_guestGetBrandMatches(sessionToken, testValues, setFeedList, 'all', 3);
+      } catch (err) {
+        console.error('Error fetching brand matches:', err);
+        setError('Kunde inte hämta varumärken.');
+        setLoading(false);
+        return;
+      }
       setLoading(false)
     }
-
-    fetch(`${AZURE_API}/guest/brand-matches`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        changeVsTradition: testValues.changeVsTradition,
-        compassionVsAmbition: testValues.compassionVsAmbition,
-        sessionToken: sessionToken,
-        category: 'all',
-        variations: 3
-      })
-    })
-      .then(res => {
-        if (!res.ok) throw new Error('Brand matches request failed')
-        return res.json()
-      })
-      .then(data => {
-        setFeedList(data.data) // Update the feedList atom with brand matchess
-        // console.log("Brand matches:", data.data);
-      })
-      .catch(error => {
-        console.error('Error fetching brand matches:', error)
-      })
 
   }, [testValues, sessionToken])
 
@@ -95,7 +82,11 @@ function ResultPage () {
     )
 
 
-  const { primaryPersonality, secondaryPersonality, thirdPersonality } = result
+  const {
+    primaryPersonality = null,
+    secondaryPersonality = null,
+    thirdPersonality = null
+  } = result || {}
 
   // Comparison between "new" user and "shared" user
   const hasFriendVals =

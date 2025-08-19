@@ -50,5 +50,28 @@ export const API_guestGetPersonality = async (bearer, testValues, onSuccess) => 
     onSuccess(data.data);
 
     return data.data;
+}
+
+export const API_guestGetBrandMatches = async (bearer, testValues, onSuccess, category, variations) => {
+    if (!bearer) return;
+    console.log("Fetching brand matches ");
+    const res = await fetch(`${AZURE_API}/guest/brand-matches`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        changeVsTradition: testValues.changeVsTradition,
+        compassionVsAmbition: testValues.compassionVsAmbition,
+        sessionToken: bearer,
+        category: category || 'all',
+        variations: variations || 3
+      })
+    });
+    if (!res.ok) throw new Error('Brand matches request failed');
+    
+    const data = await res.json();
+
+    onSuccess(data.data);
+        
+    return data.data;
 
 }
