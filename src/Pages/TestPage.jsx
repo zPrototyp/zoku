@@ -137,7 +137,7 @@ function TestPage () {
 
   return (
     <div className='page-content'>
-      {comparisonProfile != null && (<ComparisonProfileView profile={comparisonProfile}/>)}
+      {comparisonProfile && comparisonProfile != null && (<ComparisonProfileView profile={comparisonProfile}/>)}
       <div
         style={{
           maxWidth: '800px',
