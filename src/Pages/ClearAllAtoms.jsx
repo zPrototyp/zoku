@@ -7,6 +7,8 @@ import { feedListAtom } from "../Atoms/FeedListAtom.jsx";
 import { authTokenAtom } from '../Atoms/AuthAtom.jsx';
 import { ZokuMasks } from '../assets/uiData/PersonalityImages.js';
 import {valueProfiles} from '../assets/uiData/zoku_profiles_se.js';
+import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx';
+import { comparisonValueAtom } from '../Atoms/ComparisonValueAtom.jsx';
 
 function ClearAllAtoms() {
     const [profile, setProfile] = useAtom(valueProfileAtom);
@@ -14,12 +16,13 @@ function ClearAllAtoms() {
     const [testValue, setTestValue] = useAtom(testValuesAtom);
     const [guestToken, setGuestToken] = useAtom(guestTokenAtom);
     const[authToken, setAuthToken] = useAtom(authTokenAtom);
+    const [comparisonProfile, setComparisonProfile] = useAtom(comparisonProfileAtom);
+    const [friendValues, setFriendValues] = useAtom(comparisonValueAtom);
 
-    // Clear all atoms
-
-
-const listOrder= [
-    "Advocate",
+    
+    
+    const listOrder= [
+      "Advocate",
       "Adventurer",
       "Idealist", 
       "Achiever", 
@@ -28,18 +31,18 @@ const listOrder= [
       "Traditionalist", 
       "Caregiver"
     ];
-
-function ZokuShareCards() {
+    
+    function ZokuShareCards() {
       return (
         listOrder.map((profile, index) => 
-
-         (
+          
+          (
             <div className="zokuProfilePopup" key={index} style={{
-                backgroundColor:"#E1CA9C",
-                borderRadius: "10px",
-                marginBottom: "20px",
+              backgroundColor:"#E1CA9C",
+              borderRadius: "10px",
+              marginBottom: "20px",
                 padding: "10px",
-            }}>
+              }}>
             <div className="zokuProfilePopupHeader">
                 <img className="mask100" src={ZokuMasks[profile]} alt={valueProfiles[profile].title} />
                 <h2>{valueProfiles[profile].title} </h2>            
@@ -60,21 +63,24 @@ function ZokuShareCards() {
             )
           )
         )
-    }
-
-
-
-    return (
+      }
+      
+      
+      // Clear all atoms
+      
+      return (
         <div className="page-content" style={{width:"400px", overflow: "clip"}}>
         <button onClick={() => {
             setProfile(null);
             setFeed(null);
-    
             setTestValue( null);
             setGuestToken(null);
             setAuthToken(null);
+            setComparisonProfile(null);
+            setFriendValues(null);
+
             console.log("All atoms cleared");
-            console.log(profile, feed, testValue, guestToken, authToken);
+            
         }}>
             Clear All Atoms
         </button>
@@ -83,6 +89,8 @@ function ZokuShareCards() {
             <p>Test Values: {testValue?.changeVsTradition}</p>
             <p>Guest Token: {guestToken?.length}</p>
             <p>Token: {authToken?.length}</p> 
+            <p>ComparisonProfile: {comparisonProfile?.primaryPersonality?.name}</p>
+            <p>Friend Values: {friendValues?.changeVsTradition}</p>
 
 
 <h1>.</h1>
