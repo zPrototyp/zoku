@@ -60,7 +60,6 @@ function TestPage () {
       } catch (err) {
         console.error('Error fetching comparison profile:', err); 
       }
-      console.log('Comparison profile:', comparisonProfile);
     }
   },[friendValues]);
 
