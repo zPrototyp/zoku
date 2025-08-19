@@ -54,7 +54,6 @@ export const API_guestGetPersonality = async (bearer, testValues, onSuccess) => 
 
 export const API_guestGetBrandMatches = async (bearer, testValues, onSuccess, category, variations) => {
     if (!bearer) return;
-    console.log("Fetching brand matches ");
     const res = await fetch(`${AZURE_API}/guest/brand-matches`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
