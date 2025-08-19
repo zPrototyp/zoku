@@ -41,8 +41,8 @@ function ResultPage () {
 
     if (testValues.changeVsTradition > 0) {
       setLoading(true);
+      // Fetch personality data using the API helper function
       try {
-        // Fetch personality data using the API helper function
         API_guestGetPersonality(sessionToken, testValues, setResult);
       } catch (err) {
         console.error('Error fetching personality data:', err);
