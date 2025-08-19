@@ -13,8 +13,7 @@ import { FaPen, FaClock, FaCog } from "react-icons/fa";
 import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
 import { testValuesAtom } from "../Atoms/TestValuesAtom";
 import UserSettings from "../Components/UserSettings";
-
-const AZURE_API = import.meta.env.VITE_AZURE_API;
+import { API_userSafeFetchJson } from "../Services/API";
 
 function ProfilePage() {
   const [profile, setProfile] = useAtom(valueProfileAtom);
@@ -29,38 +28,27 @@ function ProfilePage() {
   const navigate = useNavigate()
   const [showSettings, setShowSettings] = useState(false);
 
-  // api call used on load and for mid-render
-  const safeFetchJson = async (url, onSuccess) => {
-  try {
-    const res = await fetch(url, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
 
-    if (!res.ok) throw new Error("Nätverksfel");
-
-    const text = await res.text();
-    if (!text) return;
-
-    const data = JSON.parse(text);
-    if (data.success) {
-      onSuccess(data.data);
-      return data.data;
-    }
-  } catch (err) {
-    console.error("Fel vid hämtning:", err);
-  }
-};
 // On load fetch all the profile information
   useEffect(() => {
     setProfile(null);
     if (!token) return;
 
-    safeFetchJson(`${AZURE_API}/user/personality`, setProfile);
-    safeFetchJson(`${AZURE_API}/user/brands/collection`, setBrands);
-    safeFetchJson(`${AZURE_API}/user/personality/history`, setHistory);    
+    try { API_userSafeFetchJson(token, 'user/personality', setProfile) }
+    catch (err) {
+      setError("Kunde inte hämta profil: " + err.message);
+      console.error("Fel vid hämtning av profil:", err);
+    }
+    try { API_userSafeFetchJson(token, 'user/brands/collection', setBrands) }
+    catch (err) {
+      setError("Kunde inte hämta varumärken: " + err.message);
+      console.error("Fel vid hämtning av varumärken:", err);
+    }
+    try { API_userSafeFetchJson(token, 'user/personality/history', setHistory) }
+    catch (err) {
+      setError("Kunde inte hämta historik: " + err.message);
+      console.error("Fel vid hämtning av historik:", err);
+    }
 
   }, [token]);
 
@@ -79,7 +67,11 @@ function ProfilePage() {
       setShowHidden(false);
       return;
     }
-    const hidden = await safeFetchJson(`${AZURE_API}/user/brands/hidden`, setHiddenBrands);
+    const hidden = await API_userSafeFetchJson(token, 'user/brands/hidden', setHiddenBrands);
+    if (!hidden) {
+      setError("Kunde inte hämta gömda varumärken");
+      return;
+    }
     if (hidden.length > 0) {
       setShowHidden(true);
     } else {

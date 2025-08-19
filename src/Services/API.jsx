@@ -74,3 +74,24 @@ export const API_guestGetBrandMatches = async (bearer, testValues, onSuccess, ca
     return data.data;
 
 }
+
+// api call used on load and for mid-render
+  export const API_userSafeFetchJson = async (token, url, onSuccess) => {
+      const res = await fetch(`${AZURE_API}/${url}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) throw new Error("Nätverksfel");
+
+    const text = await res.text();
+    if (!text) return;
+
+    const data = JSON.parse(text);
+    if (data.success) {
+      onSuccess(data.data);
+      return data.data;
+    }
+}
