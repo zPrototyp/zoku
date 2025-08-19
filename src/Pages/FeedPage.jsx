@@ -23,7 +23,7 @@ export default function FeedPage() {
     const [sortOption, setSortOption] = useState("all"); // Default sort 
     const [feed, setFeed] = useAtom(feedListAtom);
     const [sortedFeed, setSortedFeed] = useAtom(sortedListAtom);
-    const valueProfile = useAtomValue(valueProfileAtom);
+    const userProfile = useAtomValue(valueProfileAtom);
     const token = useAtomValue(authTokenAtom);
     const testValues = useAtomValue(testValuesAtom);
     const [randomCelebrity, setRandomCelebrity] = useState(null);
@@ -31,7 +31,7 @@ export default function FeedPage() {
     useEffect(() =>
     {
         if (!token) return;
-
+        // Need clarification before I can move to Services. /Jenny
         const loadRandomCelebrity = async () =>
         {
             try
@@ -85,7 +85,7 @@ export default function FeedPage() {
             }
         };
         loadRandomCelebrity();
-    }, [token, testValues, valueProfile]);
+    }, [token, testValues, userProfile]);
 
     // Re-render the list whenever the feed changes.
     useEffect(() => {
@@ -127,19 +127,19 @@ export default function FeedPage() {
     <div className="page-content">
 
         <div className="feed-page-user-details">
-            <h1><img className="mask80" src={ZokuMasks[valueProfile.primaryPersonality.name]} alt={valueProfiles[valueProfile.primaryPersonality.name]?.title} />
-                {valueProfiles[valueProfile.primaryPersonality.name]?.title}
-                    {valueProfiles[valueProfile.primaryPersonality.name]?.kanji}
+            <h1><img className="mask80" src={ZokuMasks[userProfile.primaryPersonality?.name]} alt={valueProfiles[userProfile.primaryPersonality?.name]?.title} />
+                {valueProfiles[userProfile.primaryPersonality?.name]?.title}
+                    {valueProfiles[userProfile.primaryPersonality?.name]?.kanji}
             </h1>
-            <h3>{valueProfiles[valueProfile.primaryPersonality.name]?.consumerHeader}</h3>
-            <p>{valueProfiles[valueProfile.primaryPersonality.name]?.consumerText}</p>
+            <h3>{valueProfiles[userProfile.primaryPersonality?.name]?.consumerHeader}</h3>
+            <p>{valueProfiles[userProfile.primaryPersonality?.name]?.consumerText}</p>
         </div>
         
 
         {randomCelebrity && (
             <CelebrityCard
             celeb={randomCelebrity}
-            user={valueProfile}
+            user={userProfile}
             />
         )}
 
