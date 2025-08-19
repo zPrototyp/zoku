@@ -31,6 +31,7 @@ function TestPage () {
   const [searchParams] = useSearchParams();
   const [friendValues, setFriendValues] = useAtom(comparisonValueAtom);
   const [comparisonProfile, setComparisonProfile] = useAtom(comparisonProfileAtom);
+  const [isLoadingComparison, setIsLoadingComparison] = useState(false)
 
   // If friend values are provided in the URL, set them on load
   useEffect(() => {
@@ -53,15 +54,18 @@ function TestPage () {
   }, [profile])
 
   // If friend values are set, Fetch their profile to display comparison
-  useEffect(()=>{
-    if (friendValues?.changeVsTradition > 0 && friendValues?.compassionVsAmbition > 0) {
-      try {
-        API_guestGetPersonality(sessionToken, friendValues, setComparisonProfile);
-      } catch (err) {
-        console.error('Error fetching comparison profile:', err); 
-      }
-    }
-  },[friendValues]);
+  useEffect(() => {
+  if (
+    sessionToken && 
+    friendValues?.changeVsTradition > 0 && 
+    friendValues?.compassionVsAmbition > 0
+  ) {
+     setIsLoadingComparison(true)
+      API_guestGetPersonality(sessionToken, friendValues, setComparisonProfile)
+        .catch(err => console.error('Error fetching comparison profile:', err))
+        .finally(() => setIsLoadingComparison(false))
+  }
+}, [friendValues, sessionToken]);
 
   // Get guest token if not logged in and no session token
   useEffect(() => {
@@ -132,7 +136,11 @@ function TestPage () {
 
   return (
     <div className='page-content'>
-      {comparisonProfile && comparisonProfile != null && (<ComparisonProfileView profile={comparisonProfile}/>)}
+        {/* --- Comparison Profile --- */}
+      {isLoadingComparison && <p>Laddar jämförelseprofil...</p>}
+      {!isLoadingComparison && comparisonProfile && (
+        <ComparisonProfileView profile={comparisonProfile} />
+      )}
       <div
         style={{
           maxWidth: '800px',
