@@ -15,7 +15,6 @@ import CelebrityComparisonDial from '../Components/CelebrityComparisonDial.jsx'
 import BrandCards from '../Components/BrandCards'
 import { calculateMatchPercentage } from '../Services/type-calculation.js'
 import { API_guestGetBrandMatches, API_guestGetPersonality } from '../Services/API.jsx'
-const AZURE_API = import.meta.env.VITE_AZURE_API;
 
 function ResultPage () {
   const [testValues, setTestValues] = useAtom(testValuesAtom)
