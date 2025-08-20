@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import OverlayModal from "./OverlayModal";
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 import { authTokenAtom } from "../Atoms/AuthAtom";
 import { useLocation } from "react-router";
 import { BrandLikeOverlay } from "./BrandLikeOverlay";
@@ -13,8 +13,8 @@ import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
 
 export default function BrandCards({ brandList }) {
 
-  const [token, ] = useAtom(authTokenAtom);
-  const [user, ] = useAtom(valueProfileAtom);
+  const token = useAtomValue(authTokenAtom);
+  const user = useAtomValue(valueProfileAtom);
   const [activeModal, setActiveModal] = useState(null);
   const closeModal = () => setActiveModal(null);
   
@@ -28,19 +28,19 @@ export default function BrandCards({ brandList }) {
         return acc;
       }, {});
   
-      // hook to update the active modal
-      useEffect(() => {
-        if (!activeModal || !brandList) return;
-        
-        const updatedBrand = brandList.find((b) => b.id === activeModal.id);
-        if (updatedBrand && updatedBrand !== activeModal) {
-          setActiveModal(updatedBrand);
-        }
-        if (!updatedBrand) {
-          setActiveModal(null); // or show a message
-        }
-      }, [brandList, activeModal]);
-      
+  // hook to update the active modal
+  useEffect(() => {
+    if (!activeModal || !brandList) return;
+    
+    const updatedBrand = brandList.find((b) => b.id === activeModal.id);
+    if (updatedBrand && updatedBrand !== activeModal) {
+      setActiveModal(updatedBrand);
+    }
+    if (!updatedBrand) {
+      setActiveModal(null); // or show a message
+    }
+  }, [brandList, activeModal]);
+  
   // Carousel component to print brands per category
 const BrandCarousel = ({ brands, category }) => {
   const [index, setIndex] = useState(0);
