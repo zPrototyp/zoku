@@ -19,7 +19,7 @@
   width: 360px;
   max-width: 90%;
   max-height: 90%;
-  /* overflow-y: auto; */
+  overflow-y: auto;
   z-index: 1000;
   background-color: var(--highlight);
   color: black;
