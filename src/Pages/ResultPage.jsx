@@ -76,7 +76,6 @@ function ResultPage () {
       </div>
     )
 
-    
     const {
       primaryPersonality = null,
       secondaryPersonality = null,
