@@ -81,15 +81,25 @@ const BrandCarousel = ({ brands, category }) => {
               ))}
           </select>
           </div>
-      {Object.keys(brandCategories) // fixed order
-        .filter(cat => grouped[cat]) // only show if we actually have brands in that category
-         .filter(cat => selectedCategory === "all" || selectedCategory === cat)
-        .map(cat => (
+
+        {selectedCategory != "all"
+        ? grouped[selectedCategory] && (
           <BrandCarousel
-            key={cat}
-            brands={grouped[cat]}
-            category={cat}
-          />))}
+            key={selectedCategory}
+            brands={grouped[selectedCategory]}
+            category={selectedCategory}
+          />
+        )
+      :  Object.keys(brandCategories)
+          .filter(cat => grouped[cat]?.length > 0)
+          .map(cat => (
+            <BrandCarousel
+              key={cat}
+              brands={grouped[cat]}
+              category={cat}
+            />
+          ))
+        }
         </>)
     }
 
