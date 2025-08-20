@@ -17,7 +17,9 @@ export default function BrandCards({ brandList }) {
   const user = useAtomValue(valueProfileAtom);
   const [activeModal, setActiveModal] = useState(null);
   const closeModal = () => setActiveModal(null);
-  
+  const [selectedCategory, setSelectedCategory] = useState("all");
+
+
   const location =  useLocation();
   const isFeedPage = location.pathname === '/feed';
 
@@ -67,9 +69,29 @@ const BrandCarousel = ({ brands, category }) => {
 
   return (
     <>
-    {!isFeedPage && Object.entries(grouped).map(([category, brandsInCategory]) => (
-      <BrandCarousel key={category} brands={brandsInCategory} category={category} />
-    ))}
+    {!isFeedPage && (
+      <>
+        <div className='feed-sort-options'>
+          <label htmlFor="sortSelect">Varumärken: </label>
+          <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+              {Object.entries(brandCategories).map(([value, label]) => (
+                  <option key={value} value={value}>
+                      {label}
+                  </option>
+              ))}
+          </select>
+          </div>
+      {Object.keys(brandCategories) // fixed order
+        .filter(cat => grouped[cat]) // only show if we actually have brands in that category
+         .filter(cat => selectedCategory === "all" || selectedCategory === cat)
+        .map(cat => (
+          <BrandCarousel
+            key={cat}
+            brands={grouped[cat]}
+            category={cat}
+          />))}
+        </>)
+    }
 
     {isFeedPage && brandList.map(brand => <PrintBrandCard brand={brand} key={brand.id} setActiveModal={setActiveModal}/>)}
 
