@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import '../assets/css/App.css'
 import { valueProfiles } from '../assets/uiData/zoku_profiles_se'
@@ -15,6 +15,7 @@ import CelebrityComparisonDial from '../Components/CelebrityComparisonDial.jsx'
 import BrandCards from '../Components/BrandCards'
 import { calculateMatchPercentage } from '../Services/type-calculation.js'
 import { API_guestGetBrandMatches, API_guestGetPersonality } from '../Services/API.jsx'
+import { CreateComparisonDials } from '../Components/CreateComparisonDials.jsx'
 
 function ResultPage () {
   const testValues = useAtomValue(testValuesAtom)
@@ -31,39 +32,35 @@ function ResultPage () {
   const [feedList, setFeedList] = useAtom(feedListAtom)
 
   useEffect(() => {
-    if (
-      typeof testValues.changeVsTradition !== 'number' ||
-      typeof testValues.compassionVsAmbition !== 'number' ||
-      !sessionToken
-    )
-      return
+  if (
+    typeof testValues.changeVsTradition !== 'number' ||
+    typeof testValues.compassionVsAmbition !== 'number' ||
+    !sessionToken
+  ) return;
 
-    if (testValues.changeVsTradition > 0) {
+  const fetchData = async () => {
+    try {
       setLoading(true);
-      // Fetch personality data using the API helper function
-      try {
-        API_guestGetPersonality(sessionToken, testValues, setResult);
-      } catch (err) {
-        console.error('Error fetching personality data:', err);
-        setError('Kunde inte hämta resultat.');
-        setLoading(false);
-        return;
-      }
-    
-    // Fetch brand matches using the API helper function
-      try {
-        API_guestGetBrandMatches(sessionToken, testValues, setFeedList, 'all', 3);
-      } catch (err) {
-        console.error('Error fetching brand matches:', err);
-        setError('Kunde inte hämta varumärken.');
-        setLoading(false);
-        return;
-      }
-      setLoading(false)
+
+      await API_guestGetPersonality(sessionToken, testValues, setResult);
+      await API_guestGetBrandMatches(sessionToken, testValues, setFeedList, 'all', 3);
+
+    } catch (err) {
+      console.error('Error fetching data:', err);
+      setError('Kunde inte hämta resultat.');
+    } finally {
+      setLoading(false);
     }
+  };
 
-  }, [testValues, sessionToken])
+  fetchData();
+}, [testValues, sessionToken, setResult, setFeedList]);
 
+ // derive comparison dials with memoization
+  const { dialA, dialB, hasFriend } = useMemo(() => {
+    if (!result) return { dialA: null, dialB: null, hasFriend: false }
+    return CreateComparisonDials({ friendValues, friendProfile, profile: result })
+  }, [friendValues, friendProfile, result])
 
 
   if (loading)
@@ -79,44 +76,17 @@ function ResultPage () {
       </div>
     )
 
-
-  const {
-    primaryPersonality = null,
-    secondaryPersonality = null,
-    thirdPersonality = null
-  } = result || {}
-
-  // Comparison between "new" user and "shared" user
-  const hasFriendVals =
-    typeof friendValues?.compassionVsAmbition === 'number' &&
-    typeof friendValues?.changeVsTradition === 'number' &&
-    (friendValues.compassionVsAmbition > 0 || friendValues.changeVsTradition > 0)
-
-  // New
-  const dialA = hasFriendVals ?
-  {
-    name: 'Du',
-    compassionVsAmbition: result?.compassionVsAmbition,
-    changeVsTradition: result?.changeVsTradition,
-    primaryPersonality: result?.primaryPersonality
-  } : null
-
-// Shared
-  const dialB = hasFriendVals
-    ? (friendProfile
-        ? { name: 'Vän', ...friendProfile }
-        : {
-            name: 'Vän',
-            compassionVsAmbition: friendValues.compassionVsAmbition,
-            changeVsTradition: friendValues.changeVsTradition
-          })
-    : null
-
-
+    
+    const {
+      primaryPersonality = null,
+      secondaryPersonality = null,
+      thirdPersonality = null
+    } = result || {}
+    
   return (
     <div className='result-page'>
       {/* Comparison dial */}
-      {hasFriendVals && dialA && dialB && (
+      {hasFriend && dialA && dialB && (
         <div className="comparison-inline" style={{ marginBottom: '1.25rem' }}>
           <h2 style={{ marginBottom: '.5rem' }}>Jämförelse {calculateMatchPercentage(friendValues, testValues)}% match</h2>
           <CelebrityComparisonDial a={dialA} b={dialB} aLabel="Du" bLabel="Vän" size={260} />
