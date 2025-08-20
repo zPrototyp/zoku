@@ -5,7 +5,7 @@ import { useAtom } from 'jotai';
 import { authTokenAtom } from '../Atoms/AuthAtom.jsx';
 import { feedListAtom } from '../Atoms/FeedListAtom.jsx';
 import { valueProfileAtom } from '../Atoms/ValueProfileAtom.jsx';
-
+import { API_logout } from '../Services/API.jsx';
 
 
 const HamburgerMenu = () => {
@@ -18,9 +18,14 @@ const HamburgerMenu = () => {
 
 // Needs to be sent to backend to log out user as well
   const handleLogout = () => {
+    const loggedOut = API_logout(token);
+    if (loggedOut) {
+      console.log("User logged out successfully");
+    }
     setToken(null);
     setFeedList(null);
     setValueProfile(null);
+
     setIsOpen(false)
     window.location.href = "/zoku/"; // Redirect to home page
   };

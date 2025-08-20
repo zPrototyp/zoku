@@ -125,3 +125,22 @@ export const API_brandInteraction = async (userAction, brandId, token) => {
         console.error("Error updating interaction:", error);
     });
   }
+
+//   Logout function to clear user session
+export const API_logout = async (token) => {
+    if (!token) return;
+    try {
+        const res = await fetch(`${AZURE_API}/auth/logout`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        if (!res.ok) throw new Error("Logout failed");
+        return true;
+    } catch (error) {
+        console.error("Error during logout:", error);
+        return false;
+    }
+};
