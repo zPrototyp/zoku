@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useAtom } from "jotai";
 import { useNavigate } from "react-router-dom";
 import { authTokenAtom } from "../Atoms/AuthAtom";
@@ -15,6 +15,12 @@ import { testValuesAtom } from "../Atoms/TestValuesAtom";
 import UserSettings from "../Components/UserSettings";
 import { API_userSafeFetchJson } from "../Services/API";
 
+// import { comparisonValueAtom } from '../Atoms/ComparisonValueAtom.jsx'
+// import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
+// import { CreateComparisonDials } from '../Components/CreateComparisonDials.jsx'
+// import { calculateMatchPercentage } from "../Services/type-calculation";
+// import CelebrityComparisonDial from "../Components/CelebrityComparisonDial.jsx";
+
 function ProfilePage() {
   const [profile, setProfile] = useAtom(valueProfileAtom);
   const [testValues, setTestValues] = useAtom(testValuesAtom);
@@ -28,6 +34,9 @@ function ProfilePage() {
   const navigate = useNavigate()
   const [showSettings, setShowSettings] = useState(false);
 
+  // const [friendValues] = useAtom(comparisonValueAtom)
+  // const [friendProfile] = useAtom(comparisonProfileAtom)
+  // const [showComparison, setShowComparison] = useState(false);
 
 // On load fetch all the profile information
   useEffect(() => {
@@ -74,31 +83,29 @@ function ProfilePage() {
     }
     setShowHidden(true);
   }
+  // const { dialA, dialB, hasFriend } = useMemo(() => {
+  //   if (!profile) return { dialA: null, dialB: null, hasFriend: false }
+  //   return CreateComparisonDials({ friendValues, friendProfile, profile })
+  // }, [friendValues, friendProfile, profile])
 
   if (error) return <div className="page-content"><p style={{ color: "red" }}>{error}</p></div>;
   if (!profile) return <div className="page-content"><p>Laddar profil...</p></div>; 
 
-   const userId = profile?.userId || profile?.id || null;
-
-  const cogBtn = {
-    position: "absolute",
-    top: 8,
-    right: 8,
-    width: 44,
-    height: 44,
-    display: "grid",
-    placeItems: "center",
-    borderRadius: "50%",
-    background: "white",
-    border: "1px solid #ddd",
-    boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
-    cursor: "pointer",
-    zIndex: 2,
-  };
-
+  
+  // Profile does not contain a userID to set.
+  const userId = profile?.userId || profile?.id || null;
+  
   return (
     <>
       <div className="page-content" style={{ position: "relative" }}>
+        {/* {showComparison && hasFriend && dialA && dialB && (
+          <div className="comparison-inline" style={{ marginBottom: '1.25rem' }}>
+            <h2 style={{ marginBottom: '.5rem' }}>Jämförelse {calculateMatchPercentage(friendValues, testValues)}% match</h2>
+            <CelebrityComparisonDial a={dialA} b={dialB} aLabel="Du" bLabel="Vän" size={260} />
+            <button style={{fontSize:"1.2em"}} onClick={()=>setShowComparison(p=> !p)}>Dölj jämförelse</button>
+          </div>
+          )}
+        {!showComparison && hasFriend && (<button style={{fontSize:"1.2em"}} onClick={()=>setShowComparison(p=> !p)}>Visa jämförelse med {valueProfiles[friendProfile?.primaryPersonality.name].title}</button>)} */}
         <h2>Din Personlighet</h2>
 
         {profile?.primaryPersonality?.name &&
