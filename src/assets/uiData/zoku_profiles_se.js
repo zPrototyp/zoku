@@ -8,14 +8,14 @@ export const valueProfiles = {
       "Du är den fasta punkten i en rörlig värld.",
       "Du bär ansvar med stolthet.",
     ],
-    listHeader: "Vad som definierar dig:",
+    listHeader: "Vad som definierar dig",
     list: [
       "Pliktkänsla som ryggrad",
       "Stabilitet i gruppen",
       "Tradition som för vidare värden",
       "Ansvar som grund för förtroende",
     ],
-    consumerHeader: "Du konsumerar med hjärtat:",
+    consumerHeader: "Du konsumerar med hjärtat",
     consumerText: "Du väljer det som skapar lugn, trygghet och välmående – för dig och dina nära. Kvalitet över tid, inte status över substans. Du bygger hem och vardag med omsorg.",
   },
   Adventurer: {
@@ -27,14 +27,14 @@ export const valueProfiles = {
       "Du jagar inte trygghet – du jagar liv.",
       "Det oprövade drar dig, det okända lockar. För dig är varje steg framåt en chans att växa.",
     ],
-    listHeader: "Vad som definierar dig:",
+    listHeader: "Vad som definierar dig",
     list: [
       "Frihet att följa din egen kompass",
       "Nyfikenhet som aldrig försvinner",
       "Mod att kasta dig ut utan garantier",
       "Autenticitet som aldrig kompromissar",
     ],
-    consumerHeader: "Du konsumerar som du lever:",
+    consumerHeader: "Du konsumerar som du lever",
     consumerText: "En flygbiljett, en ryggsäck, en ny app – allt du konsumerar är portaler till nästa upplevelse. Du ser produkter som passager, inte saker. Varumärken som ger dig frihet, inspiration och spontanitet vinner ditt hjärta. Du är ofta först med att testa nya digitala verktyg som berikar resan – bokstavligen eller mentalt."
   },
   Traditionalist: {
@@ -46,14 +46,14 @@ export const valueProfiles = {
       "Du vet att nytt inte alltid betyder bättre.",
       "Du hedrar det som fungerar.",
     ],
-    listHeader: "Vad som definierar dig:",
+    listHeader: "Vad som definierar dig",
     list: [
       "Kontinuitet som skapar stabilitet",
       "Lojalitet som levnadsprincip",
       "Funktionalitet före form",
       "Respekt för det beprövade",
     ],
-    consumerHeader:"Du konsumerar med förtroende:",
+    consumerHeader:"Du konsumerar med förtroende",
     consumerText: "Du väljer det du redan litar på. Du gillar varumärken med historia, hantverk och konsekvens. Du bygger ditt liv på det som visat sig hålla – inte på det som lyser tillfälligt.",
   },
 
@@ -66,14 +66,14 @@ export const valueProfiles = {
       "Du är den som står kvar när andra går.",
       "Den som höjer rösten när andra tystnar.",
     ],
-    listHeader: "Vad som definierar dig:",
+    listHeader: "Vad som definierar dig",
     list: [
       "Rättvisa i handling, inte bara ord",
       "Lojalitet som rör sig åt båda håll",
       "Mod att konfrontera orättvisor",
       "Gemenskap som inkluderar alla",
     ],
-    consumerHeader:"Du konsumerar som du kämpar:",
+    consumerHeader:"Du konsumerar som du kämpar",
     consumerText: "Du letar efter principer – inte trender. För dig är varje köp ett bevis på vad du tror på. Du väljer varumärken som visar ryggrad, inte bara vision. Du värdesätter mänsklighet över marknadsandelar.",
   },
   Idealist: {
@@ -84,14 +84,14 @@ export const valueProfiles = {
     text: [
       "Du accepterar inte världen som den är – du formar den som den borde vara.",
     ],
-    listHeader: "Vad som definierar dig:",
+    listHeader: "Vad som definierar dig",
     list: [
       "Vision som leder dig framåt",
       "Empati som formar dina val",
       "Integritet som aldrig böjs",
       "Hopp som vägrar ge upp",
     ],
-    consumerHeader:"Du konsumerar med mening:",
+    consumerHeader:"Du konsumerar med mening",
     consumerText: "För dig är ett köp ett ställningstagande. Du letar efter varumärken som står för något. Genom ditt konsumtionsval bygger du den framtid du tror på. Du är ofta den som inspirerar andra att tänka efter – och tänka om.",
   },
   Achiever: {
@@ -103,14 +103,14 @@ export const valueProfiles = {
       "Du är inte här för att delta – du är här för att vinna.",
       "Ditt fokus är knivskarpt, dina ambitioner gränslösa.", 
     ],
-    listHeader: "Vad som definierar dig:",
+    listHeader: "Vad som definierar dig",
     list: [
       "Resultat framför ursäkter",
       "Precision i varje beslut",
       "Prestation som livsstil",
       "Konkurrenskraft som motor",
 ],
-    consumerHeader:"Du konsumerar med krav:",
+    consumerHeader:"Du konsumerar med krav",
     consumerText: "Allt du använder måste hålla samma nivå som du själv. Du investerar i verktyg, kläder och teknologier som ger dig en edge. Du väljer inte för att imponera – du väljer för att vinna.",
   },
   Strategist: {
@@ -121,14 +121,14 @@ export const valueProfiles = {
     text: [
       "Din framtid bygger inte på tur – du bygger den på logik.",
     ],
-    listHeader: "Vad som definierar dig:",
+    listHeader: "Vad som definierar dig",
     list: [
       "Skärpa i tanke och verktyg",
       "Planering som skapar utrymme",
       "Effektivitet som frigör tid",
       "Struktur som möjliggör flexibilitet",
     ],
-    consumerHeader:"Du konsumerar med krav:",
+    consumerHeader:"Du konsumerar med krav",
     consumerText: "Du väljer produkter som fungerar direkt och länge. Varje köp ska optimera något i ditt system. Du är en tidshackare som gillar struktur, data och intelligenta lösningar.",
   },
   Caregiver: {
@@ -140,14 +140,14 @@ export const valueProfiles = {
       "Du är hjärtat i varje rum.",
       "Den som håller ihop när andra faller isär.", 
     ],
-    listHeader: "Vad som definierar dig:",
+    listHeader: "Vad som definierar dig",
     list: [
       "Omtanke som genomsyrar allt du gör",
       "Trygghet som lugnar andra",
       "Stabilitet som skapar tillit",
       "Värme som gör livet mjukt",
     ],
-    consumerHeader:"Du konsumerar med hjärtat:",
+    consumerHeader:"Du konsumerar med hjärtat",
     consumerText: "Du väljer det som skapar lugn, trygghet och välmående – för dig och dina nära. Kvalitet över tid, inte status över substans. Du bygger hem och vardag med omsorg.",
   },
   };
