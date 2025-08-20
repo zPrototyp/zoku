@@ -3,7 +3,7 @@ import { MdOutlinePlaylistRemove } from "react-icons/md";
 import HiddenBrands from "../Components/HiddenBrands";
 
 
-export default function BrandWardrobe({ brands, showHidden, hiddenBrands, handleShowHidden })
+export default function BrandWardrobe({ brands, showHidden, hiddenBrands, setHiddenBrands, handleShowHidden })
 {
   return (
     <div className="wardrobe-section">
@@ -15,7 +15,7 @@ export default function BrandWardrobe({ brands, showHidden, hiddenBrands, handle
           />
       
       {showHidden 
-      ? <HiddenBrands brandList={hiddenBrands} />
+      ? <HiddenBrands brandList={hiddenBrands} setHiddenBrands={setHiddenBrands} />
       : <BrandCards brandList={brands}  />
       }
     </div>

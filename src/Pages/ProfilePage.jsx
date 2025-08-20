@@ -72,12 +72,7 @@ function ProfilePage() {
       setError("Kunde inte hämta gömda varumärken");
       return;
     }
-    if (hidden.length > 0) {
-      setShowHidden(true);
-    } else {
-      alert("Du har för närvarande inga gömda varumärken");
-    }
-
+    setShowHidden(true);
   }
 
   if (error) return <div className="page-content"><p style={{ color: "red" }}>{error}</p></div>;
@@ -151,6 +146,7 @@ function ProfilePage() {
           brands={brands}
           showHidden={showHidden}
           hiddenBrands={hiddenBrands}
+          setHiddenBrands={setHiddenBrands}
           handleShowHidden={handleShowHidden}
         />
 

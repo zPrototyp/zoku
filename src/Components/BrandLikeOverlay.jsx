@@ -8,7 +8,7 @@ import '../assets/css/BrandCarousel.css';
 import { CiCircleRemove } from "react-icons/ci";
 import { API_brandInteraction } from "../Services/API.jsx";
 
-export function BrandLikeOverlay({ brand }) {
+export function BrandLikeOverlay({ brand , setHiddenBrands}) {
   const token = useAtomValue(authTokenAtom);
   const [brandList, setBrandList] = useAtom(feedListAtom);
   const location =  useLocation();
@@ -41,7 +41,7 @@ export function BrandLikeOverlay({ brand }) {
       if (action ==='hide' )
         setBrandList((prev) => prev.filter((b) => b.id !== brand.id));
       if (action ==='unhide' && isProfilePage)
-        console.log('remove from hidden list');
+        setHiddenBrands && setHiddenBrands((prev) => prev.filter((b) => b.id !== brand.id));
     } catch (error) {
       console.error("Error handling hide action:", error);
   }

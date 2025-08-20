@@ -4,7 +4,7 @@ import '../assets/css/App.css'
 import { valueProfiles } from '../assets/uiData/zoku_profiles_se'
 import PersonalityCard from '../Components/PersonalityCard'
 import SecondaryPersonalityCard from '../Components/SecondaryPersonalityCard'
-import { useAtom } from 'jotai/react'
+import { useAtom, useAtomValue } from 'jotai/react'
 import { valueProfileAtom } from '../Atoms/ValueProfileAtom'
 import { guestTokenAtom } from '../Atoms/GuestTokenAtom.jsx'
 import { testValuesAtom } from '../Atoms/TestValuesAtom.jsx'
@@ -17,18 +17,17 @@ import { calculateMatchPercentage } from '../Services/type-calculation.js'
 import { API_guestGetBrandMatches, API_guestGetPersonality } from '../Services/API.jsx'
 
 function ResultPage () {
-  const [testValues, setTestValues] = useAtom(testValuesAtom)
+  const testValues = useAtomValue(testValuesAtom)
   const location = useLocation()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
-  const [result, setResult] = useAtom(valueProfileAtom)
   const [error, setError] = useState(null)
-  // const { x, y } = { x: 50, y: 50 };
-  const [friendValues, ] = useAtom(comparisonValueAtom)
-  const [friendProfile, ] = useAtom(comparisonProfileAtom)
+  const [result, setResult] = useAtom(valueProfileAtom)
+  const friendValues = useAtomValue(comparisonValueAtom)
+  const friendProfile = useAtomValue(comparisonProfileAtom)
 
   // Added sessionToken for sending to backend
-  const [sessionToken, setSessionToken] = useAtom(guestTokenAtom)
+  const sessionToken = useAtomValue(guestTokenAtom)
   const [feedList, setFeedList] = useAtom(feedListAtom)
 
   useEffect(() => {
