@@ -14,8 +14,6 @@ import ResultPage from "./Pages/ResultPage";
 import ProfilePage from "./Pages/ProfilePage";
 import ClearAllAtoms from "./Pages/ClearAllAtoms";
 import './assets/css/App.css'; 
-import CompareProfilesPage from "./Pages/CompareProfilesPage";
-import FBShareProfiles from "./Pages/FBShareProfiles";
 
 function App() { 
   return (
@@ -36,11 +34,6 @@ function App() {
           <Route path="/register" element={<Register/>} />
           <Route path="/profile" element={<ProfilePage/>} />
           <Route path="/clear" element={<ClearAllAtoms />} />
-          <Route path="/compare" element={<CompareProfilesPage />}/>
-          
-        {/* Routes to share to fb - one per personality */}
-        <Route path="/share" element={<FBShareProfiles />} />
-
         </Route>
       </Routes>
     </Router>
