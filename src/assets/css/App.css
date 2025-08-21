@@ -259,6 +259,16 @@ button a {
 }
 /*************** END Start Page stylings *********************/
 
+/*************** NewTestPage.jsx stylings *********************/
+
+@keyframes popIn {
+  to {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+}
+
+/*************** END NewTestPage stylings *********************/
 
 /*************** AboutUs.jsx stylings *********************/
 .aboutprofileBox {

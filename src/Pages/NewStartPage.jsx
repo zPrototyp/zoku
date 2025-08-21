@@ -34,7 +34,7 @@ export default function NewStartPage() {
       Matcha med varumärken som delar dina värderingar.<br />
       Upptäck influencers och människor som vill konsumera som du.</p>
 
-      <button className="btn-small" onClick={()=> setZokuInfo(true) }>Vad är Zoku?</button>
+      <button className="btn-small active" onClick={()=> setZokuInfo(true) }>Vad är Zoku?</button>
 
       </div>
       <div className="circle-layout">

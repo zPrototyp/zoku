@@ -13,18 +13,30 @@ const clamp = (val, min, max) => Math.max(min, Math.min(max, val));
 
 const personalities = [
   { name: "Zoku", y: 50, x: 50, image: Mask },
-  { name: "ÄVENTYRAREN", y: 20, x: 80, image: Aventyraren },
-  { name: "SEGRAREN", y: 30, x: 85, image: Segraren },
-  { name: "IDEALISTEN", y: 25, x: 25, image: Idealisten },
-  { name: "FÖRKÄMPEN", y: 35, x: 15, image: Forkampen },
-  { name: "VÅRDGIVAREN", y: 75, x: 20, image: Vardgivaren },
-  { name: "BESKYDDAREN", y: 85, x: 25, image: Beskyddaren },
-  { name: "STRATEGEN", y: 70, x: 75, image: Strategen },
-  { name: "BEVARAREN", y: 80, x: 60, image: Bevararen },
+  { name: "Äventyraren", y: 20, x: 80, image: Aventyraren },
+  { name: "Segraren", y: 30, x: 85, image: Segraren },
+  { name: "Idealisten", y: 25, x: 25, image: Idealisten },
+  { name: "Förkämpen", y: 35, x: 15, image: Forkampen },
+  { name: "Vårdgivaren", y: 75, x: 20, image: Vardgivaren },
+  { name: "Beskyddaren", y: 85, x: 25, image: Beskyddaren },
+  { name: "Strategen", y: 70, x: 75, image: Strategen },
+  { name: "Traditionalisten", y: 80, x: 60, image: Bevararen },
 ];
 
 function SplitPersonalityDial({ value, onChange, uiState, setUiState })
 {
+  const [approaching, setApproaching] = useState("");
+  const [animate, setAnimate] = useState(false);
+
+  useEffect(() => {
+  if (uiState.resultMap) {
+    setAnimate(true);
+  } else {
+    setAnimate(false); // reset when leaving resultMap
+  }
+  }, [uiState.resultMap]);
+
+
 
   const svgRef = useRef(null);
   const size = 300;
@@ -159,12 +171,34 @@ function SplitPersonalityDial({ value, onChange, uiState, setUiState })
   {
     onChange({ ...value, y: parseFloat(e.target.value) });
     uiState.nextButtonState=true;
+    const closestPersonality = getClosestPersonality();
+    setApproaching(closestPersonality.name);
   }
   const handleXUpdate = (e) =>
   {
     onChange({ ...value, x: parseFloat(e.target.value) });
     uiState.nextButtonState=true;
+    const closestPersonality = getClosestPersonality();
+    setApproaching(closestPersonality.name);
   }
+
+  const [animKey, setAnimKey] = useState(0);
+
+    useEffect(() => {
+      if (uiState.resultMap) {
+        // retrigger animation every time resultMap toggles
+        setAnimKey(prev => prev + 1);
+      }
+    }, [uiState.resultMap]);
+
+  // compute final coords
+const finalX = toPixel(value.x) - 25;
+const finalY = toPixel(value.y) - 25;
+
+// center point (50,50)
+const centerX = toPixel(50) - 25;
+const centerY = toPixel(50) - 25;
+
 
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
@@ -248,6 +282,7 @@ function SplitPersonalityDial({ value, onChange, uiState, setUiState })
         <p style={{textAlign:"left", color: "var(--highlight"}}>💡 
           Ambition: Personlig utveckling, framgång, påverkan
       </p>
+      <p>Du närmar dig {approaching}</p>
         </>
   )}
 
@@ -265,7 +300,7 @@ function SplitPersonalityDial({ value, onChange, uiState, setUiState })
               onClick={()=>handleNext()}>{uiState.nextButtonTxt}</button>}
         </div>
       {/* Dial */}
-      {uiState.resultMap && (
+      {uiState.secondInput || uiState.resultMap && (
       <svg
         ref={svgRef}
         width={size}
@@ -287,12 +322,22 @@ function SplitPersonalityDial({ value, onChange, uiState, setUiState })
         <text x={20} y={radius} textAnchor="start" dominantBaseline="middle" fontSize="12">Gemenskap</text>
         <text x={size - 20} y={radius} textAnchor="end" dominantBaseline="middle" fontSize="12">Ambition</text>
 
-        <image
+      
+       <image
           href={closestImage}
-          x={toPixel(value.x) - 25}
-          y={toPixel(value.y) - 25}
+          key={animKey} // reset element to replay animation
+          x={finalX}
+          y={finalY}
           height={50}
+          style={{
+            transform: `translate(${centerX- finalX}px, ${centerY- finalY }px) scale(0.5)`,
+            opacity: 0,
+            animation: "popIn 0.9s ease-out forwards",
+          }}
         />
+
+
+      
       </svg>
         )}
     </div>
