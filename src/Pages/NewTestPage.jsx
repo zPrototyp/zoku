@@ -31,13 +31,13 @@ function NewTestPage () {
   
   const StepCounter = () => {
     if (uiState.firstInput) {
-      return "Steg 1 / 3";
+      return "1 / 3";
     }
     else if (uiState.secondImput) {
-      return "Steg 2 / 3";
+      return "2 / 3";
     }
     else if (uiState.resultMap) {
-      return "Steg 3 / 3";
+      return "3 / 3";
     }
   }
 

@@ -268,6 +268,51 @@ button a {
   }
 }
 
+/* Chrome / Edge / Safari */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 32px;
+  height: 32px;
+  background: url("Mask.svg") no-repeat center;
+  background-size: contain;
+  border: none;
+  cursor: pointer;
+}
+
+/* Firefox */
+input[type="range"]::-moz-range-thumb {
+  width: 32px;
+  height: 32px;
+  background: url("Mask.svg") no-repeat center;
+  background-size: contain;
+  border: none;
+  cursor: pointer;
+}
+.inputLeft, .inputRight{
+  position: relative;
+  text-align: left;
+}
+.inputRight {
+  /* text-align: right; */
+}
+.inputLeft::before, .inputRight::before {
+  content: "";
+  position: absolute;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  left: -2em;
+  top: 0.5em;
+}
+.inputLeft::before {
+background-color: var(--highlightContrast);
+/* left: -2em; */
+}
+.inputRight::before {
+/* right: -2em; */
+background-color: var(--highlight);
+}
 /*************** END NewTestPage stylings *********************/
 
 /*************** AboutUs.jsx stylings *********************/

@@ -228,7 +228,7 @@ const centerY = toPixel(50) - 25;
                 width: "100%",
                 WebkitAppearance: "none",
                 appearance: "none",
-                height: "8px",
+                height: "20px",
                 borderRadius: "4px",
                 background: "linear-gradient(to right, var(--highlightContrastLt), var(--highlight))", // higlightcontrastLt->highlight
                 outline: "none",
@@ -236,12 +236,12 @@ const centerY = toPixel(50) - 25;
             />
         </div>
 
-      <p style={{textAlign:"left", color: "var(--highlightContrastLt"}}>💡 
+      <p className="inputLeft">
         Förändring: Ny teknik, förändra samhället, innovation
       </p>
-      <p style={{textAlign:"left", color: "var(--highlight"}}>
-    💡 Tradition: Historia, familjvärden, kontinuitet
-    </p>
+      <p className="inputRight">
+        Tradition: Historia, familjvärden, kontinuitet
+      </p>
     </>
 )}
 
@@ -268,18 +268,18 @@ const centerY = toPixel(50) - 25;
                 width: "100%",
                 WebkitAppearance: "none",
                 appearance: "none",
-                height: "8px",
+                height: "20px",
                 borderRadius: "4px",
                 background: "linear-gradient(to right, var(--highlightContrastLt), var(--highlight))", // higlightcontrastLt->highlight
                 outline: "none",
               }}
           />
         </div>
-        <p style={{textAlign:"left", color: "var(--highlightContrastLt"}}>💡 
+        <p className="inputLeft">
           Omsorg: Miljö, rättvisa, ta hand om andra
 
         </p>
-        <p style={{textAlign:"left", color: "var(--highlight"}}>💡 
+        <p className="inputRight">
           Ambition: Personlig utveckling, framgång, påverkan
       </p>
       <p>Du närmar dig {approaching}</p>
