@@ -184,8 +184,9 @@ function NewTestPage () {
         >
           <h1>
             {authToken && profile
-              ? `Redigera personlighetstyp (${StepCounter()})`
-              : `Upptäck din personlighetstyp (${StepCounter()})`}
+              ? `Redigera personlighetstyp `
+              : profile ? `Uppdatera personlighetstyp `:`Upptäck din personlighetstyp `}
+              ({StepCounter()})
           </h1>
           <ValueInfoTooltip>
             <p>
