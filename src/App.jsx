@@ -14,6 +14,8 @@ import ResultPage from "./Pages/ResultPage";
 import ProfilePage from "./Pages/ProfilePage";
 import ClearAllAtoms from "./Pages/ClearAllAtoms";
 import './assets/css/App.css'; 
+import NewStartPage from "./Pages/NewStartPage";
+import NewTestPage from "./Pages/NewTestPage";
 
 function App() { 
   return (
@@ -34,6 +36,11 @@ function App() {
           <Route path="/register" element={<Register/>} />
           <Route path="/profile" element={<ProfilePage/>} />
           <Route path="/clear" element={<ClearAllAtoms />} />
+
+          <Route path="/start" element={<NewStartPage />} />
+          <Route path="/newtest" element={<NewTestPage />} />
+
+
         </Route>
       </Routes>
     </Router>

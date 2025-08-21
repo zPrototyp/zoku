@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import PersonalityDial from '../Components/PersonalityDial'
-import ValueInfoTooltip from '../Components/ValueInfoTooltip'
+import PersonalityDial from '../Components/PersonalityDial.jsx'
+import ValueInfoTooltip from '../Components/ValueInfoTooltip.jsx'
 import { useAtom } from 'jotai'
 import { guestTokenAtom } from '../Atoms/GuestTokenAtom.jsx'
 import { authTokenAtom } from '../Atoms/AuthAtom.jsx'
@@ -13,12 +13,34 @@ import '../assets/css/App.css'
 import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
 import ComparisonProfileView from '../Components/ComparisonProfileView.jsx'
 import { API_guestGetPersonality } from '../Services/API.jsx'
+import SplitPersonalityDial from '../Components/SplitPersonalityDial.jsx'
 
 // Given a link "http://zoku.se/test?changeY=70&compassionX=82" We can collect the values and compare.
 const AZURE_API = import.meta.env.VITE_AZURE_API;
 
-function TestPage () {
+function NewTestPage () {
   
+  const [uiState, setUiState] = useState({
+      firstInput: true,
+      secondImput: false,
+      resultMap: false,
+      showResultButton: false,
+      nextButtonTxt:"Nästa steg",
+      nextButtonState: false,
+  });
+  
+  const StepCounter = () => {
+    if (uiState.firstInput) {
+      return "Steg 1 / 3";
+    }
+    else if (uiState.secondImput) {
+      return "Steg 2 / 3";
+    }
+    else if (uiState.resultMap) {
+      return "Steg 3 / 3";
+    }
+  }
+
   const [position, setPosition] = useState({ x: 50, y: 50 })
   const navigate = useNavigate()
 
@@ -45,7 +67,6 @@ function TestPage () {
 
   // If test values exist (from a profile), use those as starting position
   useEffect(() => {    
-    console.log(profile, testValues)
     if (profile) {      
       setPosition({
         x: profile.compassionVsAmbition,
@@ -163,8 +184,8 @@ function TestPage () {
         >
           <h1>
             {authToken && profile
-              ? 'Redigera dina värderingar'
-              : 'Vad är dina värderingar?'}
+              ? `Redigera personlighetstyp (${StepCounter()})`
+              : `Upptäck din personlighetstyp (${StepCounter()})`}
           </h1>
           <ValueInfoTooltip>
             <p>
@@ -186,15 +207,17 @@ function TestPage () {
           </ValueInfoTooltip>
         </div>
 
-        <PersonalityDial value={position} onChange={setPosition} />
+        <SplitPersonalityDial value={position} onChange={setPosition} uiState={uiState} setUiState={setUiState} />
 
+      {uiState.showResultButton && (
         <button onClick={handleSubmit} className='active'>
           {friendValues?.changeVsTradition>0 && 'Jämför oss - '}
-          {authToken ? 'Spara ändringar' : 'Visa Resultat'}
+          {authToken ? 'Spara ändringar' : 'Visa personlighetstyp'}
         </button>
-      </div>
+          )}      
+    </div>
     </div>
   )
 }
 
-export default TestPage
+export default NewTestPage

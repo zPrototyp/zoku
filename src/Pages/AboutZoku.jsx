@@ -11,11 +11,19 @@ export default function AboutZoku() {
                 </h1>
             </NavLink>
             <h2>Vad är Zoku?</h2>
-            <p>Vi söker varumärken som speglar vår identitet. Zoku är ett sätt att se hur dina värderingar överrensstämmer med olika varumärken.
+            <p>
+                Vi tror att konsumtion handlar om mer än bara produkter. 
             </p>
-            <p>Zoku är en digital plattform där du kan identifiera din personlighetstyp med hjälp av Schwartz värderingsmodell. Genom att kartlägga dina värderingar matchas du med varumärken, kändisar – och vänner – som delar din livssyn.
+            <p>
+                Det handlar om vilka vi är, vem vi vill vara och vilka vi vill dela våra liv med.
             </p>
-            <p> Zoku öppnar en värld av värderingsdrivna varumärken som gör det enklare – och roligare –att konsumera hållbart och medvetet.
+            <p> 
+                Genom att svara på några enkla frågor upptäcker du din värderingspersonlighet 
+                och matchar med människor och varumärken som delar dina värderingar.
+            </p>
+
+           
+            <p>Zoku är en digital plattform där du kan identifiera din personlighetstyp.
             </p>
             <button className="active">
                 <NavLink to="/test" className="nav-link">Vad är din zoku?</NavLink>

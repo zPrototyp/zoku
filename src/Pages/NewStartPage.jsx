@@ -1,22 +1,24 @@
 import {NavLink} from "react-router";
 import { useState } from "react";
-import OverlayModal from "../Components/OverlayModal";
+import OverlayModal from "../Components/OverlayModal.jsx";
 import {valueProfiles} from "../assets/uiData/zoku_profiles_se.js";
 import { ZokuMasks } from "../assets/uiData/PersonalityImages.js";
 import zokuTitle from "../assets/images/ZokuTitle.svg";
 import { useSearchParams } from 'react-router-dom';
 
-export default function StartPage() {
+export default function NewStartPage() {
   const [activeModal, setActiveModal] = useState(null);
   const closeModal = () => setActiveModal(null);
   const [searchParams] = useSearchParams();
+  const [zokuInfo, setZokuInfo] = useState(false);
+
+  const closeZokuInfo = () => setZokuInfo(false);
 
   searchParams.get('changeY') ? parseInt(searchParams.get('changeY')) : 0;
   searchParams.get('compassionX') ? parseInt(searchParams.get('compassionX')) : 0;
 
   return (
     <div className="page-content">
-      {/* Logo here */}
       <NavLink to="/">
         <h1>
           <img src={zokuTitle} alt="Logo" className="logo" />
@@ -25,9 +27,15 @@ export default function StartPage() {
       </NavLink>
        
      <div className="sp-questionsBox">
-            <h2 className="sp-question">Zoku är din tribe</h2>
-            <h2 className="sp-question">Vem är du idag?</h2>
-            <h2 className="sp-question">Vem vill du vara?</h2>
+      {/* <h2 className="sp-question">Zoku är din tribe</h2> */}
+            
+      <h2 className="sp-question">Varumärken som speglar dina värderingar</h2>
+      <p>Upptäck din värderingspersonlighet. <br />
+      Matcha med varumärken som delar dina värderingar.<br />
+      Upptäck influencers och människor som vill konsumera som du.</p>
+
+      <button className="btn-small" onClick={()=> setZokuInfo(true) }>Vad är Zoku?</button>
+
       </div>
       <div className="circle-layout">
    
@@ -64,7 +72,7 @@ export default function StartPage() {
       
       <div className="sp-quizButtonBox">
         <button className="active">
-          <NavLink to="/test" className="nav-link">Vad är min zoku?</NavLink>
+          <NavLink to="/newtest" className="nav-link">Upptäck min personlighet</NavLink>
           </button>
       </div>
 
@@ -84,6 +92,19 @@ export default function StartPage() {
         )}
       </OverlayModal>
 
+      <OverlayModal isOpen={zokuInfo} onClose={closeZokuInfo}>
+
+        <h2>Vad är Zoku?</h2>
+        <p>Vi tror att konsumtion handlar om mer än bara produkter. <br />
+        Det handlar om vilka vi är, vem vi vill vara och vilka vi vill dela våra liv med.</p>
+
+        <p>Genom att svara på några enkla frågor upptäcker du din värderingspersonlighet och matchar med människor och varumärken som delar dina värderingar.
+        </p>
+          <button className="active">
+          <NavLink to="/newtest" className="nav-link">Upptäck min personlighet</NavLink>
+          </button>
+
+      </OverlayModal>
    
     </div>
   );
