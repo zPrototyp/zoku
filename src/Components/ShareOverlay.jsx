@@ -67,7 +67,11 @@ export function ShareOverlay({personality, profile, testValues, brand}){
             }
             const data = await res.json();
             console.log("Share:", data);
-            
+            const url = "https://zokubackend-staging-cxcchqh0aeemgkfa.swedencentral-01.azurewebsites.net/api/v1/assets/share/facebook/4";
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+                "_blank",
+                "width=600,height=900");
+
 
 
 
@@ -89,7 +93,7 @@ export function ShareOverlay({personality, profile, testValues, brand}){
         
         // console.log(facebookUrl);
 
-        window.open(facebookUrl, "_blank", "width=600,height=900");
+        // window.open(facebookUrl, "_blank", "width=600,height=900");
         setExpanded(false);
     }
 
