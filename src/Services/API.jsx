@@ -51,6 +51,7 @@ export const API_guestGetPersonality = async (bearer, testValues, onSuccess) => 
     
     onSuccess(data.data);
 
+
     return data.data;
 }
 // RESULT PAGE  - matching brands for guest profile.
@@ -145,9 +146,7 @@ export const API_logout = async (token) => {
 };
 
 
-// Centralized API service for Zoku application
-// Provides consistent error handling, authentication, and request management
-
+// Below: copied from Backend_Peter
 // const API_BASE_URL = '/api/v1';
 
 class ApiService {
@@ -259,11 +258,10 @@ class ApiService {
 
   // Guest session requests
   async guestPost(endpoint, data = null, sessionToken = null) {
-    
     return this.request(endpoint, {
       method: 'POST',
       headers: this.getGuestHeaders(sessionToken),
-      body: data ? JSON.stringify({...data, sessionToken: sessionToken}) : null,
+      body: data ? JSON.stringify(data) : null,
     });
   }
 
@@ -383,12 +381,24 @@ class ApiService {
   }
 
   // === SHARE ENDPOINTS ===
-  async generateShareAsset(data, token) {
-    return this.post('/share/generate-asset', data, token);
+  async createShare(data, token) {
+    return this.post('/share', data, token);
   }
 
-  async generateShareUrl(data, token) {
-    return this.post('/share/generate-url', data, token);
+  async trackShare(data, token) {
+    return this.post('/share/track', data, token);
+  }
+
+  async getShareHistory(limit = 50, token) {
+    return this.get(`/share/history?limit=${limit}`, token);
+  }
+
+  async getShareStats(token) {
+    return this.get('/share/stats', token);
+  }
+
+  async updateShareCount(data, token) {
+    return this.patch('/share/count', data, token);
   }
 
   // === USER DISCOVERY ENDPOINTS (NEW FEATURES) ===

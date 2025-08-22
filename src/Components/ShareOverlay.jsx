@@ -16,7 +16,7 @@ export function ShareOverlay({personality, profile, testValues, brand}){
     const url = "https://zprototyp.github.io/zoku";
     const token = useAtomValue(authTokenAtom);
     const sessionToken = useAtomValue(guestTokenAtom);
-    const bearer = token || sessionToken;
+    const bearer = token? token : sessionToken;
 
     const shareInstagramStory = () => {
         let sharedImage="";
@@ -43,10 +43,35 @@ export function ShareOverlay({personality, profile, testValues, brand}){
         setExpanded(false);
     };
 
-    function handleFbShare(){
+    async function handleFbShare(){
         // send to backend
-        API_shareProfile("facebook", bearer);
+        // API_shareProfile("facebook", bearer);
         
+
+        
+            const res = await fetch(`http://localhost:5278/api/v1/share`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${bearer}`,
+                },
+                body: JSON.stringify({
+                    entityType: brand ? "Brand" : "Personality",
+                    platform: "Facebook",
+                    entityId: 0,
+                    method: "Link"
+                }),
+            });
+            if (!res.ok) {
+                throw new Error("Failed to share on Facebook");
+            }
+            const data = await res.json();
+            console.log("Share:", data);
+            
+
+
+
+
         let shareUrl="";
         let quote="";
         if (brand) {
