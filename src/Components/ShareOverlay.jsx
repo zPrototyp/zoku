@@ -49,24 +49,24 @@ export function ShareOverlay({personality, profile, testValues, brand}){
         
 
         
-            const res = await fetch(`http://localhost:5278/api/v1/share`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${bearer}`,
-                },
-                body: JSON.stringify({
-                    entityType: brand ? "Brand" : "Personality",
-                    platform: "Facebook",
-                    entityId: 0,
-                    method: "Link"
-                }),
-            });
-            if (!res.ok) {
-                throw new Error("Failed to share on Facebook");
-            }
-            const data = await res.json();
-            console.log("Share:", data);
+            // const res = await fetch(`http://localhost:5278/api/v1/share`, {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //         Authorization: `Bearer ${bearer}`,
+            //     },
+            //     body: JSON.stringify({
+            //         entityType: brand ? "Brand" : "Personality",
+            //         platform: "Facebook",
+            //         entityId: 0,
+            //         method: "Link"
+            //     }),
+            // });
+            // if (!res.ok) {
+            //     throw new Error("Failed to share on Facebook");
+            // }
+            // const data = await res.json();
+            // console.log("Share:", data);
             const url = "https://zokubackend-staging-cxcchqh0aeemgkfa.swedencentral-01.azurewebsites.net/api/v1/assets/share/facebook/4";
             window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
                 "_blank",
