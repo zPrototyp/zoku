@@ -17,6 +17,8 @@ import { calculateMatchPercentage } from '../Services/type-calculation.js'
 import { API_guestGetBrandMatches, API_guestGetPersonality } from '../Services/API.jsx'
 import { CreateComparisonDials } from '../Components/CreateComparisonDials.jsx'
 
+
+
 function ResultPage () {
   const testValues = useAtomValue(testValuesAtom)
   const location = useLocation()
@@ -38,8 +40,8 @@ function ResultPage () {
 
   useEffect(() => {
     if (
-      typeof testValues.changeVsTradition !== 'number' ||
-      typeof testValues.compassionVsAmbition !== 'number' ||
+      typeof testValues?.changeVsTradition !== 'number' ||
+      typeof testValues?.compassionVsAmbition !== 'number' ||
       !sessionToken
     ) return;
 
@@ -98,6 +100,7 @@ function ResultPage () {
           <CelebrityComparisonDial a={dialA} b={dialB} aLabel="Du" bLabel="Vän" size={260} />
         </div>
       )}
+
 
       {/* Primary Personality Card */}
       <PersonalityCard
