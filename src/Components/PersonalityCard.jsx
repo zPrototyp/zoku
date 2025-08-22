@@ -32,7 +32,7 @@ function PersonalityCard({ personality, profile, highlight, testValues })
                         <GiReturnArrow 
                   className="clickable-icon" 
                   title="Gör om testet" 
-                  size="20px"
+                  size="30px"
                   onClick={() => navigate("/newtest")}/>
 
 
