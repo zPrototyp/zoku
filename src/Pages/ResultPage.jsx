@@ -21,40 +21,47 @@ function ResultPage () {
   const testValues = useAtomValue(testValuesAtom)
   const location = useLocation()
   const navigate = useNavigate()
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  // const [loading, setLoading] = useState(true)
+  // const [error, setError] = useState(null)
   const [result, setResult] = useAtom(valueProfileAtom)
   const friendValues = useAtomValue(comparisonValueAtom)
   const friendProfile = useAtomValue(comparisonProfileAtom)
+  const [uiStatus, setUiStatus] = useState({
+    isLoading: true,
+    error: null,
+    showBrandList: false,
+  })
 
   // Added sessionToken for sending to backend
   const sessionToken = useAtomValue(guestTokenAtom)
   const [feedList, setFeedList] = useAtom(feedListAtom)
 
   useEffect(() => {
-  if (
-    typeof testValues.changeVsTradition !== 'number' ||
-    typeof testValues.compassionVsAmbition !== 'number' ||
-    !sessionToken
-  ) return;
+    if (
+      typeof testValues.changeVsTradition !== 'number' ||
+      typeof testValues.compassionVsAmbition !== 'number' ||
+      !sessionToken
+    ) return;
 
-  const fetchData = async () => {
-    try {
-      setLoading(true);
+    const fetchData = async () => {
+      try {
+        setUiStatus({ ...uiStatus, isLoading: true, error: null });
 
-      await API_guestGetPersonality(sessionToken, testValues, setResult);
-      await API_guestGetBrandMatches(sessionToken, testValues, setFeedList, 'all', 3);
+        await API_guestGetPersonality(sessionToken, testValues, setResult);
+        await API_guestGetBrandMatches(sessionToken, testValues, setFeedList, 'all', 3);
 
-    } catch (err) {
-      console.error('Error fetching data:', err);
-      setError('Kunde inte hämta resultat.');
-    } finally {
-      setLoading(false);
-    }
-  };
+      } catch (err) {
+        console.error('Error fetching data:', err);
+        setUiStatus({ ...uiStatus, isLoading: false, error: err.message });
+        // setError('Kunde inte hämta resultat.');
+      } finally {
+        setUiStatus({ ...uiStatus, isLoading: false });
+        // setLoading(false);
+      }
+    };
 
-  fetchData();
-}, [testValues, sessionToken, setResult, setFeedList]);
+    fetchData();
+  }, [testValues, sessionToken, setResult, setFeedList]);
 
  // derive comparison dials with memoization
   const { dialA, dialB, hasFriend } = useMemo(() => {
@@ -63,16 +70,16 @@ function ResultPage () {
   }, [friendValues, friendProfile, result])
 
 
-  if (loading)
+  if (uiStatus.isLoading)
     return (
       <div className='result-page'>
         <p>Laddar resultat...</p>
       </div>
     )
-  if (error)
+  if (uiStatus.error)
     return (
       <div className='result-page'>
-        <p style={{ color: 'red' }}>{error}</p>
+        <p style={{ color: 'red' }}>{uiStatus.error}</p>
       </div>
     )
 
@@ -101,7 +108,7 @@ function ResultPage () {
       />
 
       {/* Secondary + Third Personality Cards */}
-      <div className='secondary-container'>
+{!uiStatus.showBrandList && <div className='secondary-container'>
         <SecondaryPersonalityCard
           personality={secondaryPersonality}
           profile={valueProfiles[secondaryPersonality?.name]}
@@ -111,9 +118,15 @@ function ResultPage () {
           profile={valueProfiles[thirdPersonality?.name]}
         />
       </div>
-
+}
+      <button
+        onClick={() => setUiStatus({ ...uiStatus, showBrandList: !uiStatus.showBrandList })}
+        className={uiStatus.showBrandList ? "active btn-small": "active"}
+      >
+        {uiStatus.showBrandList ? "Dölj varumärken": "Utforska mina matchningar"}
+      </button>
       {/* Brand list */}
-      {feedList && feedList.length > 0 && (
+      {uiStatus.showBrandList && feedList && feedList.length > 0 && (
         <div className='brand-list'>
           <h2>Varumärken som matchar din personlighet</h2>
 

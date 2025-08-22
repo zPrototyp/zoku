@@ -45,7 +45,7 @@ function TestPage () {
 
   // If test values exist (from a profile), use those as starting position
   useEffect(() => {    
-    console.log(profile, testValues)
+    // console.log(profile, testValues)
     if (profile) {      
       setPosition({
         x: profile.compassionVsAmbition,
