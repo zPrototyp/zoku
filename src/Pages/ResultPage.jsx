@@ -106,6 +106,7 @@ function ResultPage () {
       <PersonalityCard
         personality={primaryPersonality}
         profile={valueProfiles[primaryPersonality?.name]}
+        fullProfile={result}
         testValues={testValues}
         highlight
       />

@@ -2,7 +2,7 @@
 const AZURE_API = import.meta.env.VITE_AZURE_API;
 
 // Function to send share interaction to API can be used by guest or authenticated users
-export const API_shareProfile = async (platform, bearer) => {
+export const API_shareProfile = async (platform, bearer, entity, entityId) => {
 
     if (!bearer || !platform) return;
 
@@ -14,9 +14,9 @@ export const API_shareProfile = async (platform, bearer) => {
                 Authorization: `Bearer ${bearer}`,
             },
             body: JSON.stringify({
-                entityType: "Personality",
+                entityType: entity,
                 platform: platform,
-                entityId: 0,
+                entityId: entityId || 0,
                 method: "Link",
             }),
         });

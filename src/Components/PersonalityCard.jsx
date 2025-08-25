@@ -6,7 +6,7 @@ import { ZokuMasks } from "../assets/uiData/PersonalityImages";
 import { ShareOverlay } from "./ShareOverlay";
 import { GiReturnArrow } from "react-icons/gi";
 
-function PersonalityCard({ personality, profile, highlight, testValues })
+function PersonalityCard({ personality, profile, fullProfile, highlight, testValues })
 {
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
@@ -39,8 +39,7 @@ function PersonalityCard({ personality, profile, highlight, testValues })
       </div>
       <ShareOverlay 
         personality={personality} 
-        profile={profile} 
-        testValues={testValues}
+        profile={fullProfile} 
       />
 
       <div className="card-body preview">
