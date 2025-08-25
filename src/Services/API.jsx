@@ -430,9 +430,9 @@ class ApiService {
   }
 }
 
-// Export singleton instance
-const apiService = new ApiService();
-export default apiService;
+// // Export singleton instance
+// const apiService = new ApiService();
+// export default apiService;
 
-// Also export the class for testing purposes
-export { ApiService };
+// // Also export the class for testing purposes
+// export { ApiService };
