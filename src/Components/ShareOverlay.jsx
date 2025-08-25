@@ -74,12 +74,12 @@ const copyImage = async (img) => {
         const deepLink = `instagram-stories://share?source_application=zoku&backgroundImage=${backgroundImageUrl}`;
         const fallback = "https://www.instagram.com/";
         // Try to open Instagram Stories
-        // window.open(deepLink, "_blank");
+        window.open(deepLink, "_blank");
 
         console.log(sharedImage, deepLink)
         // Fallback after 800ms
         setTimeout(() => {
-            //  window.location.href = fallback;
+             window.location.href = fallback;
         }, 800);
         setExpanded(false);
     };
