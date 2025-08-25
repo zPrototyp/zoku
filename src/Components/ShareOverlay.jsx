@@ -98,15 +98,9 @@ const copyImage = async (img) => {
 
         let fbUrl="";
 
-        if (brand) {
-            fbUrl = shareUrl;
-        } else {
-            fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+        fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
             shareUrl
         )}&quote=${encodeURIComponent(quote)}`;
-        }
-
-        console.log(fbUrl);
 
         window.open(fbUrl, "_blank", "width=600,height=900");
         setExpanded(false);
