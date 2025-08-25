@@ -1,201 +1,194 @@
-import React, { useEffect, useState, useMemo } from "react";
-import { useAtom } from "jotai";
-import { useNavigate } from "react-router-dom";
-import { authTokenAtom } from "../Atoms/AuthAtom";
-import { feedListAtom } from "../Atoms/FeedListAtom";
-import { valueProfiles } from "../assets/uiData/zoku_profiles_se";
-import PersonalityCard from "../Components/PersonalityCard";
-import SecondaryPersonalityCard from "../Components/SecondaryPersonalityCard";
-import BrandWardrobe from "../Components/BrandWadrobe";
-import OverlayModal from "../Components/OverlayModal";
-import "../assets/css/App.css";
-import { FaPen, FaClock, FaCog } from "react-icons/fa";
-import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
-import { testValuesAtom } from "../Atoms/TestValuesAtom";
-import UserSettings from "../Components/UserSettings";
-import { API_userSafeFetchJson } from "../Services/API";
+import React, { useEffect, useState, useMemo } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import '../assets/css/App.css'
+import { valueProfiles } from '../assets/uiData/zoku_profiles_se'
+import PersonalityCard from '../Components/PersonalityCard'
+import SecondaryPersonalityCard from '../Components/SecondaryPersonalityCard'
+import { useAtom, useAtomValue } from 'jotai/react'
+import { valueProfileAtom } from '../Atoms/ValueProfileAtom'
+import { guestTokenAtom } from '../Atoms/GuestTokenAtom.jsx'
+import { testValuesAtom } from '../Atoms/TestValuesAtom.jsx'
+import { feedListAtom } from '../Atoms/FeedListAtom.jsx'
+import { comparisonValueAtom } from '../Atoms/ComparisonValueAtom.jsx'
+import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
+import CelebrityComparisonDial from '../Components/CelebrityComparisonDial.jsx'
+import BrandCards from '../Components/BrandCards'
+import { calculateMatchPercentage } from '../Services/type-calculation.js'
+import { API_guestGetBrandMatches, API_guestGetPersonality } from '../Services/API.jsx'
+import { CreateComparisonDials } from '../Components/CreateComparisonDials.jsx'
+import apiService, { API_getCelebrities, API_getPopularCelebrities } from '../Services/API.jsx'
+import CelebrityCard from '../Components/CelebrityCard'
 
-// import { comparisonValueAtom } from '../Atoms/ComparisonValueAtom.jsx'
-// import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
-// import { CreateComparisonDials } from '../Components/CreateComparisonDials.jsx'
-// import { calculateMatchPercentage } from "../Services/type-calculation";
-// import CelebrityComparisonDial from "../Components/CelebrityComparisonDial.jsx";
-
-function ProfilePage() {
-  const [profile, setProfile] = useAtom(valueProfileAtom);
-  const [testValues, setTestValues] = useAtom(testValuesAtom);
-  const [error, setError] = useState("");
-  const [brands, setBrands] = useAtom(feedListAtom)
-  const [history, setHistory] = useState([])
-  const [showHistory, setShowHistory] = useState(false)
-  const [hiddenBrands, setHiddenBrands] = useState([])
-  const [showHidden, setShowHidden] = useState(false);
-  const [token] = useAtom(authTokenAtom);
+function ResultPage () {
+  const testValues = useAtomValue(testValuesAtom)
+  const location = useLocation()
   const navigate = useNavigate()
-  const [showSettings, setShowSettings] = useState(false);
+  // const [loading, setLoading] = useState(true)
+  // const [error, setError] = useState(null)
+  const [result, setResult] = useAtom(valueProfileAtom)
+  const friendValues = useAtomValue(comparisonValueAtom)
+  const friendProfile = useAtomValue(comparisonProfileAtom)
+  const [uiStatus, setUiStatus] = useState({
+    isLoading: true,
+    error: null,
+    showBrandList: false,
+  })
 
-  // const [friendValues] = useAtom(comparisonValueAtom)
-  // const [friendProfile] = useAtom(comparisonProfileAtom)
-  // const [showComparison, setShowComparison] = useState(false);
+  // Added sessionToken for sending to backend
+  const sessionToken = useAtomValue(guestTokenAtom)
+  const [feedList, setFeedList] = useAtom(feedListAtom)
+  const [topCelebs, setTopCelebs] = useState([])
 
-// On load fetch all the profile information
   useEffect(() => {
-    setProfile(null);
-    if (!token) return;
+    if (
+      typeof testValues?.changeVsTradition !== 'number' ||
+      typeof testValues?.compassionVsAmbition !== 'number' ||
+      !sessionToken
+    ) return;
 
-    try { API_userSafeFetchJson(token, 'user/personality', setProfile) }
-    catch (err) {
-      setError("Kunde inte hämta profil: " + err.message);
-      console.error("Fel vid hämtning av profil:", err);
-    }
-    try { API_userSafeFetchJson(token, 'user/brands/collection', setBrands) }
-    catch (err) {
-      setError("Kunde inte hämta varumärken: " + err.message);
-      console.error("Fel vid hämtning av varumärken:", err);
-    }
-    try { API_userSafeFetchJson(token, 'user/personality/history', setHistory) }
-    catch (err) {
-      setError("Kunde inte hämta historik: " + err.message);
-      console.error("Fel vid hämtning av historik:", err);
-    }
+    const fetchData = async () => {
+      try {
+        setUiStatus(prev => ({ ...prev, isLoading: true, error: null }));
 
-  }, [token]);
+        await API_guestGetPersonality(sessionToken, testValues, setResult);
+        await API_guestGetBrandMatches(sessionToken, testValues, setFeedList, 'all', 3);
+        let celebs = [];
+        const primaryName = (result?.primaryPersonality?.name) ?? null;
 
-  // update testValues when we have a profile
-  useEffect(() => {
-    if (profile) {
-      setTestValues({
-        changeVsTradition: profile.changeVsTradition,
-        compassionVsAmbition: profile.compassionVsAmbition,
-      });
-    }}, [profile]);
+        if (primaryName) {
+          // Prefer ApiService instance to keep envelopes consistent
+          const response = await apiService.getCelebrities({ personality: primaryName, page: 1, pageSize: 3 });
+          celebs = Array.isArray(response?.data) ? response.data : response?.data?.data || [];
+        } else {
+          const response = await apiService.getPopularCelebrities(3);
+          celebs = Array.isArray(response?.data) ? response.data : response?.data?.data || [];
+        }
 
-  
-  async function handleShowHidden() {
-    if (showHidden) {
-      setShowHidden(false);
-      return;
-    }
-    const hidden = await API_userSafeFetchJson(token, 'user/brands/hidden', setHiddenBrands);
-    if (!hidden) {
-      setError("Kunde inte hämta gömda varumärken");
-      return;
-    }
-    setShowHidden(true);
-  }
-  // const { dialA, dialB, hasFriend } = useMemo(() => {
-  //   if (!profile) return { dialA: null, dialB: null, hasFriend: false }
-  //   return CreateComparisonDials({ friendValues, friendProfile, profile })
-  // }, [friendValues, friendProfile, profile])
+        // Defensive fallback via lightweight helpers if needed
+        if (!celebs || celebs.length === 0) {
+          if (primaryName) {
+            celebs = await API_getCelebrities({ personality: primaryName, pageSize: 3 });
+          } else {
+            celebs = await API_getPopularCelebrities(3);
+          }
+        }
 
-  if (error) return <div className="page-content"><p style={{ color: "red" }}>{error}</p></div>;
-  if (!profile) return <div className="page-content"><p>Laddar profil...</p></div>; 
+        setTopCelebs(celebs || []);
 
-  
-  // Profile does not contain a userID to set.
-  const userId = profile?.userId || profile?.id || null;
-  
+      } catch (err) {
+        console.error('Error fetching data:', err);
+        // setError('Kunde inte hämta resultat.');
+        setUiStatus(prev => ({ ...prev, error: err.message || 'Kunde inte hämta resultat.' }));
+      } finally {
+        setUiStatus(prev => ({ ...prev, isLoading: false }));
+        // setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [testValues, sessionToken, setResult, setFeedList, result?.primaryPersonality?.name]);
+
+ // derive comparison dials with memoization
+  const { dialA, dialB, hasFriend } = useMemo(() => {
+    if (!result) return { dialA: null, dialB: null, hasFriend: false }
+    return CreateComparisonDials({ friendValues, friendProfile, profile: result })
+  }, [friendValues, friendProfile, result])
+
+
+  if (uiStatus.isLoading)
+    return (
+      <div className='result-page'>
+        <p>Laddar resultat...</p>
+      </div>
+    )
+  if (uiStatus.error)
+    return (
+      <div className='result-page'>
+        <p style={{ color: 'red' }}>{uiStatus.error}</p>
+      </div>
+    )
+
+    const {
+      primaryPersonality = null,
+      secondaryPersonality = null,
+      thirdPersonality = null
+    } = result || {}
+    
   return (
-    <>
-      <div className="page-content" style={{ position: "relative" }}>
-        {/* {showComparison && hasFriend && dialA && dialB && (
-          <div className="comparison-inline" style={{ marginBottom: '1.25rem' }}>
-            <h2 style={{ marginBottom: '.5rem' }}>Jämförelse {calculateMatchPercentage(friendValues, testValues)}% match</h2>
-            <CelebrityComparisonDial a={dialA} b={dialB} aLabel="Du" bLabel="Vän" size={260} />
-            <button style={{fontSize:"1.2em"}} onClick={()=>setShowComparison(p=> !p)}>Dölj jämförelse</button>
-          </div>
-          )}
-        {!showComparison && hasFriend && (<button style={{fontSize:"1.2em"}} onClick={()=>setShowComparison(p=> !p)}>Visa jämförelse med {valueProfiles[friendProfile?.primaryPersonality.name].title}</button>)} */}
-        <h2>Din Personlighet</h2>
-
-        {profile?.primaryPersonality?.name &&
-          valueProfiles[profile.primaryPersonality.name] && (
-            <PersonalityCard
-              personality={profile.primaryPersonality}
-              profile={valueProfiles[profile.primaryPersonality.name]}
-              testValues={testValues}
-              highlight
-            />
-          )}
-
-        <div className="secondary-container">
-          {profile?.secondaryPersonality?.name &&
-            valueProfiles[profile.secondaryPersonality.name] && (
-              <SecondaryPersonalityCard
-                personality={profile.secondaryPersonality}
-                profile={valueProfiles[profile.secondaryPersonality.name]}
-              />
-            )}
-
-          {profile?.thirdPersonality?.name &&
-            valueProfiles[profile.thirdPersonality.name] && (
-              <SecondaryPersonalityCard
-                personality={profile.thirdPersonality}
-                profile={valueProfiles[profile.thirdPersonality.name]}
-              />
-            )}
-
-          <div className="secondary-icons">
-            <FaPen
-              className="clickable-icon"
-              title="Redigera personlighet"
-              onClick={() => navigate("/test")}
-            />
-            <FaClock
-              className="clickable-icon"
-              title="Visa historik"
-              onClick={() => setShowHistory(true)}
-            />
-          </div>
+    <div className='result-page'>
+      {/* Comparison dial */}
+      {hasFriend && dialA && dialB && (
+        <div className="comparison-inline" style={{ marginBottom: '1.25rem' }}>
+          <h2 style={{ marginBottom: '.5rem' }}>Jämförelse {calculateMatchPercentage(friendValues, testValues)}% match</h2>
+          <CelebrityComparisonDial a={dialA} b={dialB} aLabel="Du" bLabel="Vän" size={260} />
         </div>
+      )}
 
-        <BrandWardrobe
-          brands={brands}
-          showHidden={showHidden}
-          hiddenBrands={hiddenBrands}
-          setHiddenBrands={setHiddenBrands}
-          handleShowHidden={handleShowHidden}
+
+      {/* Primary Personality Card */}
+      <PersonalityCard
+        personality={primaryPersonality}
+        profile={valueProfiles[primaryPersonality?.name]}
+        testValues={testValues}
+        highlight
+      />
+
+      {/* Secondary + Third Personality Cards */}
+      {!uiStatus.showBrandList && <div className='secondary-container'>
+        <SecondaryPersonalityCard
+          personality={secondaryPersonality}
+          profile={valueProfiles[secondaryPersonality?.name]}
         />
+        <SecondaryPersonalityCard
+          personality={thirdPersonality}
+          profile={valueProfiles[thirdPersonality?.name]}
+        />
+      </div>}
 
-        <OverlayModal isOpen={showHistory} onClose={() => setShowHistory(false)}>
-          <div className="history-list">
-            <h3>Tidigare Resultat</h3>
-            {history.map((item, idx) => (
-              <div key={idx} className="history-entry">
-                <p>
-                  <strong>{new Date(item.createdAt).toLocaleString()}</strong>
-                </p>
-                <p>
-                  Primär: {valueProfiles[item.primaryType].title} ({item.primaryMatchPercentage}%)
-                </p>
-                <p>
-                  Sekundär: {valueProfiles[item.secondaryType].title} ({item.secondaryMatchPercentage}%)
-                </p>
-                <p>
-                  Tredje: {valueProfiles[item.thirdType].title} ({item.thirdMatchPercentage}%)
-                </p>
-                <hr />
-              </div>
+      {/* Top 3 celebrity matches */}
+      {uiStatus.showBrandList && topCelebs.length > 0 && (
+        <div style={{ width: '100%', maxWidth: 1000 }}>
+          <h2 style={{ marginTop: '1.5rem' }}>Topp 3 kändismatchningar</h2>
+          <div style={{ display: 'grid', gap: '1rem' }}>
+            {topCelebs.map((celeb) => (
+              <CelebrityCard
+                key={celeb.id || celeb.name}
+                celeb={celeb}
+                user={{
+                  compassionVsAmbition: testValues.compassionVsAmbition,
+                  changeVsTradition: testValues.changeVsTradition,
+                  primaryPersonality: result?.primaryPersonality
+                }}
+                celebBrands={celeb?.brands || []}
+              />
             ))}
           </div>
-        </OverlayModal>
+        </div>
+      )}
 
-        {/* Settings */}
-        <button
-          className="cogwheel-btn"
-          aria-label="Öppna inställningar"
-          title="Inställningar"
-          onClick={() => setShowSettings(true)}
-        >
-          <FaCog size={28} />
-        </button>
+      <button
+        onClick={() => setUiStatus(prev => ({ ...prev, showBrandList: !prev.showBrandList }))}
+        className={uiStatus.showBrandList ? "active btn-small": "active"}
+      >
+        {uiStatus.showBrandList ? "Dölj varumärken": "Utforska mina matchningar"}
+      </button>
+      {/* Brand list */}
+      {uiStatus.showBrandList && feedList && feedList.length > 0 && (
+        <div className='brand-list'>
+          <h2>Varumärken som matchar din personlighet</h2>
 
-        <OverlayModal isOpen={showSettings} onClose={() => setShowSettings(false)}>
-          <UserSettings userId={userId} onClose={() => setShowSettings(false)} />
-        </OverlayModal>
-      </div>
-    </>
-  );
+          <BrandCards brandList={feedList} />
+        </div>
+      )}
+
+      <button
+        onClick={() => navigate('/register', { state: result })}
+        className='active'
+      >
+        Spara och fortsätt
+      </button>
+    </div>
+  )
 }
 
-export default ProfilePage;
+export default ResultPage

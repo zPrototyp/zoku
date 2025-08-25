@@ -1,4 +1,3 @@
-
 const AZURE_API = import.meta.env.VITE_AZURE_API;
 
 // Function to send share interaction to API can be used by guest or authenticated users
@@ -371,6 +370,10 @@ class ApiService {
     return this.get(`/celebrities/${id}`);
   }
 
+  async getPopularCelebrities(count = 10) {
+    return this.get(`/celebrities/popular?count=${count}`);
+  }
+
   // === USER PROFILE ENDPOINTS ===
   async updateProfileName(data, token) {
     return this.patch('/user/name', data, token);
@@ -436,3 +439,30 @@ export default apiService;
 
 // Also export the class for testing purposes
 export { ApiService };
+
+//Get celebrities with optional filters via public controller.
+export const API_getCelebrities = async ({ name = null, personality = null, page = 1, pageSize = 20 } = {}) => {
+  const qs = new URLSearchParams();
+  if (name) qs.set('name', name);
+  if (personality) qs.set('personality', personality);
+  if (page) qs.set('page', String(page));
+  if (pageSize) qs.set('pageSize', String(pageSize));
+
+  const res = await fetch(`${AZURE_API}/celebrities${qs.toString() ? `?${qs}` : ''}`, {
+    headers: { 'Content-Type': 'application/json' },
+  });
+  if (!res.ok) throw new Error(`Failed to fetch celebrities: ${res.status}`);
+  const data = await res.json();
+  // Controller returns ApiResponse 
+  return Array.isArray(data) ? data : (data?.data ?? []);
+};
+
+// Get popular celebrities via public controller.
+export const API_getPopularCelebrities = async (count = 10) => {
+  const res = await fetch(`${AZURE_API}/celebrities/popular?count=${count}`, {
+    headers: { 'Content-Type': 'application/json' },
+  });
+  if (!res.ok) throw new Error(`Failed to fetch popular celebrities: ${res.status}`);
+  const data = await res.json();
+  return Array.isArray(data) ? data : (data?.data ?? []);
+};

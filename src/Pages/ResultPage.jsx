@@ -16,8 +16,8 @@ import BrandCards from '../Components/BrandCards'
 import { calculateMatchPercentage } from '../Services/type-calculation.js'
 import { API_guestGetBrandMatches, API_guestGetPersonality } from '../Services/API.jsx'
 import { CreateComparisonDials } from '../Components/CreateComparisonDials.jsx'
-
-
+import apiService, { API_getCelebrities, API_getPopularCelebrities } from '../Services/API.jsx'
+import CelebrityCard from '../Components/CelebrityCard'
 
 function ResultPage () {
   const testValues = useAtomValue(testValuesAtom)
@@ -37,6 +37,7 @@ function ResultPage () {
   // Added sessionToken for sending to backend
   const sessionToken = useAtomValue(guestTokenAtom)
   const [feedList, setFeedList] = useAtom(feedListAtom)
+  const [topCelebs, setTopCelebs] = useState([])
 
   useEffect(() => {
     if (
@@ -47,39 +48,51 @@ function ResultPage () {
 
     const fetchData = async () => {
       try {
-        setUiStatus({ ...uiStatus, isLoading: true, error: null });
+        setUiStatus(prev => ({ ...prev, isLoading: true, error: null }));
 
         await API_guestGetPersonality(sessionToken, testValues, setResult);
         await API_guestGetBrandMatches(sessionToken, testValues, setFeedList, 'all', 3);
 
-      const res = await fetch(`${AZURE_API}/user/celebrities/matches?count=3`, 
-      {
-        headers: 
-        {
-          "Authorization": `Bearer ${sessionToken}`,
-          "Content-Type": "application/json"
-        },
-      });
+        let celebs = [];
+        const primaryName = (result?.primaryPersonality?.name) ?? null;
 
-    } catch (err) {
-      console.error('Error fetching data:', err);
-      setError('Kunde inte hämta resultat.');
-    } finally {
-      setLoading(false);
-    }
-  };
+        if (primaryName)
+        {
+          const response = await apiService.getCelebrities({ personality: primaryName, page: 1, pageSize: 3 });
+          celebs = Array.isArray(response?.data) ? response.data : response?.data?.data || [];
+        }
+        else
+        {
+          const response = await apiService.getPopularCelebrities(3);
+          celebs = Array.isArray(response?.data) ? response.data : response?.data?.data || [];
+        }
+
+        if (!celebs || celebs.length === 0)
+        {
+          if (primaryName)
+          {
+            celebs = await API_getCelebrities({ personality: primaryName, pageSize: 3 });
+          }
+          else
+          {
+            celebs = await API_getPopularCelebrities(3);
+          }
+        }
+
+        setTopCelebs(celebs || []);
+
       } catch (err) {
         console.error('Error fetching data:', err);
-        setUiStatus({ ...uiStatus, isLoading: false, error: err.message });
         // setError('Kunde inte hämta resultat.');
+        setUiStatus(prev => ({ ...prev, error: err.message || 'Kunde inte hämta resultat.' }));
       } finally {
-        setUiStatus({ ...uiStatus, isLoading: false });
+        setUiStatus(prev => ({ ...prev, isLoading: false }));
         // setLoading(false);
       }
     };
 
     fetchData();
-  }, [testValues, sessionToken, setResult, setFeedList]);
+  }, [testValues, sessionToken, setResult, setFeedList, result?.primaryPersonality?.name]);
 
  // derive comparison dials with memoization
   const { dialA, dialB, hasFriend } = useMemo(() => {
@@ -127,7 +140,7 @@ function ResultPage () {
       />
 
       {/* Secondary + Third Personality Cards */}
-{!uiStatus.showBrandList && <div className='secondary-container'>
+      {!uiStatus.showBrandList && <div className='secondary-container'>
         <SecondaryPersonalityCard
           personality={secondaryPersonality}
           profile={valueProfiles[secondaryPersonality?.name]}
@@ -136,10 +149,11 @@ function ResultPage () {
           personality={thirdPersonality}
           profile={valueProfiles[thirdPersonality?.name]}
         />
-      </div>
+      </div>}
 
-      {/* Top 3 celebrity matches */}
-      {topCelebs.length > 0 && (
+      {/* Top 3 celebrity matches (from public controller) */}
+      {/* FIX: show celeb matches only when matches view is toggled */}
+      {uiStatus.showBrandList && topCelebs.length > 0 && (
         <div style={{ width: '100%', maxWidth: 1000 }}>
           <h2 style={{ marginTop: '1.5rem' }}>Topp 3 kändismatchningar</h2>
           <div style={{ display: 'grid', gap: '1rem' }}>
@@ -152,16 +166,15 @@ function ResultPage () {
                   changeVsTradition: testValues.changeVsTradition,
                   primaryPersonality: result?.primaryPersonality
                 }}
-                celebBrands={[]}
+                celebBrands={celeb?.brands || []} // if present in DTO
               />
             ))}
           </div>
         </div>
       )}
 
-}
       <button
-        onClick={() => setUiStatus({ ...uiStatus, showBrandList: !uiStatus.showBrandList })}
+        onClick={() => setUiStatus(prev => ({ ...prev, showBrandList: !prev.showBrandList }))}
         className={uiStatus.showBrandList ? "active btn-small": "active"}
       >
         {uiStatus.showBrandList ? "Dölj varumärken": "Utforska mina matchningar"}
