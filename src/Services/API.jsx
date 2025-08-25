@@ -7,17 +7,17 @@ export const API_shareProfile = async (platform, bearer) => {
     if (!bearer || !platform) return;
 
     try {
-        const res = await fetch(`${AZURE_API}/user/share-interactions`, {
+        const res = await fetch(`${AZURE_API}/share`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${bearer}`,
             },
             body: JSON.stringify({
-                entityType: "personality",
+                entityType: "Personality",
                 platform: platform,
                 entityId: 0,
-                method: "link",
+                method: "Link",
             }),
         });
 

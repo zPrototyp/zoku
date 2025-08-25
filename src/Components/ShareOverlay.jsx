@@ -45,11 +45,11 @@ export function ShareOverlay({personality, profile, testValues, brand}){
 
     async function handleFbShare(){
         // send to backend
-        // API_shareProfile("facebook", bearer);
+        const shareData = await API_shareProfile("Facebook", bearer);
         
 
         
-            // const res = await fetch(`http://localhost:5278/api/v1/share`, {
+            // const res = await fetch(`${AZURE_API}/v1/share`, {
             //     method: "POST",
             //     headers: {
             //         "Content-Type": "application/json",
@@ -65,10 +65,12 @@ export function ShareOverlay({personality, profile, testValues, brand}){
             // if (!res.ok) {
             //     throw new Error("Failed to share on Facebook");
             // }
+
             // const data = await res.json();
-            // console.log("Share:", data);
-            const url = "https://zokubackend-staging-cxcchqh0aeemgkfa.swedencentral-01.azurewebsites.net/api/v1/assets/share/facebook/4";
-            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+            console.log("Share:", shareData);
+            // const url = "https://zokubackend-staging-cxcchqh0aeemgkfa.swedencentral-01.azurewebsites.net/api/v1/assets/share/facebook/4";
+            const fbUrl = shareData.shareUrl;
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(fbUrl)}`,
                 "_blank",
                 "width=600,height=900");
 
@@ -91,7 +93,7 @@ export function ShareOverlay({personality, profile, testValues, brand}){
             shareUrl
         )}&quote=${encodeURIComponent(quote)}`;
         
-        // console.log(facebookUrl);
+        console.log(facebookUrl);
 
         // window.open(facebookUrl, "_blank", "width=600,height=900");
         setExpanded(false);
