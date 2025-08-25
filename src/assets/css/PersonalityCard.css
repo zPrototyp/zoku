@@ -13,12 +13,10 @@
   width: 100%;  
 }
 
-.card-header
-{
-  margin: 0 auto;
+.card-header {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  justify-content: space-around;
 }
 
 .mask

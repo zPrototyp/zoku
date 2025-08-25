@@ -114,11 +114,4 @@
 .primarySubtitle { font-size: 0.85rem; color: #6b645b; }
 .primaryText { margin: 0; color: #514a42; }
 
-.secondaryGrid {
-  /* display: grid;
-  grid-template-columns: repeat(2, minmax(180px, 1fr));
-  justify-content: center;
-  gap: 12px; */
-}
-
 .celebBrands { margin-top: 10px; }

@@ -21,14 +21,13 @@ export default function NewStartPage() {
     <div className="page-content">
       <NavLink to="/">
         <h1>
-          <img src={zokuTitle} alt="Logo" className="logo" />
+          <img src={zokuTitle} alt="Logo" className="logo-new" />
           <span className="sr-only">Zoku</span>
         </h1>
       </NavLink>
        
      <div className="sp-questionsBox">
-      {/* <h2 className="sp-question">Zoku är din tribe</h2> */}
-            
+                  
       <h2 className="sp-question">Varumärken som speglar dina värderingar</h2>
       <p>Upptäck din värderingspersonlighet. <br />
       Matcha med varumärken som delar dina värderingar.<br />

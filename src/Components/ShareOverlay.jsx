@@ -16,7 +16,7 @@ export function ShareOverlay({personality, profile, testValues, brand}){
     const url = "https://zprototyp.github.io/zoku";
     const token = useAtomValue(authTokenAtom);
     const sessionToken = useAtomValue(guestTokenAtom);
-    const bearer = token || sessionToken;
+    const bearer = token? token : sessionToken;
 
     const shareInstagramStory = () => {
         let sharedImage="";
@@ -43,10 +43,41 @@ export function ShareOverlay({personality, profile, testValues, brand}){
         setExpanded(false);
     };
 
-    function handleFbShare(){
+    async function handleFbShare(){
         // send to backend
-        API_shareProfile("facebook", bearer);
+        const shareData = await API_shareProfile("Facebook", bearer);
         
+
+        
+            // const res = await fetch(`${AZURE_API}/v1/share`, {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //         Authorization: `Bearer ${bearer}`,
+            //     },
+            //     body: JSON.stringify({
+            //         entityType: brand ? "Brand" : "Personality",
+            //         platform: "Facebook",
+            //         entityId: 0,
+            //         method: "Link"
+            //     }),
+            // });
+            // if (!res.ok) {
+            //     throw new Error("Failed to share on Facebook");
+            // }
+
+            // const data = await res.json();
+            console.log("Share:", shareData);
+            // const url = "https://zokubackend-staging-cxcchqh0aeemgkfa.swedencentral-01.azurewebsites.net/api/v1/assets/share/facebook/4";
+            const fbUrl = shareData.shareUrl;
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(fbUrl)}`,
+                "_blank",
+                "width=600,height=900");
+
+
+
+
+
         let shareUrl="";
         let quote="";
         if (brand) {
@@ -62,9 +93,9 @@ export function ShareOverlay({personality, profile, testValues, brand}){
             shareUrl
         )}&quote=${encodeURIComponent(quote)}`;
         
-        // console.log(facebookUrl);
+        console.log(facebookUrl);
 
-        window.open(facebookUrl, "_blank", "width=600,height=900");
+        // window.open(facebookUrl, "_blank", "width=600,height=900");
         setExpanded(false);
     }
 

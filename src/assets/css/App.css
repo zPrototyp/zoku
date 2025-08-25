@@ -32,6 +32,10 @@ h3 {
   margin-right: auto;
   margin-top: 20px;
 }
+.logo-new {
+  height: 74px;
+
+}
 .small-logo{
   background-color: var(--alt);
   border-radius: 50%;
@@ -163,6 +167,7 @@ button a {
 .sp-questionsBox{
   width: 100%;
 }
+
 .sp-question {
   font-size: 36px;
   margin: 0;
@@ -274,7 +279,7 @@ input[type="range"]::-webkit-slider-thumb {
   appearance: none;
   width: 32px;
   height: 32px;
-  background: url("Mask.svg") no-repeat center;
+  background: url("../images/Mask.svg") no-repeat center;
   background-size: contain;
   border: none;
   cursor: pointer;
@@ -284,7 +289,7 @@ input[type="range"]::-webkit-slider-thumb {
 input[type="range"]::-moz-range-thumb {
   width: 32px;
   height: 32px;
-  background: url("Mask.svg") no-repeat center;
+  background: url("../images/Mask.svg") no-repeat center;
   background-size: contain;
   border: none;
   cursor: pointer;

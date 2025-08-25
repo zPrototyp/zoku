@@ -1,12 +1,14 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../assets/css/App.css";
 import "../assets/css/PersonalityCard.css";
 import { ZokuMasks } from "../assets/uiData/PersonalityImages";
 import { ShareOverlay } from "./ShareOverlay";
-
+import { GiReturnArrow } from "react-icons/gi";
 
 function PersonalityCard({ personality, profile, highlight, testValues })
 {
+  const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
   
   if (!personality || !profile) return null;
@@ -21,9 +23,17 @@ function PersonalityCard({ personality, profile, highlight, testValues })
           className={`mask ${highlight ? "large-mask" : "faint-mask"}`}
         />
         <div className="card-title">
-          <h2>{personality.matchPercentage}% {profile.title} {profile.kanji}</h2>
-          
+          <h2>
+              {personality.matchPercentage}%
+              {profile.title} 
+            </h2>
         </div>
+              <h2>{profile.kanji}      </h2>
+                        <GiReturnArrow 
+                  className="clickable-icon" 
+                  title="Gör om testet" 
+                  size="30px"
+                  onClick={() => navigate("/newtest")}/>
 
 
       </div>
