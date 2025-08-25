@@ -45,6 +45,15 @@ function ResultPage () {
       await API_guestGetPersonality(sessionToken, testValues, setResult);
       await API_guestGetBrandMatches(sessionToken, testValues, setFeedList, 'all', 3);
 
+      const res = await fetch(`${AZURE_API}/user/celebrities/matches?count=3`, 
+      {
+        headers: 
+        {
+          "Authorization": `Bearer ${sessionToken}`,
+          "Content-Type": "application/json"
+        },
+      });
+
     } catch (err) {
       console.error('Error fetching data:', err);
       setError('Kunde inte hämta resultat.');
@@ -111,6 +120,27 @@ function ResultPage () {
           profile={valueProfiles[thirdPersonality?.name]}
         />
       </div>
+
+      {/* Top 3 celebrity matches */}
+      {topCelebs.length > 0 && (
+        <div style={{ width: '100%', maxWidth: 1000 }}>
+          <h2 style={{ marginTop: '1.5rem' }}>Topp 3 kändismatchningar</h2>
+          <div style={{ display: 'grid', gap: '1rem' }}>
+            {topCelebs.map((celeb) => (
+              <CelebrityCard
+                key={celeb.id || celeb.name}
+                celeb={celeb}
+                user={{
+                  compassionVsAmbition: testValues.compassionVsAmbition,
+                  changeVsTradition: testValues.changeVsTradition,
+                  primaryPersonality: result?.primaryPersonality
+                }}
+                celebBrands={[]}
+              />
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Brand list */}
       {feedList && feedList.length > 0 && (

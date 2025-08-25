@@ -6,7 +6,7 @@ import "../assets/css/UserSettings.css";
 
 function UserSettings({ userId, onClose })
 {
-  const [token] = useAtom(authTokenAtom);
+  const [token, setToken] = useAtom(authTokenAtom);
   const navigate = useNavigate();
 
   // Change password
@@ -15,6 +15,12 @@ function UserSettings({ userId, onClose })
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [pwLoading, setPwLoading] = useState(false);
   const [pwMsg, setPwMsg] = useState(null);
+
+  // Delete account
+  const [deleteReason, setDeleteReason] = useState("");
+  const [deleteConfirm, setDeleteConfirm] = useState("");
+  const [delLoading, setDelLoading] = useState(false);
+  const [delMsg, setDelMsg] = useState(null);
 
   const headers = token
     ? { "Content-Type": "application/json", Authorization: `Bearer ${token}` }
@@ -68,6 +74,62 @@ function UserSettings({ userId, onClose })
     finally
     {
       setPwLoading(false);
+    }
+  }
+
+  async function handleDeleteAccount(e)
+  {
+    e?.preventDefault?.();
+    setDelMsg(null);
+
+    if (!token) return setDelMsg({ type: "err", text: "Du är inte inloggad." });
+    if (deleteConfirm !== "DELETE")
+      return setDelMsg({ type: "err", text: 'Skriv exakt "DELETE" för att bekräfta.' });
+
+    if (!window.confirm("Är du säker på att du vill radera kontot? Detta går inte att ångra."))
+    {
+      return;
+    }
+
+    try
+    {
+      setDelLoading(true);
+      const res = await fetch("/api/user/account",
+      {
+        method: "DELETE",
+        headers,
+        body: JSON.stringify
+        ({
+          reason: deleteReason || "User requested deletion",
+          confirmDeletion: "DELETE",
+          deleteAllData: true,
+        }),
+      });
+
+      const text = await res.text();
+      let body;
+      try { body = text ? JSON.parse(text) : null; } catch { body = null; }
+
+      if (!res.ok)
+      {
+        const msg =
+          body?.message ||
+          (Array.isArray(body?.errors) ? body.errors.join(", ") : null) ||
+          `Misslyckades (${res.status}).`;
+        throw new Error(msg);
+      }
+
+      setDelMsg({ type: "ok", text: "Ditt konto har raderats." });
+      setToken(null); // Clear Token
+      navigate("/"); // Return to start
+    }
+    catch (err)
+    {
+      setDelMsg({ type: "err", text: err.message || "Ett fel inträffade." });
+    }
+    finally
+    {
+      setDelLoading(false);
     }
   }
 
@@ -135,9 +197,7 @@ function UserSettings({ userId, onClose })
 
           {pwMsg && (
             <p
-              className={`user-settings-message ${
-                pwMsg.type === "ok" ? "ok" : "err"
-              }`}
+              className={`user-settings-message ${pwMsg.type === "ok" ? "ok" : "err"}`}
               role="status"
               aria-live="polite"
             >
@@ -146,7 +206,59 @@ function UserSettings({ userId, onClose })
           )}
         </form>
       </section>
+
+      {/* Delete account */}
+      <section className="user-settings-card danger">
+        <h3>Radera konto</h3>
+        <p className="user-settings-note">
+          Detta raderar permanent ditt konto och all associerad data. Åtgärden kan inte ångras.
+        </p>
+
+        <form onSubmit={handleDeleteAccount} className="user-settings-form">
+          <label className="user-settings-label">
+            Orsak (valfritt)
+            <textarea
+              value={deleteReason}
+              onChange={(e) => setDeleteReason(e.target.value)}
+              rows={3}
+              className="user-settings-textarea"
+              placeholder="Berätta gärna varför du vill lämna (valfritt)"
+            />
+          </label>
+
+          <label className="user-settings-label">
+            Skriv <code>DELETE</code> för att bekräfta
+            <input
+              type="text"
+              value={deleteConfirm}
+              onChange={(e) => setDeleteConfirm(e.target.value)}
+              placeholder="DELETE"
+              className="user-settings-input"
+              required
+            />
+          </label>
+
+          <button
+            type="submit"
+            className="user-settings-submit danger"
+            disabled={delLoading || deleteConfirm !== "DELETE"}
+          >
+            {delLoading ? "Raderar..." : "Radera mitt konto"}
+          </button>
+
+          {delMsg && (
+            <p
+              className={`user-settings-message ${delMsg.type === "ok" ? "ok" : "err"}`}
+              role="status"
+              aria-live="polite"
+            >
+              {delMsg.text}
+            </p>
+          )}
+        </form>
+      </section>
     </div>
   );
 }
+
 export default UserSettings;
