@@ -14,9 +14,10 @@ import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
 import ComparisonProfileView from '../Components/ComparisonProfileView.jsx'
 import { API_guestGetPersonality } from '../Services/API.jsx'
 import SplitPersonalityDial from '../Components/SplitPersonalityDial.jsx'
+import { API_getGuestToken,  API_updatePersonality } from '../Services/API.jsx'
 
 // Given a link "http://zoku.se/test?changeY=70&compassionX=82" We can collect the values and compare.
-const AZURE_API = import.meta.env.VITE_AZURE_API;
+
 
 function NewTestPage () {
   
@@ -92,22 +93,15 @@ function NewTestPage () {
   // Get guest token if not logged in and no session token
   useEffect(() => {
     if (!authToken && !sessionToken) {
-      fetch(`${AZURE_API}/guest/start-session`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
-      })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            setSessionToken(data.data.sessionToken)
-            setProfile(null);
-            setTestValues({
-              changeVsTradition: 50,
-              compassionVsAmbition: 50
-            })
-          }
+      API_getGuestToken(setSessionToken)
+      .catch(err => console.error('Failed to get session token', err))
+      .finally(()=>{
+        setProfile(null);
+        setTestValues({
+          changeVsTradition: 50,
+          compassionVsAmbition: 50
         })
-        .catch(err => console.error('Failed to get session token', err))
+      });
     }
   }, [authToken, sessionToken])
 
@@ -123,31 +117,15 @@ function NewTestPage () {
 
     if (authToken) {
       // Logged-in user -> update profile
-      try {
-        const res = await fetch(`${AZURE_API}/user/personality`, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${authToken}`
-          },
-          body: JSON.stringify({
-            changeVsTradition: change,
-            compassionVsAmbition: compassion
-          })
-        })
-
-        const data = await res.json()
-
-        if (res.ok && data.success) {
+      API_updatePersonality(authToken, change, compassion)
+      .then(success => {
+        if (success) {
           navigate('/profile')
         } else {
-          console.error(
-            data.message || 'Misslyckades med att uppdatera personlighet.'
-          )
+          console.error('Misslyckades med att uppdatera personlighet.')
         }
-      } catch (err) {
-        console.error('Något gick fel vid uppdatering:', err)
-      }
+      })
+      .catch(err => console.error('Något gick fel vid uppdatering:', err))
     } else {        
       // Otherwise, just show the result
         navigate('/result')
