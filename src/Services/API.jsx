@@ -5,7 +5,6 @@ const AZURE_API = import.meta.env.VITE_AZURE_API;
 export const API_shareProfile = async (platform, bearer, entity, entityId) => {
 console.log("Sharing to ", platform, entity, entityId);
     if (!bearer || !platform) return;
-
     try {
         const res = await fetch(`${AZURE_API}/share`, {
             method: "POST",
@@ -144,6 +143,44 @@ export const API_logout = async (token) => {
         return false;
     }
 };
+
+// Test Page - get guest token
+export const API_getGuestToken = async (onSuccess) => {
+  console.log("Fetching guest token");
+ const res = await fetch(`${AZURE_API}/guest/start-session`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' }
+      })
+  if (!res.ok) throw new Error('Failed to get session token')
+  const data = await res.json()
+  if (data.success) {
+      onSuccess(data.data.sessionToken)
+      return data.data.sessionToken
+  }
+
+}
+
+// Update Personality for logged in users
+export const API_updatePersonality = async (change, compassion, bearer) => {
+ const res = await fetch(`${AZURE_API}/user/personality`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${bearer}`
+      },
+      body: JSON.stringify({
+        changeVsTradition: change,
+        compassionVsAmbition: compassion
+      })
+    })
+    if (!res.ok) throw new Error('Failed to update personality')
+    const data = await res.json()
+    if (data.success) {
+      return data.data
+    }
+    throw new Error('Failed to update personality')
+
+}
 
 
 // Below: copied from Backend_Peter
