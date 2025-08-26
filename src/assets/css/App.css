@@ -727,6 +727,10 @@ text-align: left;
     padding: 2.5rem 2rem;
   }
 
+  .personality-result {
+    max-width: 900px;
+    margin: 0 auto;
+  }
   /* Feed controls stretch and align */
   .feed-sort-options {
     width: 100%;
