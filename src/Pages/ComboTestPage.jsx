@@ -118,7 +118,7 @@ function TestPage () {
     if (authToken) {
       // Logged-in user -> update profile
 
-      API_updatePersonality(authToken, change, compassion)
+      API_updatePersonality(change, compassion, authToken)
         .then(success => {
           if (success) {
             navigate('/profile')
