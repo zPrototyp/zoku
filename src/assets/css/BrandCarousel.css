@@ -5,12 +5,13 @@ button.brandcarousel {
   font-size: 1.5em;
   border:0;
   margin-bottom: 0.6em;
+  font-weight: 700;
 }
 button.prev {
   margin-right: 0.1em;
 }
 button.next {
-  margin-left: 0.2em;
+  margin-left: 0.1em;
 }
 button.inactive {
   background-color: var(--background);
