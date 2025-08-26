@@ -19,7 +19,7 @@ main {
 .layout {
   margin: 0 auto;
   max-width: 500px;
-  background-image: url(assets/images/shoji-border.svg);
+  /* background-image: url(assets/images/shoji-border.svg); */
   background-repeat: no-repeat;
   background-size: cover;
   background-position: top center;
