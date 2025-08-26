@@ -70,7 +70,7 @@ export default function NewStartPage() {
       
       <div className="sp-quizButtonBox">
         <button className="active">
-          <NavLink to="/test" className="nav-link">Upptäck min personlighet</NavLink>
+          <NavLink to="/test" className="nav-link">Upptäck din personlighet</NavLink>
           </button>
       </div>
 
