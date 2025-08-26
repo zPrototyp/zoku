@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import PersonalityDial from '../Components/PersonalityDial.jsx'
-import ValueInfoTooltip from '../Components/ValueInfoTooltip.jsx'
 import { useAtom } from 'jotai'
 import { guestTokenAtom } from '../Atoms/GuestTokenAtom.jsx'
 import { authTokenAtom } from '../Atoms/AuthAtom.jsx'
@@ -16,7 +14,7 @@ import { API_guestGetPersonality, API_getGuestToken, API_updatePersonality } fro
 import SplitPersonalityDial from '../Components/SplitPersonalityDial.jsx'
 import OverlayModal from '../Components/OverlayModal.jsx'
 
-// Given a link "http://zoku.se/test?changeY=70&compassionX=82" We can collect the values and compare.
+// Given a link "/test?changeY=70&compassionX=82" We can collect the values and compare.
 
 
 function TestPage () {
