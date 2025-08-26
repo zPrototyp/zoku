@@ -22,10 +22,14 @@ button.inactive {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   gap: 0;
-  max-width: 390px;
+  max-width: 90%;
   margin: 0 auto;
 }
 .brand-list {
-  max-width: 100%;
-  width: 400px;
+  max-width: 900px;
+  width: 100%;
+  text-align: center;
+}
+.expand-feed-brand button {
+  background-color: var(--highlightOp50);
 }

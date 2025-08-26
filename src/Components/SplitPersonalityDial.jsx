@@ -314,7 +314,7 @@ const centerY = toPixel(50) - 25;
       </div>
 
         <div>
-          {showWarning && <p style={{color: "red"}}>{uiState.warningText}</p>}
+          {showWarning && <p style={{color: "var(--highlightContrast)"}}>{uiState.warningText}</p>}
           {!uiState.firstInput &&
             <button className="btn-small active" 
                 id="prevButton" 

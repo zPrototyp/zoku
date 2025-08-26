@@ -732,9 +732,11 @@ text-align: left;
     width: 100%;
     max-width: 520px;
     grid-template-columns: 200px 1fr;
-    margin: 1rem 0;
+    margin: 1rem auto;
   }
-
+.feedpage-brand {
+  height: 250px;
+}
   /* Feed list can breathe more */
   .feed {
     max-width: 900px;
@@ -803,6 +805,12 @@ text-align: left;
   /* Brand card & expanded image tweaks */
   .expanded-feed_img {
     border-radius: 12px;
+    max-height: 650px;
   }
 }
+
+.overlay-modal {
+  width: 600px;
+}
+
 /*************** End Desktop overrides (≥ 1024px) *****************/
