@@ -121,9 +121,9 @@ const copyImage = async (img) => {
                     className="clickable-icon share-icon"
                     onClick={()=>shareInstagramStory()}
                     />
-                {/* <FaTiktok 
+                <FaTiktok 
                     title="Dela på TikTok"
-                    className="clickable-icon share-icon" /> */}
+                    className="clickable-icon share-icon" />
             </div>            
         ) }
         <FaShareAlt
@@ -174,6 +174,9 @@ const copyImage = async (img) => {
                         shareInstagramStory();
                     }}
                 />
+                <FaTiktok 
+                    title="Dela på TikTok"
+                    className="clickable-icon share-icon" />
                 </div>
                 </div>
             );
