@@ -108,6 +108,7 @@ function ProfilePage() {
         {!showComparison && hasFriend && (<button style={{fontSize:"1.2em"}} onClick={()=>setShowComparison(p=> !p)}>Visa jämförelse med {valueProfiles[friendProfile?.primaryPersonality.name].title}</button>)} */}
         <h2>Din Personlighet</h2>
 
+        <div className="personality-result">
         {profile?.primaryPersonality?.name &&
           valueProfiles[profile.primaryPersonality.name] && (
             <PersonalityCard
@@ -134,7 +135,7 @@ function ProfilePage() {
                 profile={valueProfiles[profile.thirdPersonality.name]}
               />
             )}
-
+          </div>
           <div className="secondary-icons">
             <FaPen
               className="clickable-icon"
