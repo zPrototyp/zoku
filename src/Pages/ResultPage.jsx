@@ -101,7 +101,7 @@ function ResultPage () {
         </div>
       )}
 
-
+      <div className="personality-result">
       {/* Primary Personality Card */}
       <PersonalityCard
         personality={primaryPersonality}
@@ -112,7 +112,8 @@ function ResultPage () {
       />
 
       {/* Secondary + Third Personality Cards */}
-{!uiStatus.showBrandList && <div className='secondary-container'>
+      {!uiStatus.showBrandList && 
+      (<div className='secondary-container'>
         <SecondaryPersonalityCard
           personality={secondaryPersonality}
           profile={valueProfiles[secondaryPersonality?.name]}
@@ -122,7 +123,8 @@ function ResultPage () {
           profile={valueProfiles[thirdPersonality?.name]}
         />
       </div>
-}
+      )}
+      </div>
       <button
         onClick={() => setUiStatus({ ...uiStatus, showBrandList: !uiStatus.showBrandList })}
         className={uiStatus.showBrandList ? "active btn-small": "active"}
