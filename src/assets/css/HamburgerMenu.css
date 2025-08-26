@@ -1,13 +1,14 @@
+
+
 /* Container to hold everything in place */
 .hamburger-container {
   position: relative;
 }
-
 /* Circular Menu Button */
 .menu-button {
-  position: fixed;
-  top: 10px;
-  right: 30px;
+  position: relative;  /* let flexbox place it */
+  /* top: 10px; */
+  /* right: 30px; */
   width: 50px;
   height: 42px;
   background-color: var(--highlight);
@@ -19,6 +20,10 @@
   cursor: pointer;
   z-index: 1001;
   transition: background-color 0.3s;
+  
+  top: auto;
+  right: auto;
+  margin-left: auto;   /* push it to the right */
 }
 
 .menu-button:hover {
@@ -88,5 +93,13 @@
 
 .nav-links li a:hover {
   color: var(--dark);
+}
+
+header {
+  display: flex;
+  justify-content: space-between; /* logo on the left, hamburger on the right */
+  align-items: center;            /* vertically centered */
+  padding: 0 20px;
+  height: 60px; /* optional: consistent header height */
 }
 

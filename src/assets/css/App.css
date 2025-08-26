@@ -705,6 +705,8 @@ text-align: left;
   }
 .small-logo{
   margin-top: 10px;
+  height: 50px;
+  
 }
   /* Buttons: desktop scale */
   button {
