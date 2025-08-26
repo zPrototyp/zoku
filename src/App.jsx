@@ -28,21 +28,25 @@ function App() {
     
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/test" element={<TestPage />} />
-          <Route path="/" element={<StartPage />} />
-          <Route path="/feed" element={<FeedPage />} />
-          <Route path="/aboutZoku" element={<AboutZoku />} />
-          <Route path="/tribes" element={<Tribes />} />
-          <Route path="/aboutUs" element={<AboutUs />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/result" element={<ResultPage/>} />
-          <Route path="/register" element={<Register/>} />
-          <Route path="/profile" element={<ProfilePage/>} />
-          <Route path="/clear" element={<ClearAllAtoms />} />
-
           <Route path="/start" element={<NewStartPage />} />
           <Route path="/newtest" element={<NewTestPage />} />
 
+          <Route path="/" element={<NewStartPage />} />
+          <Route path="/test" element={<TestPage />} />
+          <Route path="/result" element={<ResultPage/>} />
+
+          <Route path="/profile" element={<ProfilePage/>} />
+          <Route path="/feed" element={<FeedPage />} />
+
+          <Route path="/aboutZoku" element={<AboutZoku />} />
+          <Route path="/tribes" element={<Tribes />} />
+          <Route path="/aboutUs" element={<AboutUs />} />
+
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register/>} />
+
+
+          <Route path="/clear" element={<ClearAllAtoms />} />
 
         </Route>
       </Routes>

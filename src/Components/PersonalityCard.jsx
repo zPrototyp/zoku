@@ -33,7 +33,7 @@ function PersonalityCard({ personality, profile, fullProfile, highlight, testVal
                   className="clickable-icon" 
                   title="Gör om testet" 
                   size="30px"
-                  onClick={() => navigate("/newtest")}/>
+                  onClick={() => navigate("/test")}/>
 
 
       </div>

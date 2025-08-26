@@ -71,7 +71,7 @@ export default function NewStartPage() {
       
       <div className="sp-quizButtonBox">
         <button className="active">
-          <NavLink to="/newtest" className="nav-link">Upptäck min personlighet</NavLink>
+          <NavLink to="/test" className="nav-link">Upptäck min personlighet</NavLink>
           </button>
       </div>
 
@@ -100,7 +100,7 @@ export default function NewStartPage() {
         <p>Genom att svara på några enkla frågor upptäcker du din värderingspersonlighet och matchar med människor och varumärken som delar dina värderingar.
         </p>
           <button className="active">
-          <NavLink to="/newtest" className="nav-link">Upptäck min personlighet</NavLink>
+          <NavLink to="/test" className="nav-link">Upptäck min personlighet</NavLink>
           </button>
 
       </OverlayModal>
