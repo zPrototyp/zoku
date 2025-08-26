@@ -146,7 +146,6 @@ export const API_logout = async (token) => {
 
 // Test Page - get guest token
 export const API_getGuestToken = async (onSuccess) => {
-  console.log("Fetching guest token");
  const res = await fetch(`${AZURE_API}/guest/start-session`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' }

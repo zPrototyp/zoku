@@ -22,18 +22,19 @@ function TestPage () {
   
   const [uiState, setUiState] = useState({
       firstInput: true,
-      secondImput: false,
+      secondInput: false,
       resultMap: false,
       showResultButton: false,
       nextButtonTxt:"Nästa steg",
       nextButtonState: false,
+      warningText:"",
   });
   
   const StepCounter = () => {
     if (uiState.firstInput) {
       return "1 / 3";
     }
-    else if (uiState.secondImput) {
+    else if (uiState.secondInput) {
       return "2 / 3";
     }
     else if (uiState.resultMap) {

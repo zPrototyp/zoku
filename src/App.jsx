@@ -1,7 +1,6 @@
 
 import React from "react";
 import { HashRouter as Router, Routes, Route, Link } from "react-router-dom";
-import TestPage from "./Pages/TestPage";
 import StartPage from "./Pages/StartPage";
 import Layout from "./Components/Layout";
 import AboutZoku from "./Pages/AboutZoku";
@@ -14,6 +13,10 @@ import ResultPage from "./Pages/ResultPage";
 import ProfilePage from "./Pages/ProfilePage";
 import ClearAllAtoms from "./Pages/ClearAllAtoms";
 import './assets/css/App.css'; 
+
+// import TestPage from "./Pages/TestPage";
+import TestPage from "./Pages/ComboTestPage";
+
 import NewStartPage from "./Pages/NewStartPage";
 import NewTestPage from "./Pages/NewTestPage";
 
