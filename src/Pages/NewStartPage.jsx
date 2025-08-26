@@ -98,12 +98,12 @@ export default function NewStartPage() {
 
         <p>Genom att svara på några enkla frågor upptäcker du din värderingspersonlighet och matchar med människor och varumärken som delar dina värderingar.
         </p>
-        <button>
-          Läs Zokus manifest
+        <button className="active btn-small">
+          <NavLink to="/aboutZoku">Läs Zokus manifest</NavLink>
         </button>
-          <button className="active">
-          <NavLink to="/test" className="nav-link">Upptäck min personlighet</NavLink>
-          </button>
+        <button className="active">
+          <NavLink to="/test" className="nav-link">Upptäck din personlighet</NavLink>
+        </button>
 
       </OverlayModal>
    
