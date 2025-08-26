@@ -127,7 +127,7 @@ function ResultPage () {
         onClick={() => setUiStatus({ ...uiStatus, showBrandList: !uiStatus.showBrandList })}
         className={uiStatus.showBrandList ? "active btn-small": "active"}
       >
-        {uiStatus.showBrandList ? "Dölj varumärken": "Utforska mina matchningar"}
+        {uiStatus.showBrandList ? "Dölj varumärken": "Vilka varumärken är jag?"}
       </button>
       {/* Brand list */}
       {uiStatus.showBrandList && feedList && feedList.length > 0 && (
@@ -140,7 +140,7 @@ function ResultPage () {
 
       <button
         onClick={() => navigate('/register', { state: result })}
-        className='active'
+        className='active btn-small'
       >
         Spara och fortsätt
       </button>
