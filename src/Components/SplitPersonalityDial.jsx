@@ -225,18 +225,19 @@ const centerX = toPixel(50) - 25;
 const centerY = toPixel(50) - 25;
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+    <>
+    {/* <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}> */}
 
       {/* Sliders */}
-      <div style={{ marginBottom: "20px", width: size }}>
+      <div className="test-quiz" style={{width: size }}>
         {/* Y-axis Slider → Förändring / Tradition */}
           <>
           <h2>Hur ser du på förändring?</h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.6em" }}>
-            <span>Jag tror på nya sätt</span>
-            <span>Jag värdesätter det beprövade</span>
-          </div>
+          <div className="test-slider-card">
+            <div className="test-slider-captions">
+              <span>Jag tror på nya sätt</span>
+              <span>Jag värdesätter det beprövade</span>
+            </div>
             <input
               type="range"
               min="0"
@@ -244,15 +245,7 @@ const centerY = toPixel(50) - 25;
               step="1"
               value={value.y}
               onChange={(e) => handleYUpdate(e)}
-              style={{
-                width: "100%",
-                WebkitAppearance: "none",
-                appearance: "none",
-                height: "20px",
-                borderRadius: "4px",
-                background: "linear-gradient(to right, var(--highlightContrastLt), var(--highlight))", // higlightcontrastLt->highlight
-                outline: "none",
-              }}
+              className="test-input"
             />
           </div>
           </>
@@ -272,9 +265,9 @@ const centerY = toPixel(50) - 25;
       {(uiState.secondInput|| uiState.resultMap) && (
         <>
         <h2>Vad driver dig?</h2>
-
-        <div style={{ marginTop: "20px", display: "flex", flexDirection: "column", gap: "8px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.6em" }}>
+        
+        <div className="test-slider-card">
+          <div className="test-slider-captions">
             <span>Jag drivs av att hjälpa</span>
             <span>Jag drivs av att nå mål</span>
           </div>
@@ -285,15 +278,7 @@ const centerY = toPixel(50) - 25;
             step="1"
             value={value.x}
             onChange={(e) => handleXUpdate(e)}
-             style={{
-                width: "100%",
-                WebkitAppearance: "none",
-                appearance: "none",
-                height: "20px",
-                borderRadius: "4px",
-                background: "linear-gradient(to right, var(--highlightContrastLt), var(--highlight))", // higlightcontrastLt->highlight
-                outline: "none",
-              }}
+           className="test-input"
           />
         </div>
         </>
@@ -312,30 +297,29 @@ const centerY = toPixel(50) - 25;
       )}
 
       </div>
-
-        <div>
-          {showWarning && <p style={{color: "var(--highlightContrast)"}}>{uiState.warningText}</p>}
-          {!uiState.firstInput &&
-            <button className="btn-small active" 
-                id="prevButton" 
-                onClick={()=>handleBack()}>Föregående steg
-            </button>}
-          {!uiState.resultMap && 
-            <button className={uiState.nextButtonState ? "active btn-small": "btn-small"} 
-              id="nextButton" 
-              style={!uiState.nextButtonState ?{
-                cursor: "not-allowed",
-                pointerEvents: "none"
-              }:{}}
-              onClick={()=>handleNext()}>{uiState.nextButtonTxt}</button>}
-        </div>
+      <div className="test-next-buttons">
+        {showWarning && <p style={{color: "var(--highlightContrast)"}}>{uiState.warningText}</p>}
+        {!uiState.firstInput &&
+          <button className="btn-small active" 
+              id="prevButton" 
+              onClick={()=>handleBack()}>Föregående steg
+          </button>}
+        {!uiState.resultMap && 
+          <button className={uiState.nextButtonState ? "active btn-small": "btn-small"} 
+            id="nextButton" 
+            style={!uiState.nextButtonState ?{
+              cursor: "not-allowed",
+              pointerEvents: "none"
+            }:{}}
+            onClick={()=>handleNext()}>{uiState.nextButtonTxt}</button>}
+      </div>
       {/* Dial */}
       {uiState.resultMap && (
       <svg
         ref={svgRef}
         width={size}
         height={size}
-        style={{ border: "1px solid #ccc", cursor: "crosshair", touchAction: "none" }}
+        className="test-map"
         onMouseDown={handleMouseDown}
         onTouchStart={(e) => {
           e.preventDefault();
@@ -370,7 +354,8 @@ const centerY = toPixel(50) - 25;
       
       </svg>
         )}
-    </div>
+    {/* </div> */}
+    </>
   );
 }
 

@@ -141,25 +141,8 @@ function NewTestPage () {
       {!isLoadingComparison && comparisonProfile && (
         <ComparisonProfileView profile={comparisonProfile} />
       )}
-      <div
-        style={{
-          maxWidth: '800px',
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center'
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '2em',
-            width: '100%',
-            marginBottom: '1.5rem'
-          }}
-        >
+      <div className="test-container">
+        <div className='test-header'>
           <h1>
             {authToken && profile
               ? `Redigera personlighetstyp `

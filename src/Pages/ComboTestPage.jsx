@@ -14,6 +14,7 @@ import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
 import ComparisonProfileView from '../Components/ComparisonProfileView.jsx'
 import { API_guestGetPersonality, API_getGuestToken, API_updatePersonality } from '../Services/API.jsx'
 import SplitPersonalityDial from '../Components/SplitPersonalityDial.jsx'
+import OverlayModal from '../Components/OverlayModal.jsx'
 
 // Given a link "http://zoku.se/test?changeY=70&compassionX=82" We can collect the values and compare.
 
@@ -28,8 +29,10 @@ function TestPage () {
       nextButtonTxt:"Nästa steg",
       nextButtonState: false,
       warningText:"",
+      tooltip: false,
   });
-  
+  const closeTooltip = () => setUiState({...uiState, tooltip:false})
+
   const StepCounter = () => {
     if (uiState.firstInput) {
       return "1 / 3";
@@ -142,49 +145,17 @@ function TestPage () {
       {!isLoadingComparison && comparisonProfile && (
         <ComparisonProfileView profile={comparisonProfile} />
       )}
-      <div
-        style={{
-          maxWidth: '800px',
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center'
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '2em',
-            width: '100%',
-            marginBottom: '1.5rem'
-          }}
-        >
+      <div className="test-container">
+        <div className='test-header'>
           <h1>
             {authToken && profile
               ? `Redigera personlighetstyp `
               : profile ? `Uppdatera personlighetstyp `:`Upptäck din personlighetstyp `}
               ({StepCounter()})
           </h1>
-          <ValueInfoTooltip>
-            <p>
-              <strong>Gemenskap:</strong> Fokus på samhörighet, relationer och
-              empati.
-            </p>
-            <p>
-              <strong>Ambition:</strong> Drivkraft, prestation och personlig
-              framgång.
-            </p>
-            <p>
-              <strong>Förändring:</strong> Öppenhet för nya idéer, äventyr och
-              frihet.
-            </p>
-            <p>
-              <strong>Tradition:</strong> Värdesätter stabilitet, kultur och
-              långsiktighet.
-            </p>
-          </ValueInfoTooltip>
+          <div className="tooltip-icon"
+            onClick={()=> setUiState({...uiState, tooltip:true})}
+          > i </div>
         </div>
 
         <SplitPersonalityDial value={position} onChange={setPosition} uiState={uiState} setUiState={setUiState} />
@@ -195,7 +166,21 @@ function TestPage () {
           {authToken ? 'Spara ändringar' : 'Visa personlighetstyp'}
         </button>
           )}      
-    </div>
+      </div>
+      <OverlayModal isOpen={uiState.tooltip} onClose={closeTooltip}>
+        <p>
+          <strong>Gemenskap:</strong> Fokus på samhörighet, relationer och empati.
+        </p>
+        <p>
+          <strong>Ambition:</strong> Drivkraft, prestation och personlig framgång.
+        </p>
+        <p>
+          <strong>Förändring:</strong> Öppenhet för nya idéer, äventyr och frihet.
+        </p>
+        <p>
+          <strong>Tradition:</strong> Värdesätter stabilitet, kultur och långsiktighet.
+        </p>
+      </OverlayModal>
     </div>
   )
 }

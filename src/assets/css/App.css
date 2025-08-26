@@ -272,6 +272,61 @@ button a {
 
 /*************** NewTestPage.jsx stylings *********************/
 
+.test-container {
+  max-width: 900px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+}
+.test-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+  width: 100%;
+  margin-bottom: 1.5rem; 
+}
+
+.tooltip-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--darkContrast);
+  color: white;
+  text-align: center;
+  line-height: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+}
+.test-input {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 20px;
+  border-radius: 4px;
+  background: linear-gradient(to right, var(--highlightContrastLt), var(--highlight));
+  outline: none;
+}
+.text-quiz{
+   margin-bottom: 20px;
+}
+.test-map {
+  cursor: crosshair;
+  touch-action: none;
+}
+.test-slider-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.test-slider-captions {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.6em;
+}
+
 @keyframes popIn {
   to {
     transform: translate(0, 0) scale(1);
@@ -304,9 +359,7 @@ input[type="range"]::-moz-range-thumb {
   position: relative;
   text-align: left;
 }
-.inputRight {
-  /* text-align: right; */
-}
+
 .inputLeft::before, .inputRight::before {
   content: "";
   position: absolute;
@@ -324,6 +377,7 @@ background-color: var(--highlightContrast);
 /* right: -2em; */
 background-color: var(--highlight);
 }
+
 /*************** END NewTestPage stylings *********************/
 
 /*************** AboutUs.jsx stylings *********************/
