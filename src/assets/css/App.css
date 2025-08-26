@@ -807,10 +807,50 @@ text-align: left;
     border-radius: 12px;
     max-height: 650px;
   }
-}
+  
+  .overlay-modal {
+    width: 600px;
+  }
+   /* Hamburger menu */
 
-.overlay-modal {
-  width: 600px;
-}
+    /* Hide the hamburger button */
+  .menu-button {
+    display: none;
+  }
 
+  /* Menu panel turns into a static row */
+  .menu-panel {
+    position: static;        /* no longer fixed */
+    width: auto;
+    height: auto;
+    background: transparent; /* remove background */
+    box-shadow: none;
+    padding: 0;
+    transition: none;
+    
+    border-bottom: 1px dotted var(--darkContrast);
+  }
+
+  /* Row of links */
+  .nav-links {
+    flex-direction: row; /* horizontal instead of column */
+    justify-content: flex-end;
+    gap: 30px;          /* space between links */
+  }
+
+  .nav-links li a {
+    font-size: 1em;
+    color: var(--highlightContrast);
+  }
+
+  .nav-links li a:hover {
+    color: var(--darkContrast);
+    font-weight: 400;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+  }
+  .nav-separator{
+  display: none; 
+}
+  
+}
 /*************** End Desktop overrides (≥ 1024px) *****************/

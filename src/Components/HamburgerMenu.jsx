@@ -45,7 +45,7 @@ const HamburgerMenu = () => {
         <li><NavLink to="/aboutUs" onClick={() => setIsOpen(false)}>Om oss</NavLink></li>
         {!token && <li><NavLink to="/login" onClick={() => setIsOpen(false)}>Logga in</NavLink></li>}
         {token && <>
-          <p>-</p>
+          <p className="nav-separator">-</p>
             <li><NavLink to="/profile" onClick={() => setIsOpen(false)}>Min zoku</NavLink></li>
             <li><NavLink onClick={() => handleLogout()}>Log out</NavLink></li>
           </>}
