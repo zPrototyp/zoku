@@ -384,9 +384,15 @@ background-color: var(--highlight);
   background-image: url('../images/Vardgivaren.svg');
 }
 
-
-
 /*************** END AboutUs.jsx stylings *********************/
+/*************** AboutZoku.jsx stylings *********************/
+
+ul.no-dots {
+  list-style-type: none; /* Remove default list styling */
+  padding: 0;            /* Remove default padding */
+  margin: 0;             /* Remove default margin */
+}
+/*************** END AboutZoku.jsx stylings *********************/
 
 /*************** Tribes.jsx stylings *********************/
 
