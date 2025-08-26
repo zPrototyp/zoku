@@ -161,7 +161,6 @@ function SplitPersonalityDial({ value, onChange, uiState, setUiState })
       } else {
         setShowWarning(false);
       }
-      console.log('second input');
       const closest = getClosestPersonality();
       setUiState({ ...uiState, secondInput: false, resultMap: true, showResultButton: true});
            
