@@ -191,7 +191,7 @@ function SplitPersonalityDial({ value, onChange, uiState, setUiState })
   const handleYUpdate = (e) =>
   {
     const newY = parseFloat(e.target.value);
-  
+    checkValue(newY);
     onChange({ ...value, y: newY });
     uiState.nextButtonState=true;
     const closestPersonality = getClosestPersonality();
@@ -200,7 +200,7 @@ function SplitPersonalityDial({ value, onChange, uiState, setUiState })
   const handleXUpdate = (e) =>
   {
     const newX= parseFloat(e.target.value);
-  
+    checkValue(newX);
     onChange({ ...value, x:  newX});
     uiState.nextButtonState=true;
     const closestPersonality = getClosestPersonality();
