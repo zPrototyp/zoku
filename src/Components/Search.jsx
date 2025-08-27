@@ -123,18 +123,18 @@ function Search({
     [foundCelebs]
   );
 
-  const normalizedUsers = useMemo(
-    () =>
-      (foundUsers || []).map((u) => ({
-        id: u.id ?? u.userId,
-        displayName: u.displayName ?? u.name,
-        username: u.username,
-        avatarUrl: u.avatarUrl ?? u.photoUrl,
-        bio: u.bio ?? u.tagline,
-        isFollowing: u.isFollowing,
-      })),
-    [foundUsers]
-  );
+  const normalizedUsers = useMemo(() => {
+  if (!Array.isArray(foundUsers)) return [];
+
+  return foundUsers.map((u) => ({
+    id: u.id ?? u.userId ?? "",
+    displayName: u.displayName ?? u.name ?? "",
+    username: u.username ?? "",
+    avatarUrl: u.avatarUrl ?? u.photoUrl ?? "",
+    bio: u.bio ?? u.tagline ?? "",
+    isFollowing: !!u.isFollowing,
+  }));
+}, [foundUsers]);
 
   return (
     <div>
