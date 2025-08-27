@@ -112,21 +112,14 @@ export default function FeedPage() {
   return (
      <div className="page-content">
             <div className="feed-page-user-details">
-                <h1><img className="mask80" src={valueProfiles[valueProfile.primaryPersonality.name].imgSrc} alt={valueProfiles[valueProfile.primaryPersonality.name]?.title} />
-                    {valueProfiles[valueProfile.primaryPersonality.name]?.title}
-                     {valueProfiles[valueProfile.primaryPersonality.name]?.kanji}
+                <h1><img className="mask80" src={ZokuMasks[userProfile?.primaryPersonality.name]} alt={valueProfiles[userProfile?.primaryPersonality.name]?.title} />
+                    {valueProfiles[userProfile?.primaryPersonality.name]?.title}
+                     {valueProfiles[userProfile?.primaryPersonality.name]?.kanji}
                 </h1>
-                <h3>{valueProfiles[valueProfile.primaryPersonality.name]?.consumerHeader}</h3>
-                <p>{valueProfiles[valueProfile.primaryPersonality.name]?.consumerText}</p>
+                <h3>{valueProfiles[userProfile?.primaryPersonality.name]?.consumerHeader}</h3>
+                <p>{valueProfiles[userProfile?.primaryPersonality.name]?.consumerText}</p>
             </div>
            
-
-        {randomCelebrity && (
-            <CelebrityCard
-            celeb={randomCelebrity}
-            user={valueProfile}
-            />
-        )}
 
       {/* Search */}
       <Search

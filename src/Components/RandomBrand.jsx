@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
-import { API_getBrands, API_guestGetBrandMatches } from "../Services/API";
+import { API_userSafeFetchJson, API_guestGetBrandMatches } from "../Services/API";
 import BrandCards from "./BrandCards";
 import { IoReload } from "react-icons/io5";
 import { MdClose } from "react-icons/md";
 
-export const RandomBrand = ({bearer, testValues, category, currentBrandList})=> {
+export const RandomBrand = ({bearer, testValues, user, category, currentBrandList})=> {
 const [brands, setBrands] = useState([]);
 const [filtered, setFiltered] = useState([])
 const [showRandom, setShowRandom] = useState(false);
@@ -20,10 +20,18 @@ function FindRandomBrand(array) {
     }
     
  useEffect(() => {
-    // fetch from backend
-    API_guestGetBrandMatches(bearer, testValues, setBrands, category, variations)
+    // fetch from backend for guests
+    if (user == null) 
+        API_guestGetBrandMatches(bearer, testValues, setBrands, category, variations)
+    else {
+        // Fetch  from backend for logged in user
+        API_userSafeFetchJson(bearer, 
+            `user/brands/matches?ChangeVsTradition=${testValues.changeVsTradition}&CompassionVsAmbition=${testValues.compassionVsAmbition}&Category=${category}&Variations=${variations}`,
+             setBrands)
+    }
+
     // API_getBrands(category, 10, setBrands);
-  }, [category]);
+  }, [category, user]);
 
   useEffect(() => {
     if (brands && brands.length > 0 && currentBrandList) {

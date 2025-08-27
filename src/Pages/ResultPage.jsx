@@ -235,7 +235,8 @@ function ResultPage () {
           </p>
         )}
 
-        {uiStatus.showBrandList &&  <RandomBrand category="all" 
+        {uiStatus.showBrandList &&  
+        <RandomBrand category="all" 
           bearer={sessionToken} 
           testValues={testValues} 
           currentBrandList={feedList} />
