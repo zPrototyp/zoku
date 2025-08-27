@@ -34,6 +34,9 @@ function ProfilePage() {
   const [token] = useAtom(authTokenAtom);
   const navigate = useNavigate();
   const [showSettings, setShowSettings] = useState(false);
+  const [uiStatus, setUiStatus] = useState({
+      showBrandList: false,
+    })
 
   // const [friendValues] = useAtom(comparisonValueAtom)
   // const [friendProfile] = useAtom(comparisonProfileAtom)
@@ -153,13 +156,20 @@ function ProfilePage() {
           </div>
         </div>
 
-        <BrandWardrobe
+        <button
+          onClick={() => setUiStatus(prev => ({ ...prev, showBrandList: !prev.showBrandList }))}
+          className={uiStatus.showBrandList ? "active btn-small": "active"}
+        >
+          {uiStatus.showBrandList ? "Dölj varumärken": "Utforska mina matchningar"}
+        </button>
+
+        {uiStatus.showBrandList && <BrandWardrobe
           brands={brands}
           showHidden={showHidden}
           hiddenBrands={hiddenBrands}
           setHiddenBrands={setHiddenBrands}
           handleShowHidden={handleShowHidden}
-        />
+        />}
 
         {/* Tribes: Liked celebs + Following users */}
         <TribeCommunity token={token} title="Tribes" />
