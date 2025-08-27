@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import OverlayModal from "./OverlayModal";
 import { useAtomValue } from "jotai";
 import { authTokenAtom } from "../Atoms/AuthAtom";
-import { useLocation } from "react-router";
 import { BrandLikeOverlay } from "./BrandLikeOverlay";
 import { brandCategories } from "../assets/uiData/brand_categories_se";
 import { PrintBrandCard } from "./PrintBrandCard";
@@ -11,17 +10,13 @@ import { ShareOverlay } from "./ShareOverlay";
 import "../assets/css/BrandCarousel.css";
 import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
 
-export default function BrandCards({ brandList }) {
+export default function BrandCards({ brandList, categorize, filter }) {
 
   const token = useAtomValue(authTokenAtom);
   const user = useAtomValue(valueProfileAtom);
   const [activeModal, setActiveModal] = useState(null);
   const closeModal = () => setActiveModal(null);
   const [selectedCategory, setSelectedCategory] = useState("all");
-
-
-  const location =  useLocation();
-  const isFeedPage = location.pathname === '/feed';
 
   // Grouped list to use in the Carousel
   const grouped = brandList?.reduce((acc, brand) => {
@@ -69,7 +64,7 @@ const BrandCarousel = ({ brands, category }) => {
 
   return (
     <>
-    {!isFeedPage && (
+    {categorize && (
       <>
         <div className='feed-sort-options'>
           <label htmlFor="sortSelect">Varumärken: </label>
@@ -103,7 +98,7 @@ const BrandCarousel = ({ brands, category }) => {
         </>)
     }
 
-    {isFeedPage && brandList.map(brand => <PrintBrandCard brand={brand} key={brand.id} setActiveModal={setActiveModal}/>)}
+    {!categorize && brandList.map(brand => <PrintBrandCard brand={brand} key={brand.id} setActiveModal={setActiveModal}/>)}
 
     <OverlayModal isOpen={!!activeModal} onClose={closeModal}>
       {activeModal && (

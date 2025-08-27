@@ -188,8 +188,8 @@ export const API_getBrands = async (category, limit, onSuccess) => {
   if (!res.ok) throw new Error('Failed to fetch brands')
     const data = await res.json();
   if (data.success){
-    onSuccess(data.data);
-    return data.data;
+    onSuccess(data.data.brands);
+    return data.data.brands;
   }
 
 }

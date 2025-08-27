@@ -154,7 +154,7 @@ export default function FeedPage() {
 
           {sortedFeed && (
             <div className="feed">
-              <BrandCards brandList={sortedFeed} />
+              <BrandCards brandList={sortedFeed} categorize={false}/>
             </div>
           )}
         </>

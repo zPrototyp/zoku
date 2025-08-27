@@ -19,6 +19,7 @@ import { CreateComparisonDials } from '../Components/CreateComparisonDials.jsx'
 import { ApiService, API_getCelebrities, API_getPopularCelebrities } from '../Services/API.jsx'
 import CelebrityCard from '../Components/CelebrityCard'
 import { FaPen, FaClock } from 'react-icons/fa' // added icons
+import RandomBrand from '../Components/RandomBrand.jsx'
 
 // Create a local instance since API.jsx exports the class, not a default singleton
 const apiService = new ApiService();
@@ -223,7 +224,7 @@ function ResultPage () {
         {uiStatus.showBrandList && feedList && feedList.length > 0 && (
           <div className='brand-list'>
             <h2>Varumärken som matchar din personlighet</h2>
-            <BrandCards brandList={feedList} />
+            <BrandCards brandList={feedList} categorize={true} />
           </div>
         )}
 
@@ -233,6 +234,12 @@ function ResultPage () {
             Inga varumärken matchade just nu—prova igen senare.
           </p>
         )}
+
+        {uiStatus.showBrandList &&  <RandomBrand category="all" 
+          bearer={sessionToken} 
+          testValues={testValues} 
+          currentBrandList={feedList} />
+        }
 
         <button
           onClick={() => navigate('/register', { state: result })}
