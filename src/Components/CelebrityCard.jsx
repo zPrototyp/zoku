@@ -4,7 +4,6 @@ import SecondaryPersonalityCard from "./SecondaryPersonalityCard";
 import TopCelebrityBrand from "./TopCelebrityBrand";
 import { valueProfiles } from "../assets/uiData/zoku_profiles_se";
 import "../assets/css/CelebrityCard.css";
-import { ZokuMasks } from "../assets/uiData/PersonalityImages";
 import CelebrityLikeOverlay from "./CelebrityLikeOverlay";
 
 function getProfileSafe(type)
@@ -153,7 +152,7 @@ export default function CelebrityCard({ celeb, user, celebBrands = [], onAfterUn
             <div className="primaryBlock">
               <img
                 className="primaryMask"
-                src={ZokuMasks[primary?.type]}
+                src={pProf.imgSrc}
                 alt={pProf.title}
                 loading="lazy"
               />
