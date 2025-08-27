@@ -7,13 +7,14 @@ export default function BrandWardrobe({ brands, showHidden, hiddenBrands, setHid
 {
   return (
     <div className="wardrobe-section">
+      <div className="wardrobe-header">
       <h2>Din garderob</h2>
        <MdOutlinePlaylistRemove 
           className="clickable-icon hidden-brands-toggle"
           title="Visa gömda varumärken"
           onClick={() => handleShowHidden()}
           />
-      
+      </div>
       {showHidden 
       ? <HiddenBrands brandList={hiddenBrands} setHiddenBrands={setHiddenBrands} />
       : <BrandCards brandList={brands}  />

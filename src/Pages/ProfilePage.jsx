@@ -156,13 +156,14 @@ function ProfilePage() {
           </div>
         </div>
 
-        <button
-          onClick={() => setUiStatus(prev => ({ ...prev, showBrandList: !prev.showBrandList }))}
-          className={uiStatus.showBrandList ? "active btn-small": "active"}
-        >
-          {uiStatus.showBrandList ? "Dölj mina matchningar": "Utforska mina matchningar"}
-        </button>
-
+        <div className="btn-show-matches">
+          <button
+            onClick={() => setUiStatus(prev => ({ ...prev, showBrandList: !prev.showBrandList }))}
+            className={uiStatus.showBrandList ? "active btn-small": "active"}
+          >
+            {uiStatus.showBrandList ? "Dölj mina matchningar": "Utforska mina matchningar"}
+          </button>
+        </div>
         {uiStatus.showBrandList && <BrandWardrobe
           brands={brands}
           showHidden={showHidden}
@@ -172,7 +173,7 @@ function ProfilePage() {
         />}
 
         {/* Tribes: Liked celebs + Following users */}
-        <TribeCommunity token={token} title="Tribes" />
+        {uiStatus.showBrandList && <TribeCommunity token={token} title="Tribes" />}
 
         <OverlayModal isOpen={showHistory} onClose={() => setShowHistory(false)}>
           <div className="history-list">
@@ -197,20 +198,23 @@ function ProfilePage() {
           </div>
         </OverlayModal>
 
-        {/* Settings */}
-        <button
-          className="cogwheel-btn"
-          aria-label="Öppna inställningar"
-          title="Inställningar"
-          onClick={() => setShowSettings(true)}
-        >
-          <FaCog size={28} />
-        </button>
+        {/* Settings - tried moving to HamburgerMenu instead */}
+        {/* <div>
+          <button
+            className="cogwheel-btn"
+            aria-label="Öppna inställningar"
+            title="Inställningar"
+            onClick={() => setShowSettings(true)}
+          >
+            <FaCog size={28} />
+          </button>
+        </div>
 
         <OverlayModal isOpen={showSettings} onClose={() => setShowSettings(false)}>
           <UserSettings userId={userId} onClose={() => setShowSettings(false)} />
         </OverlayModal>
-      </div>
+        */}
+      </div> 
     </>
   );
 }
