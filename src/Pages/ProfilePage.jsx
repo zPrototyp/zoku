@@ -64,6 +64,16 @@ function ProfilePage() {
 
   }, [token]);
 
+  // useEffect(() => {
+  //   if (uiStatus.showBrandList){
+  //   try { API_userSafeFetchJson(token, 'user/brands/collection', setBrands) }
+  //   catch (err) {
+  //     setError("Kunde inte hämta varumärken: " + err.message);
+  //     console.error("Fel vid hämtning av varumärken:", err);
+  //   }
+  //   }
+  // },[uiStatus.showBrandList])
+
   // update testValues when we have a profile
   useEffect(() => {
     if (profile) {
