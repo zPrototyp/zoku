@@ -18,7 +18,6 @@ import { API_guestGetBrandMatches, API_guestGetPersonality } from '../Services/A
 import { CreateComparisonDials } from '../Components/CreateComparisonDials.jsx'
 import { ApiService, API_getCelebrities, API_getPopularCelebrities } from '../Services/API.jsx'
 import CelebrityCard from '../Components/CelebrityCard'
-import { FaPen, FaClock } from 'react-icons/fa' // added icons
 import RandomBrand from '../Components/RandomBrand.jsx'
 
 // Create a local instance since API.jsx exports the class, not a default singleton
@@ -42,7 +41,6 @@ function ResultPage () {
   const sessionToken = useAtomValue(guestTokenAtom)
   const [feedList, setFeedList] = useAtom(feedListAtom)
   const [topCelebs, setTopCelebs] = useState([])
-  const [showHistory, setShowHistory] = useState(false) // for FaClock handler
 
   useEffect(() => {
     if (
@@ -174,18 +172,6 @@ function ResultPage () {
               )}
           </div>}
 
-          <div className="secondary-icons">
-            <FaPen
-              className="clickable-icon"
-              title="Redigera personlighet"
-              onClick={() => navigate("/test")}
-            />
-            <FaClock
-              className="clickable-icon"
-              title="Visa historik"
-              onClick={() => setShowHistory(true)}
-            />
-          </div>
         </div>
         <div className="btn-show-matches">   
           <button
