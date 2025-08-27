@@ -132,7 +132,7 @@ export default function CelebrityCard({ celeb, user, celebBrands = [], onAfterUn
 
         {/* Compare button */}
         <button
-          className="btn btnSlim"
+          className="btn btnSlim btn-small"
           onClick={() => setShowDial((v) => !v)}
           disabled={!canShowDial}
           title={canShowDial ? "" : compareDisabledTitle}

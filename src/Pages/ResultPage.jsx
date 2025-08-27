@@ -156,7 +156,7 @@ function ResultPage () {
               />
             )}
 
-          <div className="secondary-container">
+         {!uiStatus.showBrandList && <div className="secondary-container">
             {result?.secondaryPersonality?.name &&
               valueProfiles[result.secondaryPersonality.name] && (
                 <SecondaryPersonalityCard
@@ -172,7 +172,7 @@ function ResultPage () {
                   profile={valueProfiles[result.thirdPersonality.name]}
                 />
               )}
-          </div>
+          </div>}
 
           <div className="secondary-icons">
             <FaPen
