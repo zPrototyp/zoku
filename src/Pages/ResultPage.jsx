@@ -152,7 +152,6 @@ function ResultPage () {
       </div>}
 
       {/* Top 3 celebrity matches (from public controller) */}
-      {/* FIX: show celeb matches only when matches view is toggled */}
       {uiStatus.showBrandList && topCelebs.length > 0 && (
         <div style={{ width: '100%', maxWidth: 1000 }}>
           <h2 style={{ marginTop: '1.5rem' }}>Topp 3 kändismatchningar</h2>
