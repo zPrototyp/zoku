@@ -34,6 +34,7 @@ button.inactive {
   background-color: var(--highlightOp50);
 }
 
+/* Testing showing all brands, not just carousel all code below */
 .brand-carousel {
   display: grid;
   grid-template-columns: 1fr;

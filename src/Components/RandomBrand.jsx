@@ -57,7 +57,7 @@ function FindRandomBrand(array) {
   return (
     <>
     {randomBrand && (
-        <div className="random-brand">
+        <div className={showRandom ? 'random-brand active':"random-brand"}>
             <div className="random-brand-header">
             <h3>Slumpmässigt varumärke?
             </h3>
