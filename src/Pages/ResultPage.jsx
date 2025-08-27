@@ -27,8 +27,6 @@ function ResultPage () {
   const testValues = useAtomValue(testValuesAtom)
   const location = useLocation()
   const navigate = useNavigate()
-  // const [loading, setLoading] = useState(true)
-  // const [error, setError] = useState(null)
   const [result, setResult] = useAtom(valueProfileAtom)
   const friendValues = useAtomValue(comparisonValueAtom)
   const friendProfile = useAtomValue(comparisonProfileAtom)
@@ -36,6 +34,7 @@ function ResultPage () {
     isLoading: true,
     error: null,
     showBrandList: false,
+    showComparison: false,
   })
 
   // Added sessionToken for sending to backend
@@ -130,23 +129,18 @@ function ResultPage () {
       </div>
     )
 
-  const {
-    primaryPersonality = null,
-    secondaryPersonality = null,
-    thirdPersonality = null
-  } = result || {}
     
   return (
     <>
       <div className="page-content" style={{ position: "relative" }}>
-        {/* {showComparison && hasFriend && dialA && dialB && (
+        {uiStatus.showComparison && hasFriend && dialA && dialB && (
           <div className="comparison-inline" style={{ marginBottom: '1.25rem' }}>
             <h2 style={{ marginBottom: '.5rem' }}>Jämförelse {calculateMatchPercentage(friendValues, testValues)}% match</h2>
             <CelebrityComparisonDial a={dialA} b={dialB} aLabel="Du" bLabel="Vän" size={260} />
-            <button style={{fontSize:"1.2em"}} onClick={()=>setShowComparison(p=> !p)}>Dölj jämförelse</button>
+            <button style={{fontSize:"1.2em"}} onClick={() => setUiStatus(prev => ({ ...prev, showComparison: !prev.showComparison }))}>Dölj jämförelse</button>
           </div>
           )}
-        {!showComparison && hasFriend && (<button style={{fontSize:"1.2em"}} onClick={()=>setShowComparison(p=> !p)}>Visa jämförelse med {valueProfiles[friendProfile?.primaryPersonality.name].title}</button>)} */}
+        {!uiStatus.showComparison && hasFriend && (<button style={{fontSize:"1.2em"}} onClick={()=>setShowComparison(p=> !p)}>Visa jämförelse med {valueProfiles[friendProfile?.primaryPersonality.name].title}</button>)}
         <h2>Din Personlighet</h2>
 
         <div className="personality-result">
@@ -193,6 +187,13 @@ function ResultPage () {
           </div>
         </div>
 
+        <button
+          onClick={() => setUiStatus(prev => ({ ...prev, showBrandList: !prev.showBrandList }))}
+          className={uiStatus.showBrandList ? "active btn-small": "active"}
+        >
+          {uiStatus.showBrandList ? "Dölj mina matchningar": "Utforska mina matchningar"}
+        </button>
+
         {/* Top 3 celebrity matches (from public controller) */}
         {uiStatus.showBrandList && topCelebs.length > 0 && (
           <div style={{ width: '100%', maxWidth: '1000px' }}>
@@ -220,13 +221,6 @@ function ResultPage () {
             Inga kändismatchningar hittades för din profil ännu.
           </p>
         )}
-
-        <button
-          onClick={() => setUiStatus(prev => ({ ...prev, showBrandList: !prev.showBrandList }))}
-          className={uiStatus.showBrandList ? "active btn-small": "active"}
-        >
-          {uiStatus.showBrandList ? "Dölj varumärken": "Utforska mina matchningar"}
-        </button>
 
         {/* Brand list */}
         {uiStatus.showBrandList && feedList && feedList.length > 0 && (

@@ -753,6 +753,7 @@ text-align: left;
     padding: 0 32px;
     text-align: left; /* more natural on desktop */
   }
+  
   .page-content > h1 {
     padding-top: 64px;
     margin-bottom: 28px;

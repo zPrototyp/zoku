@@ -160,7 +160,7 @@ function ProfilePage() {
           onClick={() => setUiStatus(prev => ({ ...prev, showBrandList: !prev.showBrandList }))}
           className={uiStatus.showBrandList ? "active btn-small": "active"}
         >
-          {uiStatus.showBrandList ? "Dölj varumärken": "Utforska mina matchningar"}
+          {uiStatus.showBrandList ? "Dölj mina matchningar": "Utforska mina matchningar"}
         </button>
 
         {uiStatus.showBrandList && <BrandWardrobe
