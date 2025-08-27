@@ -14,6 +14,7 @@ import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
 import { testValuesAtom } from "../Atoms/TestValuesAtom";
 import UserSettings from "../Components/UserSettings";
 import { API_userSafeFetchJson } from "../Services/API";
+import TribeCommunity from "../Components/TribeCommunity";
 
 // import { comparisonValueAtom } from '../Atoms/ComparisonValueAtom.jsx'
 // import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
@@ -25,20 +26,20 @@ function ProfilePage() {
   const [profile, setProfile] = useAtom(valueProfileAtom);
   const [testValues, setTestValues] = useAtom(testValuesAtom);
   const [error, setError] = useState("");
-  const [brands, setBrands] = useAtom(feedListAtom)
-  const [history, setHistory] = useState([])
-  const [showHistory, setShowHistory] = useState(false)
-  const [hiddenBrands, setHiddenBrands] = useState([])
+  const [brands, setBrands] = useAtom(feedListAtom);
+  const [history, setHistory] = useState([]);
+  const [showHistory, setShowHistory] = useState(false);
+  const [hiddenBrands, setHiddenBrands] = useState([]);
   const [showHidden, setShowHidden] = useState(false);
   const [token] = useAtom(authTokenAtom);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [showSettings, setShowSettings] = useState(false);
 
   // const [friendValues] = useAtom(comparisonValueAtom)
   // const [friendProfile] = useAtom(comparisonProfileAtom)
   // const [showComparison, setShowComparison] = useState(false);
 
-// On load fetch all the profile information
+  // On load fetch all the profile information
   useEffect(() => {
     setProfile(null);
     if (!token) return;
@@ -68,9 +69,9 @@ function ProfilePage() {
         changeVsTradition: profile.changeVsTradition,
         compassionVsAmbition: profile.compassionVsAmbition,
       });
-    }}, [profile]);
+    }
+  }, [profile]);
 
-  
   async function handleShowHidden() {
     if (showHidden) {
       setShowHidden(false);
@@ -83,18 +84,18 @@ function ProfilePage() {
     }
     setShowHidden(true);
   }
+
   // const { dialA, dialB, hasFriend } = useMemo(() => {
   //   if (!profile) return { dialA: null, dialB: null, hasFriend: false }
   //   return CreateComparisonDials({ friendValues, friendProfile, profile })
   // }, [friendValues, friendProfile, profile])
 
   if (error) return <div className="page-content"><p style={{ color: "red" }}>{error}</p></div>;
-  if (!profile) return <div className="page-content"><p>Laddar profil...</p></div>; 
+  if (!profile) return <div className="page-content"><p>Laddar profil...</p></div>;
 
-  
   // Profile does not contain a userID to set.
   const userId = profile?.userId || profile?.id || null;
-  
+
   return (
     <>
       <div className="page-content" style={{ position: "relative" }}>
@@ -109,34 +110,35 @@ function ProfilePage() {
         <h2>Din Personlighet</h2>
 
         <div className="personality-result">
-        {profile?.primaryPersonality?.name &&
-          valueProfiles[profile.primaryPersonality.name] && (
-            <PersonalityCard
-              personality={profile.primaryPersonality}
-              profile={valueProfiles[profile.primaryPersonality.name]}
-              fullProfile={profile}
-              testValues={testValues}
-              highlight
-            />
-          )}
-
-        <div className="secondary-container">
-          {profile?.secondaryPersonality?.name &&
-            valueProfiles[profile.secondaryPersonality.name] && (
-              <SecondaryPersonalityCard
-                personality={profile.secondaryPersonality}
-                profile={valueProfiles[profile.secondaryPersonality.name]}
+          {profile?.primaryPersonality?.name &&
+            valueProfiles[profile.primaryPersonality.name] && (
+              <PersonalityCard
+                personality={profile.primaryPersonality}
+                profile={valueProfiles[profile.primaryPersonality.name]}
+                fullProfile={profile}
+                testValues={testValues}
+                highlight
               />
             )}
 
-          {profile?.thirdPersonality?.name &&
-            valueProfiles[profile.thirdPersonality.name] && (
-              <SecondaryPersonalityCard
-                personality={profile.thirdPersonality}
-                profile={valueProfiles[profile.thirdPersonality.name]}
-              />
-            )}
+          <div className="secondary-container">
+            {profile?.secondaryPersonality?.name &&
+              valueProfiles[profile.secondaryPersonality.name] && (
+                <SecondaryPersonalityCard
+                  personality={profile.secondaryPersonality}
+                  profile={valueProfiles[profile.secondaryPersonality.name]}
+                />
+              )}
+
+            {profile?.thirdPersonality?.name &&
+              valueProfiles[profile.thirdPersonality.name] && (
+                <SecondaryPersonalityCard
+                  personality={profile.thirdPersonality}
+                  profile={valueProfiles[profile.thirdPersonality.name]}
+                />
+              )}
           </div>
+
           <div className="secondary-icons">
             <FaPen
               className="clickable-icon"
@@ -158,6 +160,9 @@ function ProfilePage() {
           setHiddenBrands={setHiddenBrands}
           handleShowHidden={handleShowHidden}
         />
+
+        {/* Tribes: Liked celebs + Following users */}
+        <TribeCommunity token={token} title="Tribes" />
 
         <OverlayModal isOpen={showHistory} onClose={() => setShowHistory(false)}>
           <div className="history-list">

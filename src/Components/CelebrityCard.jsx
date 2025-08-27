@@ -1,10 +1,11 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react"; 
 import CelebrityComparisonDial from "./CelebrityComparisonDial";
 import SecondaryPersonalityCard from "./SecondaryPersonalityCard";
 import TopCelebrityBrand from "./TopCelebrityBrand";
 import { valueProfiles } from "../assets/uiData/zoku_profiles_se";
 import "../assets/css/CelebrityCard.css";
 import { ZokuMasks } from "../assets/uiData/PersonalityImages";
+import CelebrityLikeOverlay from "./CelebrityLikeOverlay";
 
 function getProfileSafe(type)
 {
@@ -12,7 +13,7 @@ function getProfileSafe(type)
   return valueProfiles?.[type] || null;
 }
 
-export default function CelebrityCard({ celeb, user, celebBrands = [] })
+export default function CelebrityCard({ celeb, user, celebBrands = [], onAfterUnlike, onAfterLike })
 {
   const [expanded, setExpanded] = useState(false);
   const [showDial, setShowDial] = useState(false);
@@ -86,7 +87,14 @@ export default function CelebrityCard({ celeb, user, celebBrands = [] })
   return (
     <div className="celebCard">
       {/* Header */}
-      <div className="celebHeader">
+      <div className="celebHeader" style={{ position: "relative" }}>
+        {/* Like overlay (top-right) */}
+        <CelebrityLikeOverlay
+          celeb={celeb}
+          onAfterLike={onAfterLike}
+          onAfterUnlike={onAfterUnlike}
+        />
+
         {imgSrc && (
           <img
             className="celebCover"
@@ -137,7 +145,6 @@ export default function CelebrityCard({ celeb, user, celebBrands = [] })
         </div>
       )}
 
-
       {/* Personalities */}
       {expanded && (
         <div className="celebExpanded">
@@ -146,11 +153,7 @@ export default function CelebrityCard({ celeb, user, celebBrands = [] })
             <div className="primaryBlock">
               <img
                 className="primaryMask"
-
-
                 src={ZokuMasks[primary?.type]}
-
-
                 alt={pProf.title}
                 loading="lazy"
               />
