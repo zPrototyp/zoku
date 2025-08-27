@@ -17,6 +17,7 @@ export default function CelebrityCard({ celeb, user, celebBrands = [], onAfterUn
 {
   const [expanded, setExpanded] = useState(false);
   const [showDial, setShowDial] = useState(false);
+console.log(celeb);
 
   if (!celeb || typeof celeb !== "object") return null;
 

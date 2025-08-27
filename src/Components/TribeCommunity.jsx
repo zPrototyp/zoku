@@ -3,7 +3,7 @@ import { API_userSafeFetchJson } from "../Services/API";
 import CelebrityCard from "../Components/CelebrityCard";
 import UserCard from "../Components/UserCard";
 
-function TribeCommunity({ token, title = "Tribes" }) {
+function TribeCommunity({ token, user, title = "Tribes" }) {
   const [likedCelebs, setLikedCelebs] = useState([]);
   const [followingUsers, setFollowingUsers] = useState([]);
   const [error, setError] = useState("");
@@ -120,7 +120,7 @@ function TribeCommunity({ token, title = "Tribes" }) {
                 <CelebrityCard
                   key={normalized.id || normalized.name}
                   celeb={normalized}
-                  user={null}
+                  user={user}
                   celebBrands={[]}
                   onAfterUnlike={handleAfterUnlikeCeleb}
                   onAfterLike={handleAfterLikeCeleb}

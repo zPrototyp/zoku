@@ -173,7 +173,7 @@ function ProfilePage() {
         />}
 
         {/* Tribes: Liked celebs + Following users */}
-        {uiStatus.showBrandList && <TribeCommunity token={token} title="Tribes" />}
+        {uiStatus.showBrandList && <TribeCommunity token={token} user={profile} title="Tribes" />}
 
         <OverlayModal isOpen={showHistory} onClose={() => setShowHistory(false)}>
           <div className="history-list">
