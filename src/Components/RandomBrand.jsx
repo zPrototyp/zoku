@@ -12,6 +12,12 @@ const [randomBrand, setRandomBrand]=  useState(null);
 const [reload, setReload] = useState(0);
 const variations = 100;
 
+const setBrandsUser = (brandArray) => {
+    const allBrands = brandArray.reduce((acc, category) => {
+        return acc.concat(category.brands);
+        }, []);
+    setBrands(allBrands);
+}
 
 function FindRandomBrand(array) {
     if (!array || array.length === 0) return null;
@@ -24,10 +30,11 @@ function FindRandomBrand(array) {
     if (user == null) 
         API_guestGetBrandMatches(bearer, testValues, setBrands, category, variations)
     else {
+        
         // Fetch  from backend for logged in user
         API_userSafeFetchJson(bearer, 
             `user/brands/matches?ChangeVsTradition=${testValues.changeVsTradition}&CompassionVsAmbition=${testValues.compassionVsAmbition}&Category=${category}&Variations=${variations}`,
-             setBrands)
+             setBrandsUser)
     }
 
     // API_getBrands(category, 10, setBrands);
@@ -60,7 +67,7 @@ function FindRandomBrand(array) {
                         onClick={() => setReload(prev => prev+1)}
                      />
                     <MdClose 
-                        className="clickable-icon" size={20}
+                        className="clickable-icon" color="var(--dark)" size={20}
                         onClick={()=> setShowRandom(prev => !prev)}
                         />
                     </>
