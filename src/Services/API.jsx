@@ -502,3 +502,48 @@ export const API_getPopularCelebrities = async (count = 10) => {
   const data = await res.json();
   return Array.isArray(data) ? data : (data?.data ?? []);
 };
+// --- FOLLOW / UNFOLLOW USERS ---
+export const API_followUser = async (userId, token) => {
+  if (!userId || !token) throw new Error("Missing userId or token");
+  const res = await fetch(`${AZURE_API}/user/relationships/follow/${userId}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error("Failed to follow user");
+  const data = await res.json();
+  return data?.data ?? true;
+};
+
+export const API_unfollowUser = async (userId, token) => {
+  if (!userId || !token) throw new Error("Missing userId or token");
+  const res = await fetch(`${AZURE_API}/user/relationships/follow/${userId}`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error("Failed to unfollow user");
+  const data = await res.json().catch(() => ({}));
+  return data?.data ?? true;
+};
+
+// --- LIKE / UNLIKE CELEBRITIES (simple wrappers around your endpoints) ---
+export const API_likeCelebrity = async (celebrityId, token) => {
+  if (!celebrityId || !token) throw new Error("Missing celebrityId or token");
+  const res = await fetch(`${AZURE_API}/user/celebrities/liked/${celebrityId}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error("Failed to like celebrity");
+  const data = await res.json();
+  return data?.data ?? true;
+};
+
+export const API_unlikeCelebrity = async (celebrityId, token) => {
+  if (!celebrityId || !token) throw new Error("Missing celebrityId or token");
+  const res = await fetch(`${AZURE_API}/user/celebrities/liked/${celebrityId}`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) throw new Error("Failed to unlike celebrity");
+  const data = await res.json().catch(() => ({}));
+  return data?.data ?? true;
+};

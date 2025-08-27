@@ -16,8 +16,12 @@ import BrandCards from '../Components/BrandCards'
 import { calculateMatchPercentage } from '../Services/type-calculation.js'
 import { API_guestGetBrandMatches, API_guestGetPersonality } from '../Services/API.jsx'
 import { CreateComparisonDials } from '../Components/CreateComparisonDials.jsx'
-import apiService, { API_getCelebrities, API_getPopularCelebrities } from '../Services/API.jsx'
+import { ApiService, API_getCelebrities, API_getPopularCelebrities } from '../Services/API.jsx'
 import CelebrityCard from '../Components/CelebrityCard'
+import { FaPen, FaClock } from 'react-icons/fa' // added icons
+
+// Create a local instance since API.jsx exports the class, not a default singleton
+const apiService = new ApiService();
 
 function ResultPage () {
   const testValues = useAtomValue(testValuesAtom)
@@ -38,6 +42,7 @@ function ResultPage () {
   const sessionToken = useAtomValue(guestTokenAtom)
   const [feedList, setFeedList] = useAtom(feedListAtom)
   const [topCelebs, setTopCelebs] = useState([])
+  const [showHistory, setShowHistory] = useState(false) // for FaClock handler
 
   useEffect(() => {
     if (
@@ -46,41 +51,12 @@ function ResultPage () {
       !sessionToken
     ) return;
 
-    const fetchData = async () => {
+    const fetchPersonalityAndBrands = async () => {
       try {
         setUiStatus(prev => ({ ...prev, isLoading: true, error: null }));
 
         await API_guestGetPersonality(sessionToken, testValues, setResult);
         await API_guestGetBrandMatches(sessionToken, testValues, setFeedList, 'all', 3);
-
-        let celebs = [];
-        const primaryName = (result?.primaryPersonality?.name) ?? null;
-
-        if (primaryName)
-        {
-          const response = await apiService.getCelebrities({ personality: primaryName, page: 1, pageSize: 3 });
-          celebs = Array.isArray(response?.data) ? response.data : response?.data?.data || [];
-        }
-        else
-        {
-          const response = await apiService.getPopularCelebrities(3);
-          celebs = Array.isArray(response?.data) ? response.data : response?.data?.data || [];
-        }
-
-        if (!celebs || celebs.length === 0)
-        {
-          if (primaryName)
-          {
-            celebs = await API_getCelebrities({ personality: primaryName, pageSize: 3 });
-          }
-          else
-          {
-            celebs = await API_getPopularCelebrities(3);
-          }
-        }
-
-        setTopCelebs(celebs || []);
-
       } catch (err) {
         console.error('Error fetching data:', err);
         // setError('Kunde inte hämta resultat.');
@@ -91,8 +67,48 @@ function ResultPage () {
       }
     };
 
-    fetchData();
-  }, [testValues, sessionToken, setResult, setFeedList, result?.primaryPersonality?.name]);
+    fetchPersonalityAndBrands();
+  }, [testValues, sessionToken, setResult, setFeedList]);
+
+  // Fetch celebrities after personality is known (separate effect avoids refetch loops)
+  useEffect(() => {
+    const fetchCelebs = async () => {
+      try {
+        const primaryName = result?.primaryPersonality?.name ?? null;
+
+        // 1) Try personality-filtered via ApiService instance
+        let celebs = [];
+        if (primaryName) {
+          const response = await apiService.getCelebrities({ personality: primaryName, page: 1, pageSize: 3 });
+          celebs = Array.isArray(response?.data) ? response.data : response?.data?.data || [];
+        }
+
+        // 2) If still empty, try helper with same filter
+        if ((!celebs || celebs.length === 0) && primaryName) {
+          celebs = await API_getCelebrities({ personality: primaryName, pageSize: 3 });
+        }
+
+        // 3) If still empty, fall back to popular (instance)
+        if (!celebs || celebs.length === 0) {
+          const popRes = await apiService.getPopularCelebrities(3);
+          celebs = Array.isArray(popRes?.data) ? popRes.data : popRes?.data?.data || [];
+        }
+
+        // 4) If instance failed, use helper popular
+        if (!celebs || celebs.length === 0) {
+          celebs = await API_getPopularCelebrities(3);
+        }
+
+        setTopCelebs(celebs || []);
+      } catch (err) {
+        console.error('Error fetching celebrities:', err);
+        setTopCelebs([]); // ensure stable UI
+      }
+    };
+
+    // run once we have either a result or as a popular fallback
+    fetchCelebs();
+  }, [result?.primaryPersonality?.name]);
 
  // derive comparison dials with memoization
   const { dialA, dialB, hasFriend } = useMemo(() => {
@@ -114,88 +130,127 @@ function ResultPage () {
       </div>
     )
 
-    const {
-      primaryPersonality = null,
-      secondaryPersonality = null,
-      thirdPersonality = null
-    } = result || {}
+  const {
+    primaryPersonality = null,
+    secondaryPersonality = null,
+    thirdPersonality = null
+  } = result || {}
     
   return (
-    <div className='result-page'>
-      {/* Comparison dial */}
-      {hasFriend && dialA && dialB && (
-        <div className="comparison-inline" style={{ marginBottom: '1.25rem' }}>
-          <h2 style={{ marginBottom: '.5rem' }}>Jämförelse {calculateMatchPercentage(friendValues, testValues)}% match</h2>
-          <CelebrityComparisonDial a={dialA} b={dialB} aLabel="Du" bLabel="Vän" size={260} />
-        </div>
-      )}
+    <>
+      <div className="page-content" style={{ position: "relative" }}>
+        {/* {showComparison && hasFriend && dialA && dialB && (
+          <div className="comparison-inline" style={{ marginBottom: '1.25rem' }}>
+            <h2 style={{ marginBottom: '.5rem' }}>Jämförelse {calculateMatchPercentage(friendValues, testValues)}% match</h2>
+            <CelebrityComparisonDial a={dialA} b={dialB} aLabel="Du" bLabel="Vän" size={260} />
+            <button style={{fontSize:"1.2em"}} onClick={()=>setShowComparison(p=> !p)}>Dölj jämförelse</button>
+          </div>
+          )}
+        {!showComparison && hasFriend && (<button style={{fontSize:"1.2em"}} onClick={()=>setShowComparison(p=> !p)}>Visa jämförelse med {valueProfiles[friendProfile?.primaryPersonality.name].title}</button>)} */}
+        <h2>Din Personlighet</h2>
 
-      <div className="personality-result">
-      {/* Primary Personality Card */}
-      <PersonalityCard
-        personality={primaryPersonality}
-        profile={valueProfiles[primaryPersonality?.name]}
-        fullProfile={result}
-        testValues={testValues}
-        highlight
-      />
-
-      {/* Secondary + Third Personality Cards */}
-      {!uiStatus.showBrandList && 
-      (<div className='secondary-container'>
-        <SecondaryPersonalityCard
-          personality={secondaryPersonality}
-          profile={valueProfiles[secondaryPersonality?.name]}
-        />
-        <SecondaryPersonalityCard
-          personality={thirdPersonality}
-          profile={valueProfiles[thirdPersonality?.name]}
-        />
-      </div>}
-
-      {/* Top 3 celebrity matches (from public controller) */}
-      {uiStatus.showBrandList && topCelebs.length > 0 && (
-        <div style={{ width: '100%', maxWidth: 1000 }}>
-          <h2 style={{ marginTop: '1.5rem' }}>Topp 3 kändismatchningar</h2>
-          <div style={{ display: 'grid', gap: '1rem' }}>
-            {topCelebs.map((celeb) => (
-              <CelebrityCard
-                key={celeb.id || celeb.name}
-                celeb={celeb}
-                user={{
-                  compassionVsAmbition: testValues.compassionVsAmbition,
-                  changeVsTradition: testValues.changeVsTradition,
-                  primaryPersonality: result?.primaryPersonality
-                }}
-                celebBrands={celeb?.brands || []} // if present in DTO
+        <div className="personality-result">
+          {result?.primaryPersonality?.name &&
+            valueProfiles[result.primaryPersonality.name] && (
+              <PersonalityCard
+                personality={result.primaryPersonality}
+                profile={valueProfiles[result.primaryPersonality.name]}
+                fullProfile={result}
+                testValues={testValues}
+                highlight
               />
-            ))}
+            )}
+
+          <div className="secondary-container">
+            {result?.secondaryPersonality?.name &&
+              valueProfiles[result.secondaryPersonality.name] && (
+                <SecondaryPersonalityCard
+                  personality={result.secondaryPersonality}
+                  profile={valueProfiles[result.secondaryPersonality.name]}
+                />
+              )}
+
+            {result?.thirdPersonality?.name &&
+              valueProfiles[result.thirdPersonality.name] && (
+                <SecondaryPersonalityCard
+                  personality={result.thirdPersonality}
+                  profile={valueProfiles[result.thirdPersonality.name]}
+                />
+              )}
+          </div>
+
+          <div className="secondary-icons">
+            <FaPen
+              className="clickable-icon"
+              title="Redigera personlighet"
+              onClick={() => navigate("/test")}
+            />
+            <FaClock
+              className="clickable-icon"
+              title="Visa historik"
+              onClick={() => setShowHistory(true)}
+            />
           </div>
         </div>
-      )}
 
-      <button
-        onClick={() => setUiStatus(prev => ({ ...prev, showBrandList: !prev.showBrandList }))}
-        className={uiStatus.showBrandList ? "active btn-small": "active"}
-      >
-        {uiStatus.showBrandList ? "Dölj varumärken": "Vilka varumärken är jag?"}
-      </button>
-      {/* Brand list */}
-      {uiStatus.showBrandList && feedList && feedList.length > 0 && (
-        <div className='brand-list'>
-          <h2>Varumärken som matchar din personlighet</h2>
+        {/* Top 3 celebrity matches (from public controller) */}
+        {uiStatus.showBrandList && topCelebs.length > 0 && (
+          <div style={{ width: '100%', maxWidth: '1000px' }}>
+            <h2 style={{ marginTop: '1.5rem' }}>Topp 3 kändismatchningar</h2>
+            <div style={{ display: 'grid', gap: '1rem' }}>
+              {topCelebs.map((celeb) => (
+                <CelebrityCard
+                  key={celeb.id || celeb.name}
+                  celeb={celeb}
+                  user={{
+                    compassionVsAmbition: testValues.compassionVsAmbition,
+                    changeVsTradition: testValues.changeVsTradition,
+                    primaryPersonality: result?.primaryPersonality
+                  }}
+                  celebBrands={celeb?.brands || []}
+                />
+              ))}
+            </div>
+          </div>
+        )}
 
-          <BrandCards brandList={feedList} />
-        </div>
-      )}
+        {/* Optional: friendly empty state if no celebs */}
+        {uiStatus.showBrandList && topCelebs.length === 0 && (
+          <p style={{ opacity: 0.8, marginTop: '1rem' }}>
+            Inga kändismatchningar hittades för din profil ännu.
+          </p>
+        )}
 
-      <button
-        onClick={() => navigate('/register', { state: result })}
-        className='active btn-small'
-      >
-        Spara och fortsätt
-      </button>
-    </div>
+        <button
+          onClick={() => setUiStatus(prev => ({ ...prev, showBrandList: !prev.showBrandList }))}
+          className={uiStatus.showBrandList ? "active btn-small": "active"}
+        >
+          {uiStatus.showBrandList ? "Dölj varumärken": "Utforska mina matchningar"}
+        </button>
+
+        {/* Brand list */}
+        {uiStatus.showBrandList && feedList && feedList.length > 0 && (
+          <div className='brand-list'>
+            <h2>Varumärken som matchar din personlighet</h2>
+            <BrandCards brandList={feedList} />
+          </div>
+        )}
+
+        {/* Optional: friendly empty state if no brands */}
+        {uiStatus.showBrandList && (!feedList || feedList.length === 0) && (
+          <p style={{ opacity: 0.8, marginTop: '1rem' }}>
+            Inga varumärken matchade just nu—prova igen senare.
+          </p>
+        )}
+
+        <button
+          onClick={() => navigate('/register', { state: result })}
+          className='active'
+        >
+          Spara och fortsätt
+        </button>
+      </div>
+    </>
   )
 }
 
