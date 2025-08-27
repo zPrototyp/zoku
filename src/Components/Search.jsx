@@ -214,7 +214,7 @@ function Search({
             <h3 style={{ marginBottom: ".5rem" }}>Varumärken ({foundBrands.length})</h3>
             {foundBrands.length > 0 ? (
               <div className="feed">
-                <BrandCards brandList={foundBrands} />
+                <BrandCards brandList={foundBrands} categorize={true}/>
               </div>
             ) : (
               <p style={{ opacity: 0.75 }}>Inga varumärken hittades i ditt flöde.</p>

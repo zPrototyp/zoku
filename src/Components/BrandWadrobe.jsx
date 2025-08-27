@@ -17,7 +17,7 @@ export default function BrandWardrobe({ brands, showHidden, hiddenBrands, setHid
       </div>
       {showHidden 
       ? <HiddenBrands brandList={hiddenBrands} setHiddenBrands={setHiddenBrands} />
-      : <BrandCards brandList={brands}  />
+      : <BrandCards brandList={brands} categorize={true} />
       }
     </div>
   );

@@ -5,6 +5,8 @@ import TopCelebrityBrand from "./TopCelebrityBrand";
 import { valueProfiles } from "../assets/uiData/zoku_profiles_se";
 import "../assets/css/CelebrityCard.css";
 import CelebrityLikeOverlay from "./CelebrityLikeOverlay";
+import { useAtomValue } from "jotai";
+import { authTokenAtom } from "../Atoms/AuthAtom";
 
 function getProfileSafe(type)
 {
@@ -16,6 +18,8 @@ export default function CelebrityCard({ celeb, user, celebBrands = [], onAfterUn
 {
   const [expanded, setExpanded] = useState(false);
   const [showDial, setShowDial] = useState(false);
+  const userToken = useAtomValue(authTokenAtom);
+  
 // console.log(celeb);
 
   if (!celeb || typeof celeb !== "object") return null;
@@ -89,11 +93,11 @@ export default function CelebrityCard({ celeb, user, celebBrands = [], onAfterUn
       {/* Header */}
       <div className="celebHeader" style={{ position: "relative" }}>
         {/* Like overlay (top-right) */}
-        <CelebrityLikeOverlay
+        {userToken && <CelebrityLikeOverlay
           celeb={celeb}
           onAfterLike={onAfterLike}
           onAfterUnlike={onAfterUnlike}
-        />
+        />}
 
         {imgSrc && (
           <img
