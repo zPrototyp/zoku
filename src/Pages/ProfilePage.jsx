@@ -9,12 +9,12 @@ import SecondaryPersonalityCard from "../Components/SecondaryPersonalityCard";
 import BrandWardrobe from "../Components/BrandWadrobe";
 import OverlayModal from "../Components/OverlayModal";
 import "../assets/css/App.css";
-import { FaPen, FaClock, FaCog } from "react-icons/fa";
+import { FaPen, FaClock} from "react-icons/fa";
 import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
 import { testValuesAtom } from "../Atoms/TestValuesAtom";
-import UserSettings from "../Components/UserSettings";
 import { API_userSafeFetchJson } from "../Services/API";
 import TribeCommunity from "../Components/TribeCommunity";
+import RandomBrand from "../Components/RandomBrand";
 
 // import { comparisonValueAtom } from '../Atoms/ComparisonValueAtom.jsx'
 // import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
@@ -33,7 +33,6 @@ function ProfilePage() {
   const [showHidden, setShowHidden] = useState(false);
   const [token] = useAtom(authTokenAtom);
   const navigate = useNavigate();
-  const [showSettings, setShowSettings] = useState(false);
   const [uiStatus, setUiStatus] = useState({
       showBrandList: false,
     })
@@ -172,6 +171,15 @@ function ProfilePage() {
           handleShowHidden={handleShowHidden}
         />}
 
+        {!uiStatus.showBrandList &&  
+                <RandomBrand category="all" 
+                  bearer={token}
+                  user={profile}
+                  testValues={testValues} 
+                  currentBrandList={brands} />
+                }
+        
+
         {/* Tribes: Liked celebs + Following users */}
         {uiStatus.showBrandList && <TribeCommunity token={token} user={profile} title="Tribes" />}
 
@@ -198,22 +206,6 @@ function ProfilePage() {
           </div>
         </OverlayModal>
 
-        {/* Settings - tried moving to HamburgerMenu instead */}
-        {/* <div>
-          <button
-            className="cogwheel-btn"
-            aria-label="Öppna inställningar"
-            title="Inställningar"
-            onClick={() => setShowSettings(true)}
-          >
-            <FaCog size={28} />
-          </button>
-        </div>
-
-        <OverlayModal isOpen={showSettings} onClose={() => setShowSettings(false)}>
-          <UserSettings userId={userId} onClose={() => setShowSettings(false)} />
-        </OverlayModal>
-        */}
       </div> 
     </>
   );

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
-import { API_getBrands, API_guestGetBrandMatches } from "../Services/API";
+import { API_userSafeFetchJson, API_guestGetBrandMatches } from "../Services/API";
 import BrandCards from "./BrandCards";
 import { IoReload } from "react-icons/io5";
 import { MdClose } from "react-icons/md";
 
-export const RandomBrand = ({bearer, testValues, category, currentBrandList})=> {
+export const RandomBrand = ({bearer, testValues, user, category, currentBrandList})=> {
 const [brands, setBrands] = useState([]);
 const [filtered, setFiltered] = useState([])
 const [showRandom, setShowRandom] = useState(false);
@@ -12,6 +12,12 @@ const [randomBrand, setRandomBrand]=  useState(null);
 const [reload, setReload] = useState(0);
 const variations = 100;
 
+const setBrandsUser = (brandArray) => {
+    const allBrands = brandArray.reduce((acc, category) => {
+        return acc.concat(category.brands);
+        }, []);
+    setBrands(allBrands);
+}
 
 function FindRandomBrand(array) {
     if (!array || array.length === 0) return null;
@@ -20,10 +26,19 @@ function FindRandomBrand(array) {
     }
     
  useEffect(() => {
-    // fetch from backend
-    API_guestGetBrandMatches(bearer, testValues, setBrands, category, variations)
+    // fetch from backend for guests
+    if (user == null) 
+        API_guestGetBrandMatches(bearer, testValues, setBrands, category, variations)
+    else {
+        
+        // Fetch  from backend for logged in user
+        API_userSafeFetchJson(bearer, 
+            `user/brands/matches?ChangeVsTradition=${testValues.changeVsTradition}&CompassionVsAmbition=${testValues.compassionVsAmbition}&Category=${category}&Variations=${variations}`,
+             setBrandsUser)
+    }
+
     // API_getBrands(category, 10, setBrands);
-  }, [category]);
+  }, [category, user]);
 
   useEffect(() => {
     if (brands && brands.length > 0 && currentBrandList) {
@@ -52,7 +67,7 @@ function FindRandomBrand(array) {
                         onClick={() => setReload(prev => prev+1)}
                      />
                     <MdClose 
-                        className="clickable-icon" size={20}
+                        className="clickable-icon" color="var(--dark)" size={20}
                         onClick={()=> setShowRandom(prev => !prev)}
                         />
                     </>
