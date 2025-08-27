@@ -26,6 +26,7 @@ const personalities = [
 function SplitPersonalityDial({ value, onChange, uiState, setUiState })
 {
   const [approaching, setApproaching] = useState("");
+  const [showWarning, setShowWarning] = useState(false);
   const [animate, setAnimate] = useState(false);
 
   useEffect(() => {
@@ -35,8 +36,6 @@ function SplitPersonalityDial({ value, onChange, uiState, setUiState })
     setAnimate(false); // reset when leaving resultMap
   }
   }, [uiState.resultMap]);
-
-
 
   const svgRef = useRef(null);
   const size = 300;
@@ -144,39 +143,64 @@ function SplitPersonalityDial({ value, onChange, uiState, setUiState })
   {
    if (uiState.firstInput)
    {
-      setUiState({ ...uiState, firstInput: false, secondImput: true, nextButtonState: false, nextButtonTxt: "Visa resultat"  });
+      checkValue(value.y);
+      if (uiState.warningText) {
+        setShowWarning(true);
+        return;
+      } else {
+        setShowWarning(false);
+      }
+      setUiState({ ...uiState,  firstInput: false, secondInput: true, nextButtonState: false, nextButtonTxt: "Visa resultat"  });
     }
-    else if (uiState.secondImput)
+    else if (uiState.secondInput)
     { 
+       checkValue(value.x);
+      if (uiState.warningText) {
+        setShowWarning(true);
+        return;
+      } else {
+        setShowWarning(false);
+      }
       const closest = getClosestPersonality();
-      setUiState({ ...uiState, secondImput: false, resultMap: true, showResultButton: true});
+      setUiState({ ...uiState, secondInput: false, resultMap: true, showResultButton: true});
            
     } 
   }
   const handleBack = () =>
   {
-    if (uiState.secondImput)
+    if (uiState.secondInput)
     {
-      setUiState({ ...uiState, firstInput: true, secondImput: false, nextButtonTxt:"Nästa steg"});
+      setUiState({ ...uiState, firstInput: true, secondInput: false, nextButtonTxt:"Nästa steg"});
     }
     else if (uiState.resultMap)
     {
-      setUiState({ ...uiState, secondImput: true, resultMap: false, showResultButton: false });
+      setUiState({ ...uiState, secondInput: true, resultMap: false, showResultButton: false });
     }
   };
 
   const closestImage = getClosestPersonality().image;
-
+  const checkValue = (val) => {
+        if (Math.abs(val - 50) <= 2){
+      uiState.warningText = "Prova att luta lite åt något håll. De flesta av oss har preferenser - var känns mest naturligt för dig för att hitta din personlighet?";
+    }
+    else {
+      uiState.warningText = "";
+    }
+  }
   const handleYUpdate = (e) =>
   {
-    onChange({ ...value, y: parseFloat(e.target.value) });
+    const newY = parseFloat(e.target.value);
+    checkValue(newY);
+    onChange({ ...value, y: newY });
     uiState.nextButtonState=true;
     const closestPersonality = getClosestPersonality();
     setApproaching(closestPersonality.name);
   }
   const handleXUpdate = (e) =>
   {
-    onChange({ ...value, x: parseFloat(e.target.value) });
+    const newX= parseFloat(e.target.value);
+    checkValue(newX);
+    onChange({ ...value, x:  newX});
     uiState.nextButtonState=true;
     const closestPersonality = getClosestPersonality();
     setApproaching(closestPersonality.name);
@@ -199,24 +223,20 @@ const finalY = toPixel(value.y) - 25;
 const centerX = toPixel(50) - 25;
 const centerY = toPixel(50) - 25;
 
-
   return (
-    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-      
-
+    <>
+    {/* <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}> */}
 
       {/* Sliders */}
-      <div style={{ marginBottom: "20px", width: size }}>
+      <div className="test-quiz" style={{width: size }}>
         {/* Y-axis Slider → Förändring / Tradition */}
-
-        {uiState.firstInput && (
           <>
           <h2>Hur ser du på förändring?</h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.6em" }}>
-            <span>Jag tror på nya sätt</span>
-            <span>Jag värdesätter det beprövade</span>
-          </div>
+          <div className="test-slider-card">
+            <div className="test-slider-captions">
+              <span>Jag tror på nya sätt</span>
+              <span>Jag värdesätter det beprövade</span>
+            </div>
             <input
               type="range"
               min="0"
@@ -224,36 +244,29 @@ const centerY = toPixel(50) - 25;
               step="1"
               value={value.y}
               onChange={(e) => handleYUpdate(e)}
-              style={{
-                width: "100%",
-                WebkitAppearance: "none",
-                appearance: "none",
-                height: "20px",
-                borderRadius: "4px",
-                background: "linear-gradient(to right, var(--highlightContrastLt), var(--highlight))", // higlightcontrastLt->highlight
-                outline: "none",
-              }}
+              className="test-input"
             />
-        </div>
+          </div>
+          </>
 
+      {uiState.firstInput &&
+      (<>
       <p className="inputLeft">
         Förändring: Ny teknik, förändra samhället, innovation
       </p>
       <p className="inputRight">
         Tradition: Historia, familjvärden, kontinuitet
       </p>
-    </>
-)}
-
+      </>)
+      }
 
         {/* X-axis Slider → Gemenskap / Ambition */}
-{uiState.secondImput && (
-          <>
-          <h2>Vad driver dig?</h2>
-
-
-        <div style={{ marginTop: "20px", display: "flex", flexDirection: "column", gap: "8px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.6em" }}>
+      {(uiState.secondInput|| uiState.resultMap) && (
+        <>
+        <h2>Vad driver dig?</h2>
+        
+        <div className="test-slider-card">
+          <div className="test-slider-captions">
             <span>Jag drivs av att hjälpa</span>
             <span>Jag drivs av att nå mål</span>
           </div>
@@ -264,48 +277,48 @@ const centerY = toPixel(50) - 25;
             step="1"
             value={value.x}
             onChange={(e) => handleXUpdate(e)}
-             style={{
-                width: "100%",
-                WebkitAppearance: "none",
-                appearance: "none",
-                height: "20px",
-                borderRadius: "4px",
-                background: "linear-gradient(to right, var(--highlightContrastLt), var(--highlight))", // higlightcontrastLt->highlight
-                outline: "none",
-              }}
+           className="test-input"
           />
         </div>
+        </>
+      )}
+      {uiState.secondInput && (
+        <>
         <p className="inputLeft">
           Omsorg: Miljö, rättvisa, ta hand om andra
-
         </p>
         <p className="inputRight">
           Ambition: Personlig utveckling, framgång, påverkan
-      </p>
-      <p>Du närmar dig {approaching}</p>
-        </>
-  )}
+        </p>
+        
+        <p>Du närmar dig {approaching}</p>
+      </>
+      )}
 
       </div>
-
-        <div>
-          {!uiState.firstInput &&<button className="btn-small active" id="prevButton" onClick={()=>handleBack()}>Föregående steg</button>}
-          {!uiState.resultMap && 
-            <button className={uiState.nextButtonState ? "active btn-small": "btn-small"} 
-              id="nextButton" 
-              style={!uiState.nextButtonState ?{
-                cursor: "not-allowed",
-                pointerEvents: "none"
-              }:{}}
-              onClick={()=>handleNext()}>{uiState.nextButtonTxt}</button>}
-        </div>
+      <div className="test-next-buttons">
+        {showWarning && <p style={{color: "var(--highlightContrast)"}}>{uiState.warningText}</p>}
+        {!uiState.firstInput &&
+          <button className="btn-small active" 
+              id="prevButton" 
+              onClick={()=>handleBack()}>Föregående steg
+          </button>}
+        {!uiState.resultMap && 
+          <button className={uiState.nextButtonState ? "active btn-small": "btn-small"} 
+            id="nextButton" 
+            style={!uiState.nextButtonState ?{
+              cursor: "not-allowed",
+              pointerEvents: "none"
+            }:{}}
+            onClick={()=>handleNext()}>{uiState.nextButtonTxt}</button>}
+      </div>
       {/* Dial */}
-      {uiState.secondInput || uiState.resultMap && (
+      {uiState.resultMap && (
       <svg
         ref={svgRef}
         width={size}
         height={size}
-        style={{ border: "1px solid #ccc", cursor: "crosshair", touchAction: "none" }}
+        className="test-map"
         onMouseDown={handleMouseDown}
         onTouchStart={(e) => {
           e.preventDefault();
@@ -340,7 +353,8 @@ const centerY = toPixel(50) - 25;
       
       </svg>
         )}
-    </div>
+    {/* </div> */}
+    </>
   );
 }
 

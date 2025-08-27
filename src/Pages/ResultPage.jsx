@@ -130,17 +130,19 @@ function ResultPage () {
         </div>
       )}
 
-
+      <div className="personality-result">
       {/* Primary Personality Card */}
       <PersonalityCard
         personality={primaryPersonality}
         profile={valueProfiles[primaryPersonality?.name]}
+        fullProfile={result}
         testValues={testValues}
         highlight
       />
 
       {/* Secondary + Third Personality Cards */}
-      {!uiStatus.showBrandList && <div className='secondary-container'>
+      {!uiStatus.showBrandList && 
+      (<div className='secondary-container'>
         <SecondaryPersonalityCard
           personality={secondaryPersonality}
           profile={valueProfiles[secondaryPersonality?.name]}
@@ -176,7 +178,7 @@ function ResultPage () {
         onClick={() => setUiStatus(prev => ({ ...prev, showBrandList: !prev.showBrandList }))}
         className={uiStatus.showBrandList ? "active btn-small": "active"}
       >
-        {uiStatus.showBrandList ? "Dölj varumärken": "Utforska mina matchningar"}
+        {uiStatus.showBrandList ? "Dölj varumärken": "Vilka varumärken är jag?"}
       </button>
       {/* Brand list */}
       {uiStatus.showBrandList && feedList && feedList.length > 0 && (
@@ -189,7 +191,7 @@ function ResultPage () {
 
       <button
         onClick={() => navigate('/register', { state: result })}
-        className='active'
+        className='active btn-small'
       >
         Spara och fortsätt
       </button>

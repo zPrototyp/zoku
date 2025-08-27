@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import PersonalityDial from '../Components/PersonalityDial.jsx'
-import ValueInfoTooltip from '../Components/ValueInfoTooltip.jsx'
 import { useAtom } from 'jotai'
 import { guestTokenAtom } from '../Atoms/GuestTokenAtom.jsx'
 import { authTokenAtom } from '../Atoms/AuthAtom.jsx'
@@ -12,29 +10,32 @@ import '../assets/css/App.css'
 
 import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
 import ComparisonProfileView from '../Components/ComparisonProfileView.jsx'
-import { API_guestGetPersonality } from '../Services/API.jsx'
+import { API_guestGetPersonality, API_getGuestToken, API_updatePersonality } from '../Services/API.jsx'
 import SplitPersonalityDial from '../Components/SplitPersonalityDial.jsx'
-import { API_getGuestToken,  API_updatePersonality } from '../Services/API.jsx'
+import OverlayModal from '../Components/OverlayModal.jsx'
 
-// Given a link "http://zoku.se/test?changeY=70&compassionX=82" We can collect the values and compare.
+// Given a link "/test?changeY=70&compassionX=82" We can collect the values and compare.
 
 
-function NewTestPage () {
+function TestPage () {
   
   const [uiState, setUiState] = useState({
       firstInput: true,
-      secondImput: false,
+      secondInput: false,
       resultMap: false,
       showResultButton: false,
       nextButtonTxt:"Nästa steg",
       nextButtonState: false,
+      warningText:"",
+      tooltip: false,
   });
-  
+  const closeTooltip = () => setUiState({...uiState, tooltip:false})
+
   const StepCounter = () => {
     if (uiState.firstInput) {
       return "1 / 3";
     }
-    else if (uiState.secondImput) {
+    else if (uiState.secondInput) {
       return "2 / 3";
     }
     else if (uiState.resultMap) {
@@ -117,15 +118,16 @@ function NewTestPage () {
 
     if (authToken) {
       // Logged-in user -> update profile
-      API_updatePersonality(authToken, change, compassion)
-      .then(success => {
-        if (success) {
-          navigate('/profile')
-        } else {
-          console.error('Misslyckades med att uppdatera personlighet.')
-        }
-      })
-      .catch(err => console.error('Något gick fel vid uppdatering:', err))
+
+      API_updatePersonality(change, compassion, authToken)
+        .then(success => {
+          if (success) {
+            navigate('/profile')
+          } else {
+            console.error('Misslyckades med att uppdatera personlighet.')
+          }
+        })
+        .catch(err => console.error('Något gick fel vid uppdatering:', err))
     } else {        
       // Otherwise, just show the result
         navigate('/result')
@@ -149,24 +151,9 @@ function NewTestPage () {
               : profile ? `Uppdatera personlighetstyp `:`Upptäck din personlighetstyp `}
               ({StepCounter()})
           </h1>
-          <ValueInfoTooltip>
-            <p>
-              <strong>Gemenskap:</strong> Fokus på samhörighet, relationer och
-              empati.
-            </p>
-            <p>
-              <strong>Ambition:</strong> Drivkraft, prestation och personlig
-              framgång.
-            </p>
-            <p>
-              <strong>Förändring:</strong> Öppenhet för nya idéer, äventyr och
-              frihet.
-            </p>
-            <p>
-              <strong>Tradition:</strong> Värdesätter stabilitet, kultur och
-              långsiktighet.
-            </p>
-          </ValueInfoTooltip>
+          <div className="tooltip-icon"
+            onClick={()=> setUiState({...uiState, tooltip:true})}
+          > i </div>
         </div>
 
         <SplitPersonalityDial value={position} onChange={setPosition} uiState={uiState} setUiState={setUiState} />
@@ -177,9 +164,23 @@ function NewTestPage () {
           {authToken ? 'Spara ändringar' : 'Visa personlighetstyp'}
         </button>
           )}      
-    </div>
+      </div>
+      <OverlayModal isOpen={uiState.tooltip} onClose={closeTooltip}>
+        <p>
+          <strong>Gemenskap:</strong> Fokus på samhörighet, relationer och empati.
+        </p>
+        <p>
+          <strong>Ambition:</strong> Drivkraft, prestation och personlig framgång.
+        </p>
+        <p>
+          <strong>Förändring:</strong> Öppenhet för nya idéer, äventyr och frihet.
+        </p>
+        <p>
+          <strong>Tradition:</strong> Värdesätter stabilitet, kultur och långsiktighet.
+        </p>
+      </OverlayModal>
     </div>
   )
 }
 
-export default NewTestPage
+export default TestPage

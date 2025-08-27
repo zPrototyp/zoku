@@ -115,12 +115,59 @@ function ResultPage () {
     } = result || {}
     
   return (
-    <div className='result-page'>
-      {/* Comparison dial */}
-      {hasFriend && dialA && dialB && (
-        <div className="comparison-inline" style={{ marginBottom: '1.25rem' }}>
-          <h2 style={{ marginBottom: '.5rem' }}>Jämförelse {calculateMatchPercentage(friendValues, testValues)}% match</h2>
-          <CelebrityComparisonDial a={dialA} b={dialB} aLabel="Du" bLabel="Vän" size={260} />
+    <>
+      <div className="page-content" style={{ position: "relative" }}>
+        {/* {showComparison && hasFriend && dialA && dialB && (
+          <div className="comparison-inline" style={{ marginBottom: '1.25rem' }}>
+            <h2 style={{ marginBottom: '.5rem' }}>Jämförelse {calculateMatchPercentage(friendValues, testValues)}% match</h2>
+            <CelebrityComparisonDial a={dialA} b={dialB} aLabel="Du" bLabel="Vän" size={260} />
+            <button style={{fontSize:"1.2em"}} onClick={()=>setShowComparison(p=> !p)}>Dölj jämförelse</button>
+          </div>
+          )}
+        {!showComparison && hasFriend && (<button style={{fontSize:"1.2em"}} onClick={()=>setShowComparison(p=> !p)}>Visa jämförelse med {valueProfiles[friendProfile?.primaryPersonality.name].title}</button>)} */}
+        <h2>Din Personlighet</h2>
+
+        <div className="personality-result">
+        {profile?.primaryPersonality?.name &&
+          valueProfiles[profile.primaryPersonality.name] && (
+            <PersonalityCard
+              personality={profile.primaryPersonality}
+              profile={valueProfiles[profile.primaryPersonality.name]}
+              fullProfile={profile}
+              testValues={testValues}
+              highlight
+            />
+          )}
+
+        <div className="secondary-container">
+          {profile?.secondaryPersonality?.name &&
+            valueProfiles[profile.secondaryPersonality.name] && (
+              <SecondaryPersonalityCard
+                personality={profile.secondaryPersonality}
+                profile={valueProfiles[profile.secondaryPersonality.name]}
+              />
+            )}
+
+          {profile?.thirdPersonality?.name &&
+            valueProfiles[profile.thirdPersonality.name] && (
+              <SecondaryPersonalityCard
+                personality={profile.thirdPersonality}
+                profile={valueProfiles[profile.thirdPersonality.name]}
+              />
+            )}
+          </div>
+          <div className="secondary-icons">
+            <FaPen
+              className="clickable-icon"
+              title="Redigera personlighet"
+              onClick={() => navigate("/test")}
+            />
+            <FaClock
+              className="clickable-icon"
+              title="Visa historik"
+              onClick={() => setShowHistory(true)}
+            />
+          </div>
         </div>
       )}
 

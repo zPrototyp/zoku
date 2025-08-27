@@ -16,6 +16,7 @@
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--fontHeading);
   font-weight: 500;
+  text-align: center;
 }
 h1 {
   font-size: 36px;
@@ -37,6 +38,7 @@ h3 {
 
 }
 .small-logo{
+  margin-top: 5px;
   background-color: var(--alt);
   border-radius: 50%;
   width: 100px;
@@ -166,6 +168,9 @@ button a {
 }
 .sp-questionsBox{
   width: 100%;
+  margin: 0 auto;
+  justify-items: center;
+  text-align: center;
 }
 
 .sp-question {
@@ -234,6 +239,7 @@ button a {
 }
 .sp-quizButtonBox {
   margin-top: 2em;
+  text-align: center;
 }
 .circle-layout p {
   position: absolute;
@@ -265,6 +271,61 @@ button a {
 /*************** END Start Page stylings *********************/
 
 /*************** NewTestPage.jsx stylings *********************/
+
+.test-container {
+  max-width: 900px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items:center;
+}
+.test-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+  width: 100%;
+  margin-bottom: 1.5rem; 
+}
+
+.tooltip-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: var(--darkContrast);
+  color: white;
+  text-align: center;
+  line-height: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+}
+.test-input {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 20px;
+  border-radius: 4px;
+  background: linear-gradient(to right, var(--highlightContrastLt), var(--highlight));
+  outline: none;
+}
+.text-quiz{
+   margin-bottom: 20px;
+}
+.test-map {
+  cursor: crosshair;
+  touch-action: none;
+}
+.test-slider-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.test-slider-captions {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.6em;
+}
 
 @keyframes popIn {
   to {
@@ -298,9 +359,7 @@ input[type="range"]::-moz-range-thumb {
   position: relative;
   text-align: left;
 }
-.inputRight {
-  /* text-align: right; */
-}
+
 .inputLeft::before, .inputRight::before {
   content: "";
   position: absolute;
@@ -318,6 +377,7 @@ background-color: var(--highlightContrast);
 /* right: -2em; */
 background-color: var(--highlight);
 }
+
 /*************** END NewTestPage stylings *********************/
 
 /*************** AboutUs.jsx stylings *********************/
@@ -379,9 +439,15 @@ background-color: var(--highlight);
   background-image: url('../images/Vardgivaren.svg');
 }
 
-
-
 /*************** END AboutUs.jsx stylings *********************/
+/*************** AboutZoku.jsx stylings *********************/
+
+ul.no-dots {
+  list-style-type: none; /* Remove default list styling */
+  padding: 0;            /* Remove default padding */
+  margin: 0;             /* Remove default margin */
+}
+/*************** END AboutZoku.jsx stylings *********************/
 
 /*************** Tribes.jsx stylings *********************/
 
@@ -504,7 +570,16 @@ background-color: var(--highlight);
   background-color: var(--background);
   color: var(--darkContrast);
 }
-
+.personality-result{
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--highlightOp50);
+  border-radius: 10px;
+  padding: 0.5rem;
+  padding-bottom: 1em;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
 .feedpage-brand {
   position: relative;
   background: var(--background);
@@ -669,6 +744,9 @@ text-align: left;
   h2 { font-size: 36px; }
   h3 { font-size: 30px; }
 
+  .layout {
+    max-width: 1100px;
+  }
   /* Page container */
   .page-content {
     max-width: 1100px;
@@ -679,7 +757,11 @@ text-align: left;
     padding-top: 64px;
     margin-bottom: 28px;
   }
-
+.small-logo{
+  margin-top: 10px;
+  height: 50px;
+  
+}
   /* Buttons: desktop scale */
   button {
     font-size: 18px;
@@ -701,14 +783,20 @@ text-align: left;
     padding: 2.5rem 2rem;
   }
 
+  .personality-result {
+    max-width: 900px;
+    margin: 0 auto;
+  }
   /* Feed controls stretch and align */
   .feed-sort-options {
     width: 100%;
     max-width: 520px;
     grid-template-columns: 200px 1fr;
-    margin: 1rem 0;
+    margin: 1rem auto;
   }
-
+.feedpage-brand {
+  height: 250px;
+}
   /* Feed list can breathe more */
   .feed {
     max-width: 900px;
@@ -777,6 +865,52 @@ text-align: left;
   /* Brand card & expanded image tweaks */
   .expanded-feed_img {
     border-radius: 12px;
+    max-height: 650px;
   }
+  
+  .overlay-modal {
+    width: 600px;
+  }
+   /* Hamburger menu */
+
+    /* Hide the hamburger button */
+  .menu-button {
+    display: none;
+  }
+
+  /* Menu panel turns into a static row */
+  .menu-panel {
+    position: static;        /* no longer fixed */
+    width: auto;
+    height: auto;
+    background: transparent; /* remove background */
+    box-shadow: none;
+    padding: 0;
+    transition: none;
+    
+    border-bottom: 1px dotted var(--darkContrast);
+  }
+
+  /* Row of links */
+  .nav-links {
+    flex-direction: row; /* horizontal instead of column */
+    justify-content: flex-end;
+    gap: 30px;          /* space between links */
+  }
+
+  .nav-links li a {
+    font-size: 1em;
+    color: var(--highlightContrast);
+  }
+
+  .nav-links li a:hover {
+    color: var(--darkContrast);
+    font-weight: 400;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+  }
+  .nav-separator{
+  display: none; 
+}
+  
 }
 /*************** End Desktop overrides (≥ 1024px) *****************/

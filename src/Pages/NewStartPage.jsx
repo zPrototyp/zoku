@@ -28,10 +28,9 @@ export default function NewStartPage() {
        
      <div className="sp-questionsBox">
                   
-      <h2 className="sp-question">Varumärken som speglar dina värderingar</h2>
-      <p>Upptäck din värderingspersonlighet. <br />
-      Matcha med varumärken som delar dina värderingar.<br />
-      Upptäck influencers och människor som vill konsumera som du.</p>
+      <h2 className="sp-question">Vilka varumärken är du?</h2>
+       <p>Upptäck din personlighet och bli matchad med varumärken som delar dina värderingar. </p>
+       <p>Jämför med dina vänner och kanske någon artist du gillar.</p>
 
       <button className="btn-small active" onClick={()=> setZokuInfo(true) }>Vad är Zoku?</button>
 
@@ -71,7 +70,7 @@ export default function NewStartPage() {
       
       <div className="sp-quizButtonBox">
         <button className="active">
-          <NavLink to="/newtest" className="nav-link">Upptäck min personlighet</NavLink>
+          <NavLink to="/test" className="nav-link">Upptäck din personlighet</NavLink>
           </button>
       </div>
 
@@ -99,9 +98,12 @@ export default function NewStartPage() {
 
         <p>Genom att svara på några enkla frågor upptäcker du din värderingspersonlighet och matchar med människor och varumärken som delar dina värderingar.
         </p>
-          <button className="active">
-          <NavLink to="/newtest" className="nav-link">Upptäck min personlighet</NavLink>
-          </button>
+        <button className="active btn-small">
+          <NavLink to="/aboutZoku">Läs Zokus manifest</NavLink>
+        </button>
+        <button className="active">
+          <NavLink to="/test" className="nav-link">Upptäck din personlighet</NavLink>
+        </button>
 
       </OverlayModal>
    

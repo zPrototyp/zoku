@@ -60,7 +60,7 @@ const BrandCarousel = ({ brands, category }) => {
       <div className="brand-carousel">
           <button className={`brandcarousel prev${total > 1 ? '' : ' inactive'}`} onClick={prev}>  &lt; </button>
           <PrintBrandCard brand={brand} setActiveModal={setActiveModal} />     
-          <button className={`brandcarousel prev${total > 1 ? '' : ' inactive'}`} onClick={next}> &gt;  </button>
+          <button className={`brandcarousel next${total > 1 ? '' : ' inactive'}`} onClick={next}> &gt;  </button>
           </div>
       </div>
 

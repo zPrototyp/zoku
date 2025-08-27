@@ -6,7 +6,7 @@ import { ZokuMasks } from "../assets/uiData/PersonalityImages";
 import { ShareOverlay } from "./ShareOverlay";
 import { GiReturnArrow } from "react-icons/gi";
 
-function PersonalityCard({ personality, profile, highlight, testValues })
+function PersonalityCard({ personality, profile, fullProfile, highlight, testValues })
 {
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
@@ -33,14 +33,13 @@ function PersonalityCard({ personality, profile, highlight, testValues })
                   className="clickable-icon" 
                   title="Gör om testet" 
                   size="30px"
-                  onClick={() => navigate("/newtest")}/>
+                  onClick={() => navigate("/test")}/>
 
 
       </div>
       <ShareOverlay 
         personality={personality} 
-        profile={profile} 
-        testValues={testValues}
+        profile={fullProfile} 
       />
 
       <div className="card-body preview">
