@@ -186,13 +186,14 @@ function ResultPage () {
             />
           </div>
         </div>
-
-        <button
-          onClick={() => setUiStatus(prev => ({ ...prev, showBrandList: !prev.showBrandList }))}
-          className={uiStatus.showBrandList ? "active btn-small": "active"}
-        >
-          {uiStatus.showBrandList ? "Dölj mina matchningar": "Utforska mina matchningar"}
-        </button>
+        <div className="btn-show-matches">   
+          <button
+            onClick={() => setUiStatus(prev => ({ ...prev, showBrandList: !prev.showBrandList }))}
+            className={uiStatus.showBrandList ? "active btn-small": "active"}
+          >
+            {uiStatus.showBrandList ? "Dölj mina matchningar": "Utforska mina matchningar"}
+          </button>
+        </div>
 
         {/* Top 3 celebrity matches (from public controller) */}
         {uiStatus.showBrandList && topCelebs.length > 0 && (
