@@ -204,11 +204,7 @@ function ResultPage () {
                 <CelebrityCard
                   key={celeb.id || celeb.name}
                   celeb={celeb}
-                  user={{
-                    compassionVsAmbition: testValues.compassionVsAmbition,
-                    changeVsTradition: testValues.changeVsTradition,
-                    primaryPersonality: result?.primaryPersonality
-                  }}
+                  user={result}
                   celebBrands={celeb?.brands || []}
                 />
               ))}

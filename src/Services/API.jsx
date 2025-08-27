@@ -180,6 +180,21 @@ export const API_updatePersonality = async (change, compassion, bearer) => {
 
 }
 
+// Fetching brands for Random
+export const API_getBrands = async (category, limit, onSuccess) => {
+  const res = await fetch(`${AZURE_API}/brands?Category=${category}&Limit=${limit}`,
+    {method: 'GET'}
+  );
+  if (!res.ok) throw new Error('Failed to fetch brands')
+    const data = await res.json();
+  if (data.success){
+    onSuccess(data.data);
+    return data.data;
+  }
+
+}
+
+
 
 // Below: copied from Backend_Peter
 // const API_BASE_URL = '/api/v1';
