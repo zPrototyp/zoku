@@ -33,3 +33,23 @@ button.inactive {
 .expand-feed-brand button {
   background-color: var(--highlightOp50);
 }
+
+.brand-carousel {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 5px;
+}
+
+/* Two per row on medium screens */
+@media (min-width: 768px) {
+  .brand-carousel {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Three per row on large screens */
+@media (min-width: 1100px) {
+  .brand-carousel {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

@@ -547,6 +547,10 @@ ul.no-dots {
   background-color: var(--highlight);
   padding: 0.5em;
   border-radius: 10px;
+  text-align: center;
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
 }
 .random-brand h3 {
   margin: 0;
@@ -771,7 +775,7 @@ text-align: left;
   }
   /* Page container */
   .page-content {
-    max-width: 1100px;
+    max-width: 900px;
     padding: 0 32px;
     text-align: left; /* more natural on desktop */
   }
@@ -823,7 +827,7 @@ text-align: left;
   /* Feed list can breathe more */
   .feed {
     max-width: 900px;
-    margin: 0;
+    margin: 0 auto;
   }
 
   /* Celebrity teaser on feed a bit wider/taller */

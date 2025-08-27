@@ -10,7 +10,7 @@ import { ShareOverlay } from "./ShareOverlay";
 import "../assets/css/BrandCarousel.css";
 import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
 
-export default function BrandCards({ brandList, categorize, filter }) {
+export default function BrandCards({ brandList, categorize }) {
 
   const token = useAtomValue(authTokenAtom);
   const user = useAtomValue(valueProfileAtom);
@@ -39,28 +39,47 @@ export default function BrandCards({ brandList, categorize, filter }) {
   }, [brandList, activeModal]);
   
   // Carousel component to print brands per category
-const BrandCarousel = ({ brands, category }) => {
-  const [index, setIndex] = useState(0);
+  const BrandCarousel = ({ brands, category }) => {
   const total = brands.length;
-
-  const next = () => setIndex((prev) => (prev + 1) % total);
-  const prev = () => setIndex((prev) => (prev - 1 + total) % total);
-
-  const brand = brands[index];
 
   return (
     <div>
-      <h3>{brandCategories[category]} - {index + 1} / {total}</h3>
+      <h3>{brandCategories[category]} - {total}</h3>
 
       <div className="brand-carousel">
-          <button className={`brandcarousel prev${total > 1 ? '' : ' inactive'}`} onClick={prev}>  &lt; </button>
-          <PrintBrandCard brand={brand} setActiveModal={setActiveModal} />     
-          <button className={`brandcarousel next${total > 1 ? '' : ' inactive'}`} onClick={next}> &gt;  </button>
-          </div>
+        {brands.map((brand) => (
+          <PrintBrandCard
+            key={brand.id}
+            brand={brand}
+            setActiveModal={setActiveModal}
+          />
+        ))}
       </div>
-
+    </div>
   );
 };
+// const BrandCarousel = ({ brands, category }) => {
+//   const [index, setIndex] = useState(0);
+//   const total = brands.length;
+
+//   const next = () => setIndex((prev) => (prev + 1) % total);
+//   const prev = () => setIndex((prev) => (prev - 1 + total) % total);
+
+//   const brand = brands[index];
+
+//   return (
+//     <div>
+//       <h3>{brandCategories[category]} - {index + 1} / {total}</h3>
+
+//       <div className="brand-carousel">
+//           <button className={`brandcarousel prev${total > 1 ? '' : ' inactive'}`} onClick={prev}>  &lt; </button>
+//           <PrintBrandCard brand={brand} setActiveModal={setActiveModal} />     
+//           <button className={`brandcarousel next${total > 1 ? '' : ' inactive'}`} onClick={next}> &gt;  </button>
+//           </div>
+//       </div>
+
+//   );
+// };
 
   return (
     <>
