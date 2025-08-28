@@ -467,8 +467,6 @@ ul.no-dots {
   padding: 0.5em 0;
   border-radius: 10px;
   background-color: var(--alt);
-  /* display: flex;
-  flex-direction: row; */
   align-items: center;
   font-size: 0.6em;
 }
@@ -943,6 +941,10 @@ text-align: left;
   .nav-separator{
   display: none; 
 }
-  
+
+.tribe-card {
+  gap: 2em;
+}
+
 }
 /*************** End Desktop overrides (≥ 1024px) *****************/

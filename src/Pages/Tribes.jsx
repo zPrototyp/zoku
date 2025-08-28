@@ -1,11 +1,14 @@
+import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import OverlayModal from "../Components/OverlayModal";
 import { valueProfiles } from "../assets/uiData/zoku_profiles_se";
 import { ZokuMasks } from "../assets/uiData/PersonalityImages";
+import {API_safeGetCelebrities} from "../Services/API";
 export default function Tribes() {
     const [activeModal, setActiveModal] = useState(null);
     const closeModal = () => setActiveModal(null);
+    const [result, setResult] = useState(null);
     const listOrder= [
       "Adventurer",
       "Idealist", 
@@ -17,6 +20,18 @@ export default function Tribes() {
       "Caregiver"
     ];
 
+
+    // Fetch one or two celebs for each personality
+    useEffect( () => {
+      API_safeGetCelebrities("Adventurer", 2, setResult);
+
+    },[])
+    
+    useEffect( () => {
+      result && console.log(result)
+    },[result])
+    
+    
 
     // Print out the Zoku cards
 
