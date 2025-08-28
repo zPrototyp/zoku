@@ -5,10 +5,14 @@ import OverlayModal from "../Components/OverlayModal";
 import { valueProfiles } from "../assets/uiData/zoku_profiles_se";
 import { ZokuMasks } from "../assets/uiData/PersonalityImages";
 import {API_safeGetCelebrities} from "../Services/API";
+import "../assets/css/MenuZokuTribes.css"
+import CelebrityCard from "../Components/CelebrityCard";
+
 export default function Tribes() {
     const [activeModal, setActiveModal] = useState(null);
     const closeModal = () => setActiveModal(null);
-    const [result, setResult] = useState(null);
+    const [celebsByPersonality, setCelebsByPersonality] = useState({});
+
     const listOrder= [
       "Adventurer",
       "Idealist", 
@@ -21,18 +25,29 @@ export default function Tribes() {
     ];
 
 
-    // Fetch one or two celebs for each personality
-    useEffect( () => {
-      API_safeGetCelebrities("Adventurer", 2, setResult);
+    function randomCeleb(array){ 
+      if (!array || array.length === 0) return null;
+      const randomIndex = Math.floor(Math.random() * array.length);
+      return array[randomIndex];
+  }
 
-    },[])
-    
-    useEffect( () => {
-      result && console.log(result)
-    },[result])
-    
-    
+  useEffect(() => {
+    const fetchCelebs = async (personality) => {
+      const data = await API_safeGetCelebrities(personality, 3, ()=>{});
+      // Merge one random celeb into existing state
+      setCelebsByPersonality((prev) => ({
+        ...prev,
+        [personality]: randomCeleb(data), 
+      }));
 
+    };
+
+    listOrder.forEach((personality) => {
+      fetchCelebs(personality);
+    });
+  }, []);
+    
+    // console.log(celebsByPersonality);
     // Print out the Zoku cards
 
     function ZokuCards() {
@@ -45,6 +60,10 @@ export default function Tribes() {
                 <img className="mask60" src={ZokuMasks[profile]} alt={profile} />
                 <h2>{valueProfiles[profile]?.title}</h2>
                 <p>{valueProfiles[profile]?.subtitle}</p>
+                <div className="tribe-card-celeb-preview">
+                  <p>{celebsByPersonality[profile]?.name}</p>
+                    <img src={celebsByPersonality[profile]?.imageUrl} />
+                </div>
             </div>
             )
           )
@@ -80,6 +99,10 @@ export default function Tribes() {
             </ul>
             <h3>{valueProfiles[activeModal].consumerHeader}</h3>
             <p>{valueProfiles[activeModal].consumerText}</p>
+
+              <div>
+                <CelebrityCard celeb={celebsByPersonality[activeModal]} />
+              </div>
 
               {/* If logged in - show link to compare yourself, if not - link to test */}
             <div>
