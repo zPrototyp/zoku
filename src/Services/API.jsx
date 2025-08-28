@@ -203,7 +203,6 @@ export const API_safeGetCelebrities = async (personality, variations, onSuccess)
   if (data.success){
     onSuccess(data.data);
     return data.data;}
-
 }
 
 

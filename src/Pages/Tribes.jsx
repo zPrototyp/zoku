@@ -9,6 +9,7 @@ export default function Tribes() {
     const [activeModal, setActiveModal] = useState(null);
     const closeModal = () => setActiveModal(null);
     const [result, setResult] = useState(null);
+    const [celebs, setCelebs] = useState([]);
     const listOrder= [
       "Adventurer",
       "Idealist", 
@@ -20,18 +21,25 @@ export default function Tribes() {
       "Caregiver"
     ];
 
+    
+    const [celebsByPersonality, setCelebsByPersonality] = useState({});
 
-    // Fetch one or two celebs for each personality
-    useEffect( () => {
-      API_safeGetCelebrities("Adventurer", 2, setResult);
+  useEffect(() => {
+    const fetchCelebs = async (personality) => {
+      const data = await API_safeGetCelebrities(personality, 2, ()=>{});
+      // Merge into existing state
+      setCelebsByPersonality((prev) => ({
+        ...prev,
+        [personality]: data,   // store array of celebs under this personality
+      }));
+    };
 
-    },[])
+    listOrder.forEach((personality) => {
+      fetchCelebs(personality);
+    });
+  }, []);
     
-    useEffect( () => {
-      result && console.log(result)
-    },[result])
-    
-    
+    console.log(celebsByPersonality);
 
     // Print out the Zoku cards
 
