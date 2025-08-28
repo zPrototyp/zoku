@@ -749,6 +749,13 @@ text-align: left;
 .feedpage-brand {
   height: 250px;
 }
+.feedpage-brand>img{
+  min-width: 120%;
+  min-height: 250px;
+  align-items: center;
+  transform: translateY(0);
+}
+
   /* Feed list can breathe more */
   .feed {
     max-width: 900px;
