@@ -34,7 +34,7 @@ function ResultPage () {
     isLoading: true,
     error: null,
     showBrandList: false,
-    showComparison: false,
+    showComparison: true,
   })
 
   // Added sessionToken for sending to backend
@@ -139,7 +139,9 @@ function ResultPage () {
             <button style={{fontSize:"1.2em"}} onClick={() => setUiStatus(prev => ({ ...prev, showComparison: !prev.showComparison }))}>Dölj jämförelse</button>
           </div>
           )}
-        {!uiStatus.showComparison && hasFriend && (<button style={{fontSize:"1.2em"}} onClick={()=>setShowComparison(p=> !p)}>Visa jämförelse med {valueProfiles[friendProfile?.primaryPersonality.name].title}</button>)}
+        {!uiStatus.showComparison && hasFriend && (
+          <button style={{fontSize:"1.2em"}} 
+          onClick={()=>setUiStatus((p)=>({...p, showComparison: !p.showComparison}))}>Visa jämförelse med {valueProfiles[friendProfile?.primaryPersonality.name].title}</button>)}
         <h2>Din Personlighet</h2>
 
         <div className="personality-result">
