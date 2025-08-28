@@ -134,7 +134,7 @@ export default function CelebrityCard({ celeb, user, celebBrands = [], onAfterUn
         )}
 
         {/* Compare button */}
-        <button
+       {user && <button
           className="btn btnSlim"
           onClick={() => setShowDial((v) => !v)}
           disabled={!canShowDial}
@@ -142,7 +142,7 @@ export default function CelebrityCard({ celeb, user, celebBrands = [], onAfterUn
           aria-disabled={!canShowDial}
         >
           {showDial ? "Dölj jämförelse" : "Jämför"}
-        </button>
+        </button>}
       </div>
 
       {/* Comparison dial  */}
