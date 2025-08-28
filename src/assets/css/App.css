@@ -449,83 +449,7 @@ ul.no-dots {
 }
 /*************** END AboutZoku.jsx stylings *********************/
 
-/*************** Tribes.jsx stylings *********************/
 
-.tribes-container{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.2em;
-  padding: 0 0.5em;
-}
-.tribe-card {
-  display: grid;
-  grid-template-columns: 70px 100px auto;
-  column-gap: 0.5em;
-  width: 100%;
-  margin: 0 0.5em;
-  padding: 0.5em 0;
-  border-radius: 10px;
-  background-color: var(--alt);
-  align-items: center;
-  font-size: 0.6em;
-}
-.tribe-card:hover {
-  background-color: var(--highlight);
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-}
-.tribe-card > img {
-  grid-column: 1/2;
-  margin: 0 auto;
-}
-.tribe-card > h2 {
-  grid-column: 2/3;
-  margin: 0 auto;
-}
-.tribe-card > p {
-  grid-column: 3/4;
-  text-align: left;
-  overflow: auto;
-}
-
-.zokuProfilePopup{
-  font-size: 12px;
-}
-.zokuProfilePopup::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('../images/ZokuTitle.svg');
-  background-size: 90% auto;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0.1;
-  pointer-events: none; /* ensures it doesn't block clicks */
-}
-.zokuProfilePopup > h3 {
-    margin: 0;
-}
-.zokuProfilePopup > p {
- margin-top: 0;
-  
-}
-.zokuProfilePopupHeader {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 2em;
-}
-.zokuProfilePopup > ul {
-  text-align: left;
-}
-.zokuProfilePopup button {
-  margin: 0.5em 0;
-}
-/*************** END Tribes.jsx stylings *********************/
 
 /*************** ResultPage.jsx stylings *********************/
 .result-page
@@ -940,10 +864,6 @@ text-align: left;
   }
   .nav-separator{
   display: none; 
-}
-
-.tribe-card {
-  gap: 2em;
 }
 
 }
