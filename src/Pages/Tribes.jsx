@@ -97,10 +97,11 @@ export default function Tribes() {
                 <li key={i}>{item}</li>
               ))}
             </ul>
-            <h3>{valueProfiles[activeModal].consumerHeader}</h3>
-            <p>{valueProfiles[activeModal].consumerText}</p>
+            {/* <h3>{valueProfiles[activeModal].consumerHeader}</h3> */}
+            {/* <p>{valueProfiles[activeModal].consumerText}</p> */}
 
               <div>
+                <h3>En kändis som matchar {valueProfiles[activeModal].title}</h3>
                 <CelebrityCard celeb={celebsByPersonality[activeModal]} />
               </div>
 
