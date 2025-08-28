@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import OverlayModal from "../Components/OverlayModal";
 import { valueProfiles } from "../assets/uiData/zoku_profiles_se";
@@ -12,6 +12,7 @@ export default function Tribes() {
     const [activeModal, setActiveModal] = useState(null);
     const closeModal = () => setActiveModal(null);
     const [celebsByPersonality, setCelebsByPersonality] = useState({});
+    const navigate = useNavigate();
 
     const listOrder= [
       "Adventurer",
@@ -103,6 +104,11 @@ export default function Tribes() {
               {celebsByPersonality[activeModal] && <div>
                 <h3>En kändis som matchar {valueProfiles[activeModal].title}</h3>
                 <CelebrityCard celeb={celebsByPersonality[activeModal]} />
+                <button className="btn-small"
+                onClick={() => {navigate(`/test?changeY=${celebsByPersonality[activeModal].changeVsTradition}&compassionX=${celebsByPersonality[activeModal].compassionVsAmbition}`)
+                  
+                }}
+                >Se hur jag matchar {celebsByPersonality[activeModal].name}</button>
               </div>}
 
               {/* If logged in - show link to compare yourself, if not - link to test */}

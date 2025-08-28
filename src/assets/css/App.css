@@ -557,7 +557,6 @@ ul.no-dots {
 .feedpage-brand>img{
   width: 120%;
   align-items: center;
-  transform: translateY(-40%);
 }
 .feedpage-celeb {
   display: grid;
