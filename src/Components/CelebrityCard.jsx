@@ -112,7 +112,7 @@ export default function CelebrityCard({ celeb, user, celebBrands = [], onAfterUn
             <h3 className="celebName">{celeb?.name || "Okänd kändis"}</h3>
             {user ? 
             <span className="celebMatch">{matchPct}% match</span> : 
-            <span className="type">{celeb?.primaryMatchPercentage}% {celeb?.personalityType}</span>
+            <span className="type">{celeb?.primaryMatchPercentage}% {valueProfiles[celeb?.personalityType].title}</span>
             }
           </div>
           {pProf && <div className="celebPrimary">{pProf.title}</div>}
