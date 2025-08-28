@@ -728,6 +728,53 @@ text-align: left;
   }
   .circle-layout img { height: 96px; }
 
+
+  
+/* Top */
+.top-left {
+  top: calc(50% - 220px);  /* 411/2 + 100/2 */
+  left: calc(50% - 130px);
+}
+
+.top-right {
+  top: calc(50% - 220px);
+  left: calc(50% + 70px);
+}
+
+/* Right */
+.right-top {
+  top: calc(50% - 205px + 100px); /* offset from top of center */
+  left: calc(50% + 120px);       /* 311/2 + 50 */
+}
+
+.right-bottom {
+  top: calc(50% + 20px);         /* offset from center down */
+  left: calc(50% + 120px);
+}
+
+/* Bottom */
+.bottom-right {
+  bottom: calc(50% - 220px);
+  left: calc(50%  + 70px);
+}
+
+.bottom-left {
+  bottom: calc(50% - 220px);
+  left: calc(50% - 130px);
+}
+
+/* Left */
+.left-bottom {
+  top: calc(50% + 20px);
+  left: calc(50% - 190px);
+}
+
+.left-top {
+  top: calc(50% - 205px + 100px);
+  left: calc(50% - 190px);
+}
+
+
   /* Result page wider center column */
   .result-page {
     max-width: 1200px;
