@@ -166,12 +166,14 @@ function TestPage () {
           )}      
       </div>
       <OverlayModal isOpen={uiState.tooltip} onClose={closeTooltip}>
+        <h2>Gemenskap vs Ambition</h2>
         <p>
           <strong>Gemenskap:</strong> Fokus på samhörighet, relationer och empati.
         </p>
         <p>
           <strong>Ambition:</strong> Drivkraft, prestation och personlig framgång.
         </p>
+        <h2>Förändring vs Tradition</h2>
         <p>
           <strong>Förändring:</strong> Öppenhet för nya idéer, äventyr och frihet.
         </p>
