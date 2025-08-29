@@ -159,9 +159,9 @@ function TestPage () {
         <SplitPersonalityDial value={position} onChange={setPosition} uiState={uiState} setUiState={setUiState} />
 
       {uiState.showResultButton && (
-        <button onClick={handleSubmit} className='active'>
+        <button onClick={handleSubmit} className='btn-show-personality'>
           {friendValues?.changeVsTradition>0 && 'Jämför oss - '}
-          {authToken ? 'Spara ändringar' : 'Visa personlighetstyp'}
+          {authToken ? 'Spara ändringar' : 'Visa min personlighet'}
         </button>
           )}      
       </div>

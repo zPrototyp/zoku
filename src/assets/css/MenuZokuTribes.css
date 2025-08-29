@@ -50,10 +50,10 @@
   width: 90%;
   height: 90%;
   background-image: url('../images/ZokuTitle.svg');
-  background-size: 80% auto;
+  background-size: auto auto;
   background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0.1;
+  background-repeat: repeat-y;
+  opacity: 0.03;
   pointer-events: none; /* ensures it doesn't block clicks */
 }
 .zokuProfilePopup > h3 {

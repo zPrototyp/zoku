@@ -326,7 +326,10 @@ button a {
   justify-content: space-between;
   font-size: 0.6em;
 }
-
+.btn-show-personality{
+  font-size: 36px;
+  background-color: var(--alt);
+}
 @keyframes popIn {
   to {
     transform: translate(0, 0) scale(1);
@@ -807,7 +810,6 @@ text-align: left;
     left: calc(50% - 190px);
   }
 
-
   /* Result page wider center column */
   .result-page {
     max-width: 1200px;
@@ -966,6 +968,24 @@ text-align: left;
     display: inline-block;
     margin-right: 1em;
   }
+/* Test page for large screens two columns */
+.test-container{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1em;
+  justify-items: center;
+}
+.test-header{
+  grid-column: 1/3;
+}
+
+.test-next-buttons{
+  grid-column: 1/2;
+}
+.test-map{
+  grid-column: 2/3;
+  grid-row: 2/3;
+}
 
 }
 /*************** End Desktop overrides (≥ 1024px) *****************/
