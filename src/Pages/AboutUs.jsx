@@ -12,12 +12,13 @@ export default function AboutUs() {
                 </h1>
             </NavLink>
             <h2>Om Oss</h2>
-            <p>Zoku ™</p>
-            <p>är ett koncept av </p>
-            <p><a href="https://www.magnussonkennberg.se/">Magnusson & Kennberg</a></p>
-            <p>i samarbete med</p>
-            <p><a href="https://www.webbess.se/">WebbEss</a></p>
-    
+            <div className="about-textlines">
+                <p>Zoku ™</p>
+                <p>är ett koncept av </p>
+                <p><a href="https://www.magnussonkennberg.se/">Magnusson & Kennberg</a></p>
+                <p>i samarbete med</p>
+                <p><a href="https://www.webbess.se/">WebbEss</a></p>
+            </div>
             <div className="aboutprofileBox">
                 <div className="aboutProfile-Traditionalist">
                     <h2>Matz Magnusson</h2>

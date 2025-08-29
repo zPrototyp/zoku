@@ -948,6 +948,17 @@ text-align: left;
   .nav-separator{
   display: none; 
 }
+/* move the text central on big screens for About us page profiles */
+  [class^="aboutProfile-"] {
+    text-align:center;
+  }
+  .about-textlines{
+    text-align: center;
+  }
+  .about-textlines p{
+    display: inline-block;
+    margin-right: 1em;
+  }
 
 }
 /*************** End Desktop overrides (≥ 1024px) *****************/
