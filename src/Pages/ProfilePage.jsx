@@ -220,6 +220,8 @@ function ProfilePage() {
               <h3>Tidigare Resultat</h3>
               {history.map((item, idx) => (
                 <div key={idx} className="history-entry">
+                  <div className={`aboutProfile-${item.primaryType}`}>
+                  {/* <div className="aboutProfile-Traditionalist"> */}
                   <p>
                     <strong>{new Date(item.createdAt).toLocaleString()}</strong>
                   </p>
@@ -232,6 +234,7 @@ function ProfilePage() {
                   <p>
                     Tredje: {valueProfiles[item.thirdType].title} ({item.thirdMatchPercentage}%)
                   </p>
+                  </div>
                   <hr />
                 </div>
               ))}

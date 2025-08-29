@@ -702,6 +702,13 @@ text-align: left;
 .hidden-brands-toggle {
   grid-column: 3;
 }
+
+.history-entry [class^="aboutProfile-"] {
+  width: unset;
+  font-size: unset;
+  background-color: unset;
+}
+
 /*************** END Profile Page stylings *********************/
 /*************** Desktop overrides (≥ 1024px) *****************/
 @media (min-width: 1024px) {
