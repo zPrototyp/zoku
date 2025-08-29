@@ -15,6 +15,7 @@ import { testValuesAtom } from "../Atoms/TestValuesAtom";
 import { API_userSafeFetchJson } from "../Services/API";
 import TribeCommunity from "../Components/TribeCommunity";
 import RandomBrand from "../Components/RandomBrand";
+import { MdKeyboardDoubleArrowDown, MdKeyboardDoubleArrowUp } from "react-icons/md";
 
 // import { comparisonValueAtom } from '../Atoms/ComparisonValueAtom.jsx'
 // import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
@@ -170,7 +171,19 @@ function ProfilePage() {
             onClick={() => setUiStatus(prev => ({ ...prev, showBrandList: !prev.showBrandList }))}
             className={uiStatus.showBrandList ? "active btn-small btn-show-matches": "active btn-show-matches"}
           >
-            {uiStatus.showBrandList ? "Dölj mina matchningar": "Utforska mina matchningar"}
+            {uiStatus.showBrandList ? (
+              <>
+              <MdKeyboardDoubleArrowUp className="clickable-icon"/>
+              Dölj mina matchningar
+              <MdKeyboardDoubleArrowUp className="clickable-icon"/>
+              </>
+            ) : (
+              <>
+              <MdKeyboardDoubleArrowDown className="clickable-icon"/>
+                Utforska mina matchningar
+                <MdKeyboardDoubleArrowDown className="clickable-icon"/>
+              </>
+            )}
           </button>
         </div>
         {uiStatus.showBrandList && <BrandWardrobe

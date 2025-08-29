@@ -19,6 +19,7 @@ import { CreateComparisonDials } from '../Components/CreateComparisonDials.jsx'
 import { ApiService, API_getCelebrities, API_getPopularCelebrities } from '../Services/API.jsx'
 import CelebrityCard from '../Components/CelebrityCard'
 import RandomBrand from '../Components/RandomBrand.jsx'
+import { MdKeyboardDoubleArrowDown, MdKeyboardDoubleArrowUp } from "react-icons/md";
 
 // Create a local instance since API.jsx exports the class, not a default singleton
 const apiService = new ApiService();
@@ -180,7 +181,19 @@ function ResultPage () {
             onClick={() => setUiStatus(prev => ({ ...prev, showBrandList: !prev.showBrandList }))}
             className={uiStatus.showBrandList ? "active btn-small btn-show-matches": "active btn-show-matches"}
           >
-            {uiStatus.showBrandList ? "Dölj mina matchningar": "Utforska mina matchningar"}
+          {uiStatus.showBrandList ? (
+              <>
+              <MdKeyboardDoubleArrowUp className="clickable-icon"/>
+              Dölj mina matchningar
+              <MdKeyboardDoubleArrowUp className="clickable-icon"/>
+              </>
+            ) : (
+              <>
+              <MdKeyboardDoubleArrowDown className="clickable-icon"/>
+                Utforska mina matchningar
+                <MdKeyboardDoubleArrowDown className="clickable-icon"/>
+              </>
+            )}
           </button>
         </div>
 

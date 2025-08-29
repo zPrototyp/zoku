@@ -466,9 +466,13 @@ ul.no-dots {
   font-family: sans-serif;
 }
 .btn-show-matches{
+  width: 100%;
   text-align: center;
   font-size: 40px;
-  border-radius: 20px;
+}
+.btn-small.btn-show-matches{
+  font-size: 24px;
+  width: unset;
 }
 .random-brand{
   
