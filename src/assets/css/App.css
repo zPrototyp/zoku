@@ -1016,10 +1016,11 @@ text-align: left;
     grid-column: 2/3;
   }
   .btn-show-matches {
-    grid-column: 2/3;
+    display: none;
+    /* grid-column: 2/3;
     grid-row: 1/2;
     width: 400px;
-    justify-self:center;
+    justify-self:center; */
     
   }
   .wardrobe-section, .brand-list {
