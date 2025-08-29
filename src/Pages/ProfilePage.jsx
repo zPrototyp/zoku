@@ -16,6 +16,7 @@ import { API_userSafeFetchJson } from "../Services/API";
 import TribeCommunity from "../Components/TribeCommunity";
 import RandomBrand from "../Components/RandomBrand";
 import { MdKeyboardDoubleArrowDown, MdKeyboardDoubleArrowUp } from "react-icons/md";
+import useMediaQuery from "../Components/MediaQuery";
 
 // import { comparisonValueAtom } from '../Atoms/ComparisonValueAtom.jsx'
 // import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
@@ -38,15 +39,17 @@ function ProfilePage() {
       showBrandList: false,
     })
 
+  const isComputer = useMediaQuery("(min-width: 1024px)")
+  
   // const [friendValues] = useAtom(comparisonValueAtom)
   // const [friendProfile] = useAtom(comparisonProfileAtom)
   // const [showComparison, setShowComparison] = useState(false);
-
+  
   // On load fetch all the profile information
   useEffect(() => {
     setProfile(null);
     if (!token) return;
-
+    
     try { API_userSafeFetchJson(token, 'user/personality', setProfile) }
     catch (err) {
       setError("Kunde inte hämta profil: " + err.message);
@@ -62,6 +65,7 @@ function ProfilePage() {
       setError("Kunde inte hämta historik: " + err.message);
       console.error("Fel vid hämtning av historik:", err);
     }
+  if (isComputer) setUiStatus((prev)=>({...prev, showBrandList:true}))
 
   }, [token]);
 

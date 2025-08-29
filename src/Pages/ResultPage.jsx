@@ -20,6 +20,7 @@ import { ApiService, API_getCelebrities, API_getPopularCelebrities } from '../Se
 import CelebrityCard from '../Components/CelebrityCard'
 import RandomBrand from '../Components/RandomBrand.jsx'
 import { MdKeyboardDoubleArrowDown, MdKeyboardDoubleArrowUp } from "react-icons/md";
+import useMediaQuery from '../Components/MediaQuery.jsx'
 
 // Create a local instance since API.jsx exports the class, not a default singleton
 const apiService = new ApiService();
@@ -42,6 +43,7 @@ function ResultPage () {
   const sessionToken = useAtomValue(guestTokenAtom)
   const [feedList, setFeedList] = useAtom(feedListAtom)
   const [topCelebs, setTopCelebs] = useState([])
+  const isComputer = useMediaQuery("(min-width: 1024px)")
 
   useEffect(() => {
     if (
@@ -67,6 +69,7 @@ function ResultPage () {
     };
 
     fetchPersonalityAndBrands();
+    if (isComputer) setUiStatus((prev)=>({...prev, showBrandList:true}))
   }, [testValues, sessionToken, setResult, setFeedList]);
 
   // Fetch celebrities after personality is known (separate effect avoids refetch loops)
