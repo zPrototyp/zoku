@@ -69,8 +69,13 @@ function ResultPage () {
     };
 
     fetchPersonalityAndBrands();
-    if (isComputer) setUiStatus((prev)=>({...prev, showBrandList:true}))
   }, [testValues, sessionToken, setResult, setFeedList]);
+
+  useEffect(() => {
+    if (isComputer) {
+      setUiStatus(prev => ({ ...prev, showBrandList: true }));
+    }
+  }, [isComputer]);
 
   // Fetch celebrities after personality is known (separate effect avoids refetch loops)
   useEffect(() => {

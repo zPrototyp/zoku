@@ -65,9 +65,14 @@ function ProfilePage() {
       setError("Kunde inte hämta historik: " + err.message);
       console.error("Fel vid hämtning av historik:", err);
     }
-  if (isComputer) setUiStatus((prev)=>({...prev, showBrandList:true}))
-
   }, [token]);
+
+  
+    useEffect(() => {
+      if (isComputer) {
+        setUiStatus(prev => ({ ...prev, showBrandList: true }));
+      }
+    }, [isComputer]);
 
   // useEffect(() => {
   //   if (uiStatus.showBrandList){
