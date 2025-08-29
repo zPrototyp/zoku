@@ -833,7 +833,6 @@ text-align: left;
   }
   /* Feed controls stretch and align */
   .feed-sort-options {
-    width: 100%;
     max-width: 520px;
     grid-template-columns: 200px 1fr;
     margin: 1rem auto;
