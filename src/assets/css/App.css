@@ -864,6 +864,7 @@ text-align: left;
     grid-template-rows: auto auto;
     justify-content: center;
     gap: 1rem 2rem;
+    margin: 0;
   }
   .secondary-icons {
     grid-column: 1 / -1;     /* span both columns */
