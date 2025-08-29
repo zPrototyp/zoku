@@ -75,19 +75,23 @@
 }
 
 @media (min-width: 1024px) {
+  .personality-result{
+    max-width: 450px;
+  }
+  
   .secondary-card-circle.expanded {
-    width: 310px;
+    /* width: 310px; */
   }
 
   .card-body.full-info{
-    display: grid;
+    /* display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto auto;
     column-gap: 1em;
-    padding: 1em;
+    padding: 1em; */
   }
   .card-body.full-info>h4 {
-    grid-row: 1/2;
+    /* grid-row: 1/2; */
   }
 
 }

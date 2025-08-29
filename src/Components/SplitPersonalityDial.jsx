@@ -29,6 +29,10 @@ function SplitPersonalityDial({ value, onChange, uiState, setUiState })
   const [showWarning, setShowWarning] = useState(false);
   const [animate, setAnimate] = useState(false);
 
+  if (value.x !=50 && value.y != 50){
+    uiState.nextButtonState = true;
+  }
+
   useEffect(() => {
   if (uiState.resultMap) {
     setAnimate(true);

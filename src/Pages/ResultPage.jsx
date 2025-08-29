@@ -145,6 +145,7 @@ function ResultPage () {
           onClick={()=>setUiStatus((p)=>({...p, showComparison: !p.showComparison}))}>Visa jämförelse med {valueProfiles[friendProfile?.primaryPersonality.name].title}</button>)}
         <h2>Din Personlighet</h2>
 
+        <div className="result-content">
         <div className="personality-result">
           {result?.primaryPersonality?.name &&
             valueProfiles[result.primaryPersonality.name] && (
@@ -199,7 +200,7 @@ function ResultPage () {
 
         {/* Top 3 celebrity matches (from public controller) */}
         {uiStatus.showBrandList && topCelebs.length > 0 && (
-          <div style={{ width: '100%', maxWidth: '1000px' }}>
+          <div className="result-celeb-matches">
             <h2 style={{ marginTop: '1.5rem' }}>Topp 3 kändismatchningar</h2>
             <div style={{ display: 'grid', gap: '1rem' }}>
               {topCelebs.map((celeb) => (
@@ -245,10 +246,11 @@ function ResultPage () {
 
         <button
           onClick={() => navigate('/register', { state: result })}
-          className='active'
+          className='active btn-go-to-register'
         >
           Spara och fortsätt
         </button>
+      </div>
       </div>
     </>
   )

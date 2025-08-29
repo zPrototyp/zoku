@@ -121,114 +121,114 @@ function ProfilePage() {
           )}
         {!showComparison && hasFriend && (<button style={{fontSize:"1.2em"}} onClick={()=>setShowComparison(p=> !p)}>Visa jämförelse med {valueProfiles[friendProfile?.primaryPersonality.name].title}</button>)} */}
         <h2>Din Personlighet</h2>
+          <div className="result-content">
+          <div className="personality-result">
+            {profile?.primaryPersonality?.name &&
+              valueProfiles[profile.primaryPersonality.name] && (
+                <PersonalityCard
+                  personality={profile.primaryPersonality}
+                  profile={valueProfiles[profile.primaryPersonality.name]}
+                  fullProfile={profile}
+                  testValues={testValues}
+                  highlight
+                />
+              )}
 
-        <div className="personality-result">
-          {profile?.primaryPersonality?.name &&
-            valueProfiles[profile.primaryPersonality.name] && (
-              <PersonalityCard
-                personality={profile.primaryPersonality}
-                profile={valueProfiles[profile.primaryPersonality.name]}
-                fullProfile={profile}
-                testValues={testValues}
-                highlight
+            <div className="secondary-container">
+              {profile?.secondaryPersonality?.name &&
+                valueProfiles[profile.secondaryPersonality.name] && (
+                  <SecondaryPersonalityCard
+                    personality={profile.secondaryPersonality}
+                    profile={valueProfiles[profile.secondaryPersonality.name]}
+                  />
+                )}
+
+              {profile?.thirdPersonality?.name &&
+                valueProfiles[profile.thirdPersonality.name] && (
+                  <SecondaryPersonalityCard
+                    personality={profile.thirdPersonality}
+                    profile={valueProfiles[profile.thirdPersonality.name]}
+                  />
+                )}
+            </div>
+
+            <div className="secondary-icons">
+              <FaPen
+                className="clickable-icon"
+                title="Redigera personlighet"
+                onClick={() => navigate("/test")}
               />
-            )}
-
-          <div className="secondary-container">
-            {profile?.secondaryPersonality?.name &&
-              valueProfiles[profile.secondaryPersonality.name] && (
-                <SecondaryPersonalityCard
-                  personality={profile.secondaryPersonality}
-                  profile={valueProfiles[profile.secondaryPersonality.name]}
-                />
-              )}
-
-            {profile?.thirdPersonality?.name &&
-              valueProfiles[profile.thirdPersonality.name] && (
-                <SecondaryPersonalityCard
-                  personality={profile.thirdPersonality}
-                  profile={valueProfiles[profile.thirdPersonality.name]}
-                />
-              )}
+              <FaClock
+                className="clickable-icon"
+                title="Visa historik"
+                onClick={() => setShowHistory(true)}
+              />
+            </div>
           </div>
 
-          <div className="secondary-icons">
-            <FaPen
-              className="clickable-icon"
-              title="Redigera personlighet"
-              onClick={() => navigate("/test")}
-            />
-            <FaClock
-              className="clickable-icon"
-              title="Visa historik"
-              onClick={() => setShowHistory(true)}
-            />
-          </div>
-        </div>
-
-        <div className="btn-show-matches">
-          <button
-            onClick={() => setUiStatus(prev => ({ ...prev, showBrandList: !prev.showBrandList }))}
-            className={uiStatus.showBrandList ? "active btn-small btn-show-matches": "active btn-show-matches"}
-          >
-            {uiStatus.showBrandList ? (
-              <>
-              <MdKeyboardDoubleArrowUp className="clickable-icon"/>
-              Dölj mina matchningar
-              <MdKeyboardDoubleArrowUp className="clickable-icon"/>
-              </>
-            ) : (
-              <>
-              <MdKeyboardDoubleArrowDown className="clickable-icon"/>
-                Utforska mina matchningar
+          <div className="btn-show-matches">
+            <button
+              onClick={() => setUiStatus(prev => ({ ...prev, showBrandList: !prev.showBrandList }))}
+              className={uiStatus.showBrandList ? "active btn-small btn-show-matches": "active btn-show-matches"}
+            >
+              {uiStatus.showBrandList ? (
+                <>
+                <MdKeyboardDoubleArrowUp className="clickable-icon"/>
+                Dölj mina matchningar
+                <MdKeyboardDoubleArrowUp className="clickable-icon"/>
+                </>
+              ) : (
+                <>
                 <MdKeyboardDoubleArrowDown className="clickable-icon"/>
-              </>
-            )}
-          </button>
-        </div>
-        {uiStatus.showBrandList && <BrandWardrobe
-          brands={brands}
-          showHidden={showHidden}
-          hiddenBrands={hiddenBrands}
-          setHiddenBrands={setHiddenBrands}
-          handleShowHidden={handleShowHidden}
-        />}
-
-        {!uiStatus.showBrandList &&  
-                <RandomBrand category="all" 
-                  bearer={token}
-                  user={profile}
-                  testValues={testValues} 
-                  currentBrandList={brands} />
-                }
-        
-
-        {/* Tribes: Liked celebs + Following users */}
-        {uiStatus.showBrandList && <TribeCommunity token={token} user={profile} title="Tribes" />}
-
-        <OverlayModal isOpen={showHistory} onClose={() => setShowHistory(false)}>
-          <div className="history-list">
-            <h3>Tidigare Resultat</h3>
-            {history.map((item, idx) => (
-              <div key={idx} className="history-entry">
-                <p>
-                  <strong>{new Date(item.createdAt).toLocaleString()}</strong>
-                </p>
-                <p>
-                  Primär: {valueProfiles[item.primaryType].title} ({item.primaryMatchPercentage}%)
-                </p>
-                <p>
-                  Sekundär: {valueProfiles[item.secondaryType].title} ({item.secondaryMatchPercentage}%)
-                </p>
-                <p>
-                  Tredje: {valueProfiles[item.thirdType].title} ({item.thirdMatchPercentage}%)
-                </p>
-                <hr />
-              </div>
-            ))}
+                  Utforska mina matchningar
+                  <MdKeyboardDoubleArrowDown className="clickable-icon"/>
+                </>
+              )}
+            </button>
           </div>
-        </OverlayModal>
+          {uiStatus.showBrandList && <BrandWardrobe
+            brands={brands}
+            showHidden={showHidden}
+            hiddenBrands={hiddenBrands}
+            setHiddenBrands={setHiddenBrands}
+            handleShowHidden={handleShowHidden}
+          />}
 
+          {!uiStatus.showBrandList &&  
+                  <RandomBrand category="all" 
+                    bearer={token}
+                    user={profile}
+                    testValues={testValues} 
+                    currentBrandList={brands} />
+                  }
+          
+
+          {/* Tribes: Liked celebs + Following users */}
+          {uiStatus.showBrandList && <TribeCommunity token={token} user={profile} title="Tribes" />}
+
+          <OverlayModal isOpen={showHistory} onClose={() => setShowHistory(false)}>
+            <div className="history-list">
+              <h3>Tidigare Resultat</h3>
+              {history.map((item, idx) => (
+                <div key={idx} className="history-entry">
+                  <p>
+                    <strong>{new Date(item.createdAt).toLocaleString()}</strong>
+                  </p>
+                  <p>
+                    Primär: {valueProfiles[item.primaryType].title} ({item.primaryMatchPercentage}%)
+                  </p>
+                  <p>
+                    Sekundär: {valueProfiles[item.secondaryType].title} ({item.secondaryMatchPercentage}%)
+                  </p>
+                  <p>
+                    Tredje: {valueProfiles[item.thirdType].title} ({item.thirdMatchPercentage}%)
+                  </p>
+                  <hr />
+                </div>
+              ))}
+            </div>
+          </OverlayModal>
+        </div>
       </div> 
     </>
   );

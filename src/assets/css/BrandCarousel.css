@@ -51,6 +51,6 @@ button.inactive {
 /* Three per row on large screens */
 @media (min-width: 1100px) {
   .brand-carousel {
-    grid-template-columns: repeat(3, 1fr);
+    /* grid-template-columns: repeat(3, 1fr); */
   }
 }
