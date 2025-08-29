@@ -25,55 +25,56 @@ export default function NewStartPage() {
           <span className="sr-only">Zoku</span>
         </h1>
       </NavLink>
-       
-     <div className="sp-questionsBox">
-                  
-      <h2 className="sp-question">Vilka varumärken är du?</h2>
-       <p>Upptäck din personlighet och bli matchad med varumärken som delar dina värderingar. </p>
-       <p>Jämför med dina vänner och kanske någon artist du gillar.</p>
+       <div className="start-page">
+        <div className="sp-questionsBox">
+                      
+          <h2 className="sp-question">Vilka varumärken är du?</h2>
+          <p>Upptäck din personlighet och bli matchad med varumärken som delar dina värderingar. </p>
+          <p>Jämför med dina vänner och kanske någon artist du gillar.</p>
 
-      <button className="btn-small active" onClick={()=> setZokuInfo(true) }>Vad är Zoku?</button>
+        </div>
+        <div className="sp-whatIsZokuBtn">
+          <button className="btn-small active" onClick={()=> setZokuInfo(true) }>Vad är Zoku?</button>
+        </div>
+        <div className="circle-layout">
+    
+          <p className="xTop">Förändring</p>
+          <p className="xBottom">Tradition</p>
+          <p className="yLeft">Gemenskap</p>
+          <p className="yRight">Ambition</p>
 
+          {/* Top edge */}
+          <img src={ZokuMasks.Idealist} className="top-left" 
+            title="Idealisten" onClick={() => setActiveModal("Idealist")} />
+          <img src={ZokuMasks.Adventurer} className="top-right" 
+            title="Äventyraren" onClick={() => setActiveModal("Adventurer")} />
+
+          {/* Right edge */}
+          <img src={ZokuMasks.Achiever} className="right-top" 
+            title="Segraren" onClick={() => setActiveModal("Achiever")} />
+          <img src={ZokuMasks.Strategist} className="right-bottom" 
+            title="Strategen" onClick={() => setActiveModal("Strategist")} />
+
+          {/* Bottom edge */}
+          <img src={ZokuMasks.Traditionalist} className="bottom-right" 
+            title="Bevararen" onClick={() => setActiveModal("Traditionalist")} />
+          <img src={ZokuMasks.Guardian} className="bottom-left" 
+            title="Beskyddaren" onClick={() => setActiveModal("Guardian")} />
+
+          {/* Left edge */}
+          <img src={ZokuMasks.Advocate} className="left-top" 
+            title="Förkämpen" onClick={() => setActiveModal("Advocate")} />
+          <img src={ZokuMasks.Caregiver} className="left-bottom" 
+            title="Vårdgivaren" onClick={() => setActiveModal("Caregiver")} />
+  
+        </div>
+        
+        <div className="sp-quizButtonBox">
+          <button className="active sp-quizButton">
+            <NavLink to="/test" className="nav-link">Upptäck din personlighet</NavLink>
+            </button>
+        </div>
       </div>
-      <div className="circle-layout">
-   
-        <p className="xTop">Förändring</p>
-        <p className="xBottom">Tradition</p>
-        <p className="yLeft">Gemenskap</p>
-        <p className="yRight">Ambition</p>
-
-        {/* Top edge */}
-        <img src={ZokuMasks.Idealist} className="top-left" 
-          title="Idealisten" onClick={() => setActiveModal("Idealist")} />
-        <img src={ZokuMasks.Adventurer} className="top-right" 
-          title="Äventyraren" onClick={() => setActiveModal("Adventurer")} />
-
-        {/* Right edge */}
-        <img src={ZokuMasks.Achiever} className="right-top" 
-          title="Segraren" onClick={() => setActiveModal("Achiever")} />
-        <img src={ZokuMasks.Strategist} className="right-bottom" 
-          title="Strategen" onClick={() => setActiveModal("Strategist")} />
-
-        {/* Bottom edge */}
-        <img src={ZokuMasks.Traditionalist} className="bottom-right" 
-          title="Bevararen" onClick={() => setActiveModal("Traditionalist")} />
-        <img src={ZokuMasks.Guardian} className="bottom-left" 
-          title="Beskyddaren" onClick={() => setActiveModal("Guardian")} />
-
-        {/* Left edge */}
-        <img src={ZokuMasks.Advocate} className="left-top" 
-          title="Förkämpen" onClick={() => setActiveModal("Advocate")} />
-        <img src={ZokuMasks.Caregiver} className="left-bottom" 
-          title="Vårdgivaren" onClick={() => setActiveModal("Caregiver")} />
- 
-      </div>
-      
-      <div className="sp-quizButtonBox">
-        <button className="active">
-          <NavLink to="/test" className="nav-link">Upptäck din personlighet</NavLink>
-          </button>
-      </div>
-
       <OverlayModal isOpen={!!activeModal} onClose={closeModal}>
         {activeModal && (
           <>

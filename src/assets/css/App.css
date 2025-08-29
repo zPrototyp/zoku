@@ -719,60 +719,86 @@ text-align: left;
     padding: 10px 16px;
     border-radius: 8px;
   }
-
+  /* On large screens put the map next to the intro text */
+  .start-page{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;   /* vertical alignment */
+    column-gap: 4em;
+    row-gap: 2em;
+  }
+  .sp-questionsBox{
+    grid-column: 1/2;
+    grid-row: 1/2;
+  }
+  .sp-quizButtonBox {
+    margin-top: unset;
+    grid-column: 2/3;
+    grid-row: 2/3;
+    justify-self: center;
+    align-self: center;
+  }
+  .sp-quizButton{
+    font-size: 36px;
+  }
+  .sp-whatIsZokuBtn {
+    grid-column: 1/2;
+    grid-row: 2/3;
+    justify-self: center;
+  }
   /* Start page dial a bit larger on desktop */
   .circle-layout {
     width: 480px;
     height: 480px;
     margin-top: 32px;
+    grid-column: 2/3;
+    grid-row: 1/2;
   }
   .circle-layout img { height: 96px; }
+  /* Circle Mask Images */
+  /* Top */
+  .top-left {
+    top: calc(50% - 220px);  /* 411/2 + 100/2 */
+    left: calc(50% - 130px);
+  }
 
+  .top-right {
+    top: calc(50% - 220px);
+    left: calc(50% + 70px);
+  }
 
-  
-/* Top */
-.top-left {
-  top: calc(50% - 220px);  /* 411/2 + 100/2 */
-  left: calc(50% - 130px);
-}
+  /* Right */
+  .right-top {
+    top: calc(50% - 205px + 100px); /* offset from top of center */
+    left: calc(50% + 120px);       /* 311/2 + 50 */
+  }
 
-.top-right {
-  top: calc(50% - 220px);
-  left: calc(50% + 70px);
-}
+  .right-bottom {
+    top: calc(50% + 20px);         /* offset from center down */
+    left: calc(50% + 120px);
+  }
 
-/* Right */
-.right-top {
-  top: calc(50% - 205px + 100px); /* offset from top of center */
-  left: calc(50% + 120px);       /* 311/2 + 50 */
-}
+  /* Bottom */
+  .bottom-right {
+    bottom: calc(50% - 220px);
+    left: calc(50%  + 70px);
+  }
 
-.right-bottom {
-  top: calc(50% + 20px);         /* offset from center down */
-  left: calc(50% + 120px);
-}
+  .bottom-left {
+    bottom: calc(50% - 220px);
+    left: calc(50% - 130px);
+  }
 
-/* Bottom */
-.bottom-right {
-  bottom: calc(50% - 220px);
-  left: calc(50%  + 70px);
-}
+  /* Left */
+  .left-bottom {
+    top: calc(50% + 20px);
+    left: calc(50% - 190px);
+  }
 
-.bottom-left {
-  bottom: calc(50% - 220px);
-  left: calc(50% - 130px);
-}
-
-/* Left */
-.left-bottom {
-  top: calc(50% + 20px);
-  left: calc(50% - 190px);
-}
-
-.left-top {
-  top: calc(50% - 205px + 100px);
-  left: calc(50% - 190px);
-}
+  .left-top {
+    top: calc(50% - 205px + 100px);
+    left: calc(50% - 190px);
+  }
 
 
   /* Result page wider center column */
