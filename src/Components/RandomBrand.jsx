@@ -56,6 +56,10 @@ function FindRandomBrand(array) {
 
   return (
     <>
+    {!randomBrand && (
+        <div className="random-brand"></div>
+    )
+}
     {randomBrand && (
         <div className={showRandom ? 'random-brand active':"random-brand"}>
             <div className="random-brand-header">

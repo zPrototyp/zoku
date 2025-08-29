@@ -64,6 +64,7 @@ function TestPage () {
         changeVsTradition: parseInt(searchParams.get('changeY')),
         compassionVsAmbition: parseInt(searchParams.get('compassionX'))
       });
+      setIsLoadingComparison(true);
     }
   }, [searchParams, setFriendValues]);
 

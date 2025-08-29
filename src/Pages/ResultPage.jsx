@@ -161,7 +161,7 @@ function ResultPage () {
               />
             )}
 
-         {!uiStatus.showBrandList && <div className="secondary-container">
+         <div className="secondary-container">
             {result?.secondaryPersonality?.name &&
               valueProfiles[result.secondaryPersonality.name] && (
                 <SecondaryPersonalityCard
@@ -177,7 +177,7 @@ function ResultPage () {
                   profile={valueProfiles[result.thirdPersonality.name]}
                 />
               )}
-          </div>}
+          </div>
 
         </div>
         <div className="btn-show-matches">   
@@ -201,6 +201,7 @@ function ResultPage () {
           </button>
         </div>
 
+   
         {/* Top 3 celebrity matches (from public controller) */}
         {uiStatus.showBrandList && topCelebs.length > 0 && (
           <div className="result-celeb-matches">
@@ -239,13 +240,13 @@ function ResultPage () {
             Inga varumärken matchade just nu—prova igen senare.
           </p>
         )}
-
-        {uiStatus.showBrandList &&  
+      {uiStatus.showBrandList &&  
         <RandomBrand category="all" 
           bearer={sessionToken} 
           testValues={testValues} 
           currentBrandList={feedList} />
         }
+      
 
         <button
           onClick={() => navigate('/register', { state: result })}
