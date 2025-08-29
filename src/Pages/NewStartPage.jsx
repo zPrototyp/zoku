@@ -34,7 +34,7 @@ export default function NewStartPage() {
 
         </div>
         <div className="sp-whatIsZokuBtn">
-          <button className="btn-small active" onClick={()=> setZokuInfo(true) }>Vad är Zoku?</button>
+          <button className="btn-small" onClick={()=> setZokuInfo(true) }>Vad är Zoku?</button>
         </div>
         <div className="circle-layout">
     
@@ -70,7 +70,7 @@ export default function NewStartPage() {
         </div>
         
         <div className="sp-quizButtonBox">
-          <button className="active sp-quizButton">
+          <button className="sp-quizButton">
             <NavLink to="/test" className="nav-link">Upptäck din personlighet</NavLink>
             </button>
         </div>

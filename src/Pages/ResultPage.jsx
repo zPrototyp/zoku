@@ -178,7 +178,7 @@ function ResultPage () {
         <div className="btn-show-matches">   
           <button
             onClick={() => setUiStatus(prev => ({ ...prev, showBrandList: !prev.showBrandList }))}
-            className={uiStatus.showBrandList ? "active btn-small": "active"}
+            className={uiStatus.showBrandList ? "active btn-small btn-show-matches": "active btn-show-matches"}
           >
             {uiStatus.showBrandList ? "Dölj mina matchningar": "Utforska mina matchningar"}
           </button>

@@ -464,6 +464,8 @@ ul.no-dots {
 }
 .btn-show-matches{
   text-align: center;
+  font-size: 40px;
+  border-radius: 20px;
 }
 .random-brand{
   
@@ -715,7 +717,7 @@ text-align: left;
 }
   /* Buttons: desktop scale */
   button {
-    font-size: 18px;
+    font-size: 24px;
     padding: 10px 16px;
     border-radius: 8px;
   }
@@ -734,12 +736,17 @@ text-align: left;
   .sp-quizButtonBox {
     margin-top: unset;
     grid-column: 2/3;
-    grid-row: 2/3;
+    grid-row: 1/2;
     justify-self: center;
     align-self: center;
+    z-index: 20;
   }
   .sp-quizButton{
     font-size: 36px;
+    background-color: var(--background);
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
   }
   .sp-whatIsZokuBtn {
     grid-column: 1/2;
@@ -750,7 +757,7 @@ text-align: left;
   .circle-layout {
     width: 480px;
     height: 480px;
-    margin-top: 32px;
+    margin: 0;
     grid-column: 2/3;
     grid-row: 1/2;
   }
