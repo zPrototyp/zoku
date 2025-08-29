@@ -198,7 +198,7 @@ function ProfilePage() {
             handleShowHidden={handleShowHidden}
           />}
 
-          {!uiStatus.showBrandList &&  
+          {uiStatus.showBrandList &&  
                   <RandomBrand category="all" 
                     bearer={token}
                     user={profile}
