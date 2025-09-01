@@ -35,54 +35,44 @@ function ProfilePage() {
   const [showHidden, setShowHidden] = useState(false);
   const [token] = useAtom(authTokenAtom);
   const navigate = useNavigate();
+  const [showSettings, setShowSettings] = useState(false); // <-- added
   const [uiStatus, setUiStatus] = useState({
-      showBrandList: false,
-    })
+    showBrandList: false,
+  });
 
-  const isComputer = useMediaQuery("(min-width: 1024px)")
-  
+  const isComputer = useMediaQuery("(min-width: 1024px)");
+
   // const [friendValues] = useAtom(comparisonValueAtom)
   // const [friendProfile] = useAtom(comparisonProfileAtom)
   // const [showComparison, setShowComparison] = useState(false);
-  
+
   // On load fetch all the profile information
   useEffect(() => {
     setProfile(null);
     if (!token) return;
-    
-    try { API_userSafeFetchJson(token, 'user/personality', setProfile) }
+
+    try { API_userSafeFetchJson(token, "user/personality", setProfile); }
     catch (err) {
       setError("Kunde inte hämta profil: " + err.message);
       console.error("Fel vid hämtning av profil:", err);
     }
-    try { API_userSafeFetchJson(token, 'user/brands/collection', setBrands) }
+    try { API_userSafeFetchJson(token, "user/brands/collection", setBrands); }
     catch (err) {
       setError("Kunde inte hämta varumärken: " + err.message);
       console.error("Fel vid hämtning av varumärken:", err);
     }
-    try { API_userSafeFetchJson(token, 'user/personality/history', setHistory) }
+    try { API_userSafeFetchJson(token, "user/personality/history", setHistory); }
     catch (err) {
       setError("Kunde inte hämta historik: " + err.message);
       console.error("Fel vid hämtning av historik:", err);
     }
   }, [token]);
 
-  
-    useEffect(() => {
-      if (isComputer) {
-        setUiStatus(prev => ({ ...prev, showBrandList: true }));
-      }
-    }, [isComputer]);
-
-  // useEffect(() => {
-  //   if (uiStatus.showBrandList){
-  //   try { API_userSafeFetchJson(token, 'user/brands/collection', setBrands) }
-  //   catch (err) {
-  //     setError("Kunde inte hämta varumärken: " + err.message);
-  //     console.error("Fel vid hämtning av varumärken:", err);
-  //   }
-  //   }
-  // },[uiStatus.showBrandList])
+  useEffect(() => {
+    if (isComputer) {
+      setUiStatus((prev) => ({ ...prev, showBrandList: true }));
+    }
+  }, [isComputer]);
 
   // update testValues when we have a profile
   useEffect(() => {
@@ -99,7 +89,7 @@ function ProfilePage() {
       setShowHidden(false);
       return;
     }
-    const hidden = await API_userSafeFetchJson(token, 'user/brands/hidden', setHiddenBrands);
+    const hidden = await API_userSafeFetchJson(token, "user/brands/hidden", setHiddenBrands);
     if (!hidden) {
       setError("Kunde inte hämta gömda varumärken");
       return;
@@ -130,7 +120,8 @@ function ProfilePage() {
           )}
         {!showComparison && hasFriend && (<button style={{fontSize:"1.2em"}} onClick={()=>setShowComparison(p=> !p)}>Visa jämförelse med {valueProfiles[friendProfile?.primaryPersonality.name].title}</button>)} */}
         <h2>Din Personlighet</h2>
-          <div className="result-content">
+
+        <div className="result-content">
           <div className="personality-result">
             {profile?.primaryPersonality?.name &&
               valueProfiles[profile.primaryPersonality.name] && (
@@ -177,81 +168,88 @@ function ProfilePage() {
 
           <div className="btn-show-matches">
             <button
-              onClick={() => setUiStatus(prev => ({ ...prev, showBrandList: !prev.showBrandList }))}
-              className={uiStatus.showBrandList ? "active btn-small btn-show-matches": "active btn-show-matches"}
+              onClick={() =>
+                setUiStatus((prev) => ({ ...prev, showBrandList: !prev.showBrandList }))
+              }
+              className={uiStatus.showBrandList ? "active btn-small btn-show-matches" : "active btn-show-matches"}
             >
               {uiStatus.showBrandList ? (
                 <>
-                <MdKeyboardDoubleArrowUp className="clickable-icon"/>
-                Dölj mina matchningar
-                <MdKeyboardDoubleArrowUp className="clickable-icon"/>
+                  <MdKeyboardDoubleArrowUp className="clickable-icon" />
+                  Dölj mina matchningar
+                  <MdKeyboardDoubleArrowUp className="clickable-icon" />
                 </>
               ) : (
                 <>
-                <MdKeyboardDoubleArrowDown className="clickable-icon"/>
+                  <MdKeyboardDoubleArrowDown className="clickable-icon" />
                   Utforska mina matchningar
-                  <MdKeyboardDoubleArrowDown className="clickable-icon"/>
+                  <MdKeyboardDoubleArrowDown className="clickable-icon" />
                 </>
               )}
             </button>
           </div>
-          {uiStatus.showBrandList && <BrandWardrobe
-            brands={brands}
-            showHidden={showHidden}
-            hiddenBrands={hiddenBrands}
-            setHiddenBrands={setHiddenBrands}
-            handleShowHidden={handleShowHidden}
-          />}
 
-          {uiStatus.showBrandList &&  
-                  <RandomBrand category="all" 
-                    bearer={token}
-                    user={profile}
-                    testValues={testValues} 
-                    currentBrandList={brands} />
-                  }
+          {uiStatus.showBrandList && (
+            <BrandWardrobe
+              brands={brands}
+              showHidden={showHidden}
+              hiddenBrands={hiddenBrands}
+              setHiddenBrands={setHiddenBrands}
+              handleShowHidden={handleShowHidden}
+            />
+          )}
 
-        {/* Tribes overview */}
-        <TribeCommunityOverview token={token} title="Tribes" />
+          {uiStatus.showBrandList && (
+            <RandomBrand
+              category="all"
+              bearer={token}
+              user={profile}
+              testValues={testValues}
+              currentBrandList={brands}
+            />
+          )}
 
-        <OverlayModal isOpen={showHistory} onClose={() => setShowHistory(false)}>
-          <div className="history-list">
-            <h3>Tidigare Resultat</h3>
-            {history.map((item, idx) => (
-              <div key={idx} className="history-entry">
-                <p>
-                  <strong>{new Date(item.createdAt).toLocaleString()}</strong>
-                </p>
-                <p>
-                  Primär: {valueProfiles[item.primaryType].title} ({item.primaryMatchPercentage}%)
-                </p>
-                <p>
-                  Sekundär: {valueProfiles[item.secondaryType].title} ({item.secondaryMatchPercentage}%)
-                </p>
-                <p>
-                  Tredje: {valueProfiles[item.thirdType].title} ({item.thirdMatchPercentage}%)
-                </p>
-                <hr />
-              </div>
-            ))}
-          </div>
-        </OverlayModal>
+          {/* Tribes overview */}
+          <TribeCommunityOverview token={token} title="Tribes" />
 
-        {/* Settings */}
-        <button
-          className="cogwheel-btn"
-          aria-label="Öppna inställningar"
-          title="Inställningar"
-          onClick={() => setShowSettings(true)}
-        >
-          <FaCog size={28} />
-        </button>
+          <OverlayModal isOpen={showHistory} onClose={() => setShowHistory(false)}>
+            <div className="history-list">
+              <h3>Tidigare Resultat</h3>
+              {history.map((item, idx) => (
+                <div key={idx} className="history-entry">
+                  <p>
+                    <strong>{new Date(item.createdAt).toLocaleString()}</strong>
+                  </p>
+                  <p>
+                    Primär: {valueProfiles[item.primaryType].title} ({item.primaryMatchPercentage}%)
+                  </p>
+                  <p>
+                    Sekundär: {valueProfiles[item.secondaryType].title} ({item.secondaryMatchPercentage}%)
+                  </p>
+                  <p>
+                    Tredje: {valueProfiles[item.thirdType].title} ({item.thirdMatchPercentage}%)
+                  </p>
+                  <hr />
+                </div>
+              ))}
+            </div>
+          </OverlayModal>
 
-        <OverlayModal isOpen={showSettings} onClose={() => setShowSettings(false)}>
-          <UserSettings userId={userId} onClose={() => setShowSettings(false)} />
-        </OverlayModal>
+          {/* Settings */}
+          <button
+            className="cogwheel-btn"
+            aria-label="Öppna inställningar"
+            title="Inställningar"
+            onClick={() => setShowSettings(true)}
+          >
+            <FaCog size={28} />
+          </button>
+
+          <OverlayModal isOpen={showSettings} onClose={() => setShowSettings(false)}>
+            <UserSettings userId={userId} onClose={() => setShowSettings(false)} />
+          </OverlayModal>
+        </div>
       </div>
-      </div> 
     </>
   );
 }
