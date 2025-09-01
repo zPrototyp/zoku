@@ -139,21 +139,6 @@ function Search({
     doSearch();
   }, [debouncedTerm, token, brandsFeed]);
 
-  const normalizedCelebs = useMemo(
-    () =>
-      (foundCelebs || []).map((c) => ({
-        id: c.id ?? c.celebrityId,
-        name: c.name ?? c.celebrityName,
-        imageUrl: c.imageUrl ?? c.photoUrl,
-        description: c.description,
-        coordinates: c.coordinates,
-        personalityProfile: c.personalityProfile,
-        matchPercentage: c.matchWithUser ?? c.matchPercentage,
-        isLiked: c.isLiked,
-      })),
-    [foundCelebs]
-  );
-
   const normalizedUsers = useMemo(() => {
   if (!Array.isArray(foundUsers)) return [];
 
@@ -222,8 +207,8 @@ function Search({
 
           {/* Celebrities */}
           <div style={{ marginTop: "1.25rem" }}>
-            <h3 style={{ marginBottom: ".5rem" }}>Kändisar ({normalizedCelebs.length})</h3>
-            {normalizedCelebs.length > 0 ? (
+            <h3 style={{ marginBottom: ".5rem" }}>Kändisar ({foundCelebs.length})</h3>
+            {foundCelebs.length > 0 ? (
               <div
                 style={{
                   display: "grid",
@@ -231,7 +216,7 @@ function Search({
                   gap: "1rem",
                 }}
               >
-                {normalizedCelebs.map((c) => (
+                {foundCelebs.map((c) => (
                   <CelebrityCard key={c.id || c.name} celeb={c} user={userProfile} />
                 ))}
               </div>

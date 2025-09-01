@@ -30,9 +30,6 @@ function ProfilePage() {
   const [brands, setBrands] = useAtom(feedListAtom);
   const [history, setHistory] = useState([]);
   const [hiddenBrands, setHiddenBrands] = useState([]);
-
-  const [showHidden, setShowHidden] = useState(false);
-
   const [token] = useAtom(authTokenAtom);
   const navigate = useNavigate();
   const [uiStatus, setUiStatus] = useState({
@@ -64,6 +61,7 @@ function ProfilePage() {
       console.error("Fel vid hämtning av historik:", err);
     }
   }, [token]);
+  
   useEffect(() => {
     if (isComputer) {
       setUiStatus(prev => ({ ...prev, showBrandList: true }));
