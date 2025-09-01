@@ -119,7 +119,7 @@ function TribeCommunity({ token, user, title = "Tribes" }) {
               return (
                 <CelebrityCard
                   key={normalized.id || normalized.name}
-                  celeb={normalized}
+                  celeb={c}
                   user={user}
                   celebBrands={[]}
                   onAfterUnlike={handleAfterUnlikeCeleb}
