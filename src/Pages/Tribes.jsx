@@ -1,19 +1,21 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useState } from "react";
 import OverlayModal from "../Components/OverlayModal";
 import { valueProfiles } from "../assets/uiData/zoku_profiles_se";
 import { ZokuMasks } from "../assets/uiData/PersonalityImages";
 import {API_safeGetCelebrities} from "../Services/API";
 import "../assets/css/MenuZokuTribes.css"
 import CelebrityCard from "../Components/CelebrityCard";
+import { useAtomValue } from "jotai";
+import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
 
 export default function Tribes() {
     const [activeModal, setActiveModal] = useState(null);
     const closeModal = () => setActiveModal(null);
     const [celebsByPersonality, setCelebsByPersonality] = useState({});
     const navigate = useNavigate();
-
+    const userProfile = useAtomValue(valueProfileAtom);
+    const [user, setUser] = useState(null);
     const listOrder= [
       "Adventurer",
       "Idealist", 
@@ -25,6 +27,11 @@ export default function Tribes() {
       "Caregiver"
     ];
 
+    useEffect(()=>
+    {
+      userProfile && userProfile != null && setUser(userProfile)
+    },
+    [userProfile])
 
     function randomCeleb(array){ 
       if (!array || array.length === 0) return null;
@@ -48,7 +55,7 @@ export default function Tribes() {
     });
   }, []);
     
-    // console.log(celebsByPersonality);
+    console.log(celebsByPersonality['Achiever']);
     // Print out the Zoku cards
 
     function ZokuCards() {
@@ -103,12 +110,13 @@ export default function Tribes() {
 
               {celebsByPersonality[activeModal] && <div>
                 <h3>En kändis som matchar {valueProfiles[activeModal].title}</h3>
-                <CelebrityCard celeb={celebsByPersonality[activeModal]} />
+                <CelebrityCard celeb={celebsByPersonality[activeModal]} user={user} />
+                {user == null &&
                 <button className="btn-small"
                 onClick={() => {navigate(`/test?changeY=${celebsByPersonality[activeModal].changeVsTradition}&compassionX=${celebsByPersonality[activeModal].compassionVsAmbition}`)
                   
                 }}
-                >Se hur jag matchar {celebsByPersonality[activeModal].name}</button>
+                >Se hur jag matchar {celebsByPersonality[activeModal].name}</button>}
               </div>}
 
               {/* If logged in - show link to compare yourself, if not - link to test */}
