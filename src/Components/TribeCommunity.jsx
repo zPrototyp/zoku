@@ -37,7 +37,7 @@ function TribeCommunity({ token, user, title = "Tribes" }) {
   }, [token]);
 
   const TribeGrid = ({ children }) => (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: "1rem" }}>
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(380px, 1fr))", gap: "1rem" }}>
       {children}
     </div>
   );
