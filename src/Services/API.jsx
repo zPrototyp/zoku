@@ -1,4 +1,5 @@
-const AZURE_API = import.meta.env.VITE_AZURE_API;
+const RAW_AZURE = (import.meta.env.VITE_AZURE_API || "").replace(/\/+$/,"");
+const AZURE_API = /\/api\/v1$/i.test(RAW_AZURE) ? RAW_AZURE : `${RAW_AZURE}/api/v1`;
 
 // Function to send share interaction to API can be used by guest or authenticated users
 export const API_shareProfile = async (platform, bearer, entity, entityId) => {
