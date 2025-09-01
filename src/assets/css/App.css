@@ -680,7 +680,7 @@ font-family: var(--fontNav);
 text-align: left;
 }
 .wardrobe-section {
-  position: relative; /* to position the hidden brands toggle */
+  width: 100%;
 }
 .hidden-brand-admin h4 {
   font-family: var(--fontNav);
@@ -1019,9 +1019,7 @@ text-align: left;
   .result-celeb-matches{
     grid-column: 2/3;
   }
-  .result-celeb-matches{
-    /* grid-row: 1/3; */
-  }
+
   .btn-show-matches {
     display: none;   
   }
@@ -1031,9 +1029,6 @@ text-align: left;
     grid-column: 1/2;
     grid-row: 2/3;
   }
-  .brand-list{
-    /* padding-top: 400px; */
-  }
   .personality-result {
     justify-self: start;
     align-self: start;
@@ -1041,7 +1036,7 @@ text-align: left;
   }
   .random-brand{
     justify-self: start;
-    align-self: start;
+    align-self: center;
     grid-column: 2/3;
     grid-row: 1/2;
   }
