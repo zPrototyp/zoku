@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { API_userSafeFetchJson } from "../Services/API";
 import CelebrityCard from "./CelebrityCard";
 import UserCard from "./UserCard";
+import { PiFileXlsDuotone } from "react-icons/pi";
 
 function TribeCommunityOverview({ token, title = "Tribes", limit = 6 , user}) {
   const [likedCelebs, setLikedCelebs] = useState([]);
@@ -21,6 +22,7 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6 , user}) {
       try {
         await API_userSafeFetchJson(token, "user/celebrities/liked", (data) => {
           if (!mounted) return;
+          console.log("data",data);
           setLikedCelebs(Array.isArray(data) ? data.slice(0, limit) : []);
         });
       } catch (err) {
@@ -46,6 +48,9 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6 , user}) {
     fetchData();
     return () => { mounted = false; };
   }, [token, limit]);
+
+
+  // console.log(likedCelebs);
 
   const Grid = ({ children }) => (
     <div style={{
@@ -107,22 +112,15 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6 , user}) {
       <div style={{ marginTop: ".75rem", marginBottom: ".75rem" }}>
         <h3 style={{ marginBottom: ".5rem" }}>Kändisar du gillar</h3>
         {likedCelebs && likedCelebs.length > 0 ? (
-          <Grid>
+          // <Grid>
+          <div style={{display: "flex",
+            flexDirection: "column"
+          }}>
             {likedCelebs.map((c) => {
-              const normalized = {
-                id: c.id || c.celebrityId,
-                name: c.name || c.celebrityName,
-                imageUrl: c.imageUrl || c.photoUrl,
-                description: c.description,
-                isLiked: true,
-                coordinates: c.coordinates,
-                personalityProfile: c.personalityProfile,
-                matchPercentage: c.matchWithUser ?? c.matchPercentage,
-              };
               return (
                 <CelebrityCard
-                  key={normalized.id || normalized.name}
-                  celeb={normalized}
+                  key={c.id || c.name}
+                  celeb={c}
                   user={user}
                   celebBrands={[]}
                   onAfterUnlike={handleAfterUnlikeCeleb}
@@ -130,7 +128,8 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6 , user}) {
                 />
               );
             })}
-          </Grid>
+            </div>
+          // </Grid>
         ) : (
           <p style={{ opacity: 0.75 }}>Inga kändisar ännu.</p>
         )}
