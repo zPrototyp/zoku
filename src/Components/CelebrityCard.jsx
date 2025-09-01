@@ -83,13 +83,14 @@ export default function CelebrityCard({ celeb, user, celebBrands = [], onAfterUn
     <div className="celebCard">
       {/* Header */}
       <div className="celebHeader" style={{ position: "relative" }}>
-        {/* Like overlay*/}
-        <CelebrityLikeOverlay
+        {/* Like overlay  - only print if we are logged in = has a user*/}
+      {user &&
+               <CelebrityLikeOverlay
           celeb={celeb}
           onAfterLike={onAfterLike}
           onAfterUnlike={onAfterUnlike}
         />
-
+}
         {imgSrc && (
           <img
             className="celebCover"
@@ -121,8 +122,8 @@ export default function CelebrityCard({ celeb, user, celebBrands = [], onAfterUn
           </button>
         )}
 
-        {/* Compare button */}
-        <button
+        {/* Compare button - only print if we have a user profile to compare */}
+        {user && <button
           className="btn btnSlim"
           onClick={() => setShowDial((v) => !v)}
           disabled={!canShowDial}
@@ -130,7 +131,7 @@ export default function CelebrityCard({ celeb, user, celebBrands = [], onAfterUn
           aria-disabled={!canShowDial}
         >
           {showDial ? "Dölj jämförelse" : "Jämför"}
-        </button>
+        </button>}
       </div>
 
       {/* Comparison dial  */}

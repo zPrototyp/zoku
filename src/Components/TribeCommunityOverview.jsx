@@ -4,7 +4,7 @@ import { API_userSafeFetchJson } from "../Services/API";
 import CelebrityCard from "./CelebrityCard";
 import UserCard from "./UserCard";
 
-function TribeCommunityOverview({ token, title = "Tribes", limit = 6 }) {
+function TribeCommunityOverview({ token, title = "Tribes", limit = 6 , user}) {
   const [likedCelebs, setLikedCelebs] = useState([]);
   const [followingUsers, setFollowingUsers] = useState([]);
   const [error, setError] = useState("");
@@ -123,7 +123,7 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6 }) {
                 <CelebrityCard
                   key={normalized.id || normalized.name}
                   celeb={normalized}
-                  user={null}
+                  user={user}
                   celebBrands={[]}
                   onAfterUnlike={handleAfterUnlikeCeleb}
                   onAfterLike={handleAfterLikeCeleb}

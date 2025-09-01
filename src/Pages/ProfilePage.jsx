@@ -185,7 +185,7 @@ function ProfilePage() {
           />
         )}
 
-        {!uiStatus.showBrandList && (
+        {uiStatus.showBrandList && (
           <RandomBrand
             category="all"
             bearer={token}
@@ -196,7 +196,7 @@ function ProfilePage() {
         )}
 
         {/* Community overview (your compact component) */}
-        <TribeCommunityOverview token={token} title="Tribes" />
+        <TribeCommunityOverview token={token} title="Tribes" user={profile}/>
 
         <OverlayModal isOpen={showHistory} onClose={() => setShowHistory(false)}>
           <div className="history-list">
