@@ -84,19 +84,17 @@ function ClearAllAtoms() {
         }}>
             Clear All Atoms
         </button>
-            <p>Profile: {profile?.primaryPersonality?.name}</p>
-            <p>Feed: {feed?.length}</p>
-            <p>Test Values: {testValue?.changeVsTradition}</p>
-            <p>Guest Token: {guestToken?.length}</p>
-            <p>Token: {authToken?.length}</p> 
-            <p>ComparisonProfile: {comparisonProfile?.primaryPersonality?.name}</p>
-            <p>Friend Values: {friendValues?.changeVsTradition}</p>
+            <p>Profile: <strong>{profile?.primaryPersonality?.name}</strong></p>
+            <p>Feed: <strong>{feed?.length}</strong></p>
+            <p>Test Values: <strong>{testValue?.changeVsTradition ? "yes": "no"}</strong></p>
+            <p>Guest Token: <strong>{guestToken?.length > 0 ? "Yes": "No"}</strong></p>
+            <p>Token: <strong>{authToken?.length > 0 ? "Yes": "No"}</strong></p>
+            <p>ComparisonProfile:<strong> {comparisonProfile?.primaryPersonality?.name}</strong></p>
+            <p>Friend Values:<strong> {friendValues?.changeVsTradition ? "Yes": "no"}</strong></p>
 
-
-<h1>.</h1>
             <div>
 
-<ZokuShareCards />
+            {/* <ZokuShareCards /> */}
 
             </div>
 

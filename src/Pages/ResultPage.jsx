@@ -18,7 +18,9 @@ import { API_guestGetBrandMatches, API_guestGetPersonality } from '../Services/A
 import { CreateComparisonDials } from '../Components/CreateComparisonDials.jsx'
 import { ApiService, API_getCelebrities, API_getPopularCelebrities } from '../Services/API.jsx'
 import CelebrityCard from '../Components/CelebrityCard'
-import { FaPen, FaClock } from 'react-icons/fa' // added icons
+import RandomBrand from '../Components/RandomBrand.jsx'
+import { MdKeyboardDoubleArrowDown, MdKeyboardDoubleArrowUp } from "react-icons/md";
+import useMediaQuery from '../Components/MediaQuery.jsx'
 
 // Create a local instance since API.jsx exports the class, not a default singleton
 const apiService = new ApiService();
@@ -27,8 +29,6 @@ function ResultPage () {
   const testValues = useAtomValue(testValuesAtom)
   const location = useLocation()
   const navigate = useNavigate()
-  // const [loading, setLoading] = useState(true)
-  // const [error, setError] = useState(null)
   const [result, setResult] = useAtom(valueProfileAtom)
   const friendValues = useAtomValue(comparisonValueAtom)
   const friendProfile = useAtomValue(comparisonProfileAtom)
@@ -36,13 +36,14 @@ function ResultPage () {
     isLoading: true,
     error: null,
     showBrandList: false,
+    showComparison: true,
   })
 
   // Added sessionToken for sending to backend
   const sessionToken = useAtomValue(guestTokenAtom)
   const [feedList, setFeedList] = useAtom(feedListAtom)
   const [topCelebs, setTopCelebs] = useState([])
-  const [showHistory, setShowHistory] = useState(false) // for FaClock handler
+  const isComputer = useMediaQuery("(min-width: 1024px)")
 
   useEffect(() => {
     if (
@@ -56,7 +57,7 @@ function ResultPage () {
         setUiStatus(prev => ({ ...prev, isLoading: true, error: null }));
 
         await API_guestGetPersonality(sessionToken, testValues, setResult);
-        await API_guestGetBrandMatches(sessionToken, testValues, setFeedList, 'all', 3);
+        await API_guestGetBrandMatches(sessionToken, testValues, setFeedList, 'all', 4);
       } catch (err) {
         console.error('Error fetching data:', err);
         // setError('Kunde inte hämta resultat.');
@@ -69,6 +70,12 @@ function ResultPage () {
 
     fetchPersonalityAndBrands();
   }, [testValues, sessionToken, setResult, setFeedList]);
+
+  useEffect(() => {
+    if (isComputer) {
+      setUiStatus(prev => ({ ...prev, showBrandList: true }));
+    }
+  }, [isComputer]);
 
   // Fetch celebrities after personality is known (separate effect avoids refetch loops)
   useEffect(() => {
@@ -130,25 +137,23 @@ function ResultPage () {
       </div>
     )
 
-  const {
-    primaryPersonality = null,
-    secondaryPersonality = null,
-    thirdPersonality = null
-  } = result || {}
     
   return (
     <>
       <div className="page-content" style={{ position: "relative" }}>
-        {/* {showComparison && hasFriend && dialA && dialB && (
+        {uiStatus.showComparison && hasFriend && dialA && dialB && (
           <div className="comparison-inline" style={{ marginBottom: '1.25rem' }}>
             <h2 style={{ marginBottom: '.5rem' }}>Jämförelse {calculateMatchPercentage(friendValues, testValues)}% match</h2>
             <CelebrityComparisonDial a={dialA} b={dialB} aLabel="Du" bLabel="Vän" size={260} />
-            <button style={{fontSize:"1.2em"}} onClick={()=>setShowComparison(p=> !p)}>Dölj jämförelse</button>
+            <button style={{fontSize:"1.2em"}} onClick={() => setUiStatus(prev => ({ ...prev, showComparison: !prev.showComparison }))}>Dölj jämförelse</button>
           </div>
           )}
-        {!showComparison && hasFriend && (<button style={{fontSize:"1.2em"}} onClick={()=>setShowComparison(p=> !p)}>Visa jämförelse med {valueProfiles[friendProfile?.primaryPersonality.name].title}</button>)} */}
+        {!uiStatus.showComparison && hasFriend && (
+          <button style={{fontSize:"1.2em"}} 
+          onClick={()=>setUiStatus((p)=>({...p, showComparison: !p.showComparison}))}>Visa jämförelse med {valueProfiles[friendProfile?.primaryPersonality.name].title}</button>)}
         <h2>Din Personlighet</h2>
 
+        <div className="result-content">
         <div className="personality-result">
           {result?.primaryPersonality?.name &&
             valueProfiles[result.primaryPersonality.name] && (
@@ -161,7 +166,7 @@ function ResultPage () {
               />
             )}
 
-          <div className="secondary-container">
+         <div className="secondary-container">
             {result?.secondaryPersonality?.name &&
               valueProfiles[result.secondaryPersonality.name] && (
                 <SecondaryPersonalityCard
@@ -179,34 +184,39 @@ function ResultPage () {
               )}
           </div>
 
-          <div className="secondary-icons">
-            <FaPen
-              className="clickable-icon"
-              title="Redigera personlighet"
-              onClick={() => navigate("/test")}
-            />
-            <FaClock
-              className="clickable-icon"
-              title="Visa historik"
-              onClick={() => setShowHistory(true)}
-            />
-          </div>
+        </div>
+        <div className="btn-show-matches">   
+          <button
+            onClick={() => setUiStatus(prev => ({ ...prev, showBrandList: !prev.showBrandList }))}
+            className={uiStatus.showBrandList ? "active btn-small btn-show-matches": "active btn-show-matches"}
+          >
+          {uiStatus.showBrandList ? (
+              <>
+              <MdKeyboardDoubleArrowUp className="clickable-icon"/>
+              Dölj mina matchningar
+              <MdKeyboardDoubleArrowUp className="clickable-icon"/>
+              </>
+            ) : (
+              <>
+              <MdKeyboardDoubleArrowDown className="clickable-icon"/>
+                Utforska mina matchningar
+                <MdKeyboardDoubleArrowDown className="clickable-icon"/>
+              </>
+            )}
+          </button>
         </div>
 
+   
         {/* Top 3 celebrity matches (from public controller) */}
         {uiStatus.showBrandList && topCelebs.length > 0 && (
-          <div style={{ width: '100%', maxWidth: '1000px' }}>
+          <div className="result-celeb-matches">
             <h2 style={{ marginTop: '1.5rem' }}>Topp 3 kändismatchningar</h2>
             <div style={{ display: 'grid', gap: '1rem' }}>
               {topCelebs.map((celeb) => (
                 <CelebrityCard
                   key={celeb.id || celeb.name}
                   celeb={celeb}
-                  user={{
-                    compassionVsAmbition: testValues.compassionVsAmbition,
-                    changeVsTradition: testValues.changeVsTradition,
-                    primaryPersonality: result?.primaryPersonality
-                  }}
+                  user={result}
                   celebBrands={celeb?.brands || []}
                 />
               ))}
@@ -221,18 +231,11 @@ function ResultPage () {
           </p>
         )}
 
-        <button
-          onClick={() => setUiStatus(prev => ({ ...prev, showBrandList: !prev.showBrandList }))}
-          className={uiStatus.showBrandList ? "active btn-small": "active"}
-        >
-          {uiStatus.showBrandList ? "Dölj varumärken": "Utforska mina matchningar"}
-        </button>
-
         {/* Brand list */}
         {uiStatus.showBrandList && feedList && feedList.length > 0 && (
           <div className='brand-list'>
             <h2>Varumärken som matchar din personlighet</h2>
-            <BrandCards brandList={feedList} />
+            <BrandCards brandList={feedList} categorize={true} />
           </div>
         )}
 
@@ -242,13 +245,21 @@ function ResultPage () {
             Inga varumärken matchade just nu—prova igen senare.
           </p>
         )}
+      {uiStatus.showBrandList &&  
+        <RandomBrand category="all" 
+          bearer={sessionToken} 
+          testValues={testValues} 
+          currentBrandList={feedList} />
+        }
+      
 
         <button
           onClick={() => navigate('/register', { state: result })}
-          className='active'
+          className='active btn-go-to-register'
         >
           Spara och fortsätt
         </button>
+      </div>
       </div>
     </>
   )

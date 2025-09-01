@@ -33,3 +33,9 @@
   transform: scale(1.05);
   cursor: pointer;
 }
+
+@media (min-width: 900px) {
+  .footer-nav {
+    gap: 180px;
+  }
+}

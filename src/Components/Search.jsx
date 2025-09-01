@@ -154,18 +154,18 @@ function Search({
     [foundCelebs]
   );
 
-  const normalizedUsers = useMemo(
-    () =>
-      (foundUsers || []).map((u) => ({
-        id: u.id ?? u.userId,
-        displayName: u.displayName ?? u.name,
-        username: u.username,
-        avatarUrl: u.avatarUrl ?? u.photoUrl,
-        bio: u.bio ?? u.tagline,
-        isFollowing: u.isFollowing,
-      })),
-    [foundUsers]
-  );
+  const normalizedUsers = useMemo(() => {
+  if (!Array.isArray(foundUsers)) return [];
+
+  return foundUsers.map((u) => ({
+    id: u.id ?? u.userId ?? "",
+    displayName: u.displayName ?? u.name ?? "",
+    username: u.username ?? "",
+    avatarUrl: u.avatarUrl ?? u.photoUrl ?? "",
+    bio: u.bio ?? u.tagline ?? "",
+    isFollowing: !!u.isFollowing,
+  }));
+}, [foundUsers]);
 
   return (
     <div>
@@ -245,7 +245,7 @@ function Search({
             <h3 style={{ marginBottom: ".5rem" }}>Varumärken ({foundBrands.length})</h3>
             {foundBrands.length > 0 ? (
               <div className="feed">
-                <BrandCards brandList={foundBrands} />
+                <BrandCards brandList={foundBrands} categorize={true}/>
               </div>
             ) : (
               <p style={{ opacity: 0.75 }}>Inga varumärken hittades i ditt flöde.</p>
