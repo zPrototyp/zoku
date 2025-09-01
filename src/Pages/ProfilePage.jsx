@@ -121,7 +121,7 @@ function ProfilePage() {
           )}
         {!showComparison && hasFriend && (<button style={{fontSize:"1.2em"}} onClick={()=>setShowComparison(p=> !p)}>Visa jämförelse med {valueProfiles[friendProfile?.primaryPersonality.name].title}</button>)} */}
         <h2>Din Personlighet</h2>
-
+      <div className="result-content">
         <div className="personality-result">
           {profile?.primaryPersonality?.name &&
             valueProfiles[profile.primaryPersonality.name] && (
@@ -169,7 +169,7 @@ function ProfilePage() {
         <div className="btn-show-matches">
           <button
             onClick={() => setUiStatus(prev => ({ ...prev, showBrandList: !prev.showBrandList }))}
-            className={uiStatus.showBrandList ? "active btn-small" : "active"}
+            className={uiStatus.showBrandList ? "active btn-small btn-show-matches": "active btn-show-matches"}
           >
             {uiStatus.showBrandList ? "Dölj mina matchningar" : "Utforska mina matchningar"}
           </button>
@@ -220,6 +220,7 @@ function ProfilePage() {
             ))}
           </div>
         </OverlayModal>
+      </div>
       </div>
     </>
   );
