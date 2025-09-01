@@ -209,13 +209,13 @@ function ProfilePage() {
                   </strong>
                 </p>
                 <p>
-                  Primär: {valueProfiles?.[item?.primaryType]?.type ?? item?.primaryType ?? "Okänd"} ({item?.primaryMatchPercentage ?? "–"}%)
+                  Primär: {valueProfiles?.[item?.primaryType]?.title ?? item?.primaryType ?? "Okänd"} ({item?.primaryMatchPercentage ?? "–"}%)
                 </p>
                 <p>
-                  Sekundär: {valueProfiles?.[item?.secondaryType]?.type ?? item?.secondaryType ?? "Okänd"} ({item?.secondaryMatchPercentage ?? "–"}%)
+                  Sekundär: {valueProfiles?.[item?.secondaryType]?.tilte ?? item?.secondaryType ?? "Okänd"} ({item?.secondaryMatchPercentage ?? "–"}%)
                 </p>
                 <p>
-                  Tredje: {valueProfiles?.[item?.thirdType]?.type ?? item?.thirdType ?? "Okänd"} ({item?.thirdMatchPercentage ?? "–"}%)
+                  Tredje: {valueProfiles?.[item?.thirdType]?.title ?? item?.thirdType ?? "Okänd"} ({item?.thirdMatchPercentage ?? "–"}%)
                 </p>
                 <hr />
               </div>
