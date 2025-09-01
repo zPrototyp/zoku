@@ -9,15 +9,18 @@ import SecondaryPersonalityCard from "../Components/SecondaryPersonalityCard";
 import BrandWardrobe from "../Components/BrandWadrobe";
 import OverlayModal from "../Components/OverlayModal";
 import "../assets/css/App.css";
-import { FaPen, FaClock, FaCog } from "react-icons/fa";
+import { FaPen, FaClock } from "react-icons/fa";
 import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
 import { testValuesAtom } from "../Atoms/TestValuesAtom";
 import { API_userSafeFetchJson } from "../Services/API";
-import TribeCommunityOverview from "../Components/TribeCommunityOverview";
 import RandomBrand from "../Components/RandomBrand";
-import { MdKeyboardDoubleArrowDown, MdKeyboardDoubleArrowUp } from "react-icons/md";
-import useMediaQuery from "../Components/MediaQuery";
-import UserSettings from "../Components/UserSettings";
+import TribeCommunityOverview from "../Components/TribeCommunityOverview"; // <-- your compact community
+
+// import { comparisonValueAtom } from '../Atoms/ComparisonValueAtom.jsx'
+// import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
+// import { CreateComparisonDials } from '../Components/CreateComparisonDials.jsx'
+// import { calculateMatchPercentage } from "../Services/type-calculation";
+// import CelebrityComparisonDial from "../Components/CelebrityComparisonDial.jsx";
 
 function ProfilePage() {
   const [profile, setProfile] = useAtom(valueProfileAtom);
@@ -30,10 +33,9 @@ function ProfilePage() {
   const [showHidden, setShowHidden] = useState(false);
   const [token] = useAtom(authTokenAtom);
   const navigate = useNavigate();
-  const [showSettings, setShowSettings] = useState(false);
-  const [uiStatus, setUiStatus] = useState({ showBrandList: false });
-
-  const isComputer = useMediaQuery("(min-width: 1024px)");
+  const [uiStatus, setUiStatus] = useState({
+    showBrandList: false,
+  });
 
   // On load fetch all the profile information
   useEffect(() => {
@@ -56,12 +58,6 @@ function ProfilePage() {
       console.error("Fel vid hämtning av historik:", err);
     }
   }, [token]);
-
-  useEffect(() => {
-    if (isComputer) {
-      setUiStatus((prev) => ({ ...prev, showBrandList: true }));
-    }
-  }, [isComputer]);
 
   // update testValues when we have a profile
   useEffect(() => {
@@ -92,143 +88,117 @@ function ProfilePage() {
   // Profile does not contain a userID to set.
   const userId = profile?.userId || profile?.id || null;
 
-  // --- helper: safe lookup for titles from valueProfiles ---
-  const getProfileTitle = (typeKey) =>
-    (typeKey && valueProfiles?.[typeKey]?.title) || String(typeKey ?? "Okänd");
-
   return (
     <>
       <div className="page-content" style={{ position: "relative" }}>
+        {/* {showComparison && hasFriend && dialA && dialB && (
+          <div className="comparison-inline" style={{ marginBottom: '1.25rem' }}>
+            <h2 style={{ marginBottom: '.5rem' }}>Jämförelse {calculateMatchPercentage(friendValues, testValues)}% match</h2>
+            <CelebrityComparisonDial a={dialA} b={dialB} aLabel="Du" bLabel="Vän" size={260} />
+            <button style={{fontSize:"1.2em"}} onClick={()=>setShowComparison(p=> !p)}>Dölj jämförelse</button>
+          </div>
+          )}
+        {!showComparison && hasFriend && (<button style={{fontSize:"1.2em"}} onClick={()=>setShowComparison(p=> !p)}>Visa jämförelse med {valueProfiles[friendProfile?.primaryPersonality.name].title}</button>)} */}
         <h2>Din Personlighet</h2>
 
-        <div className="result-content">
-          <div className="personality-result">
-            {profile?.primaryPersonality?.name &&
-              valueProfiles[profile.primaryPersonality.name] && (
-                <PersonalityCard
-                  personality={profile.primaryPersonality}
-                  profile={valueProfiles[profile.primaryPersonality.name]}
-                  fullProfile={profile}
-                  testValues={testValues}
-                  highlight
+        <div className="personality-result">
+          {profile?.primaryPersonality?.name &&
+            valueProfiles[profile.primaryPersonality.name] && (
+              <PersonalityCard
+                personality={profile.primaryPersonality}
+                profile={valueProfiles[profile.primaryPersonality.name]}
+                fullProfile={profile}
+                testValues={testValues}
+                highlight
+              />
+            )}
+
+          <div className="secondary-container">
+            {profile?.secondaryPersonality?.name &&
+              valueProfiles[profile.secondaryPersonality.name] && (
+                <SecondaryPersonalityCard
+                  personality={profile.secondaryPersonality}
+                  profile={valueProfiles[profile.secondaryPersonality.name]}
                 />
               )}
 
-            <div className="secondary-container">
-              {profile?.secondaryPersonality?.name &&
-                valueProfiles[profile.secondaryPersonality.name] && (
-                  <SecondaryPersonalityCard
-                    personality={profile.secondaryPersonality}
-                    profile={valueProfiles[profile.secondaryPersonality.name]}
-                  />
-                )}
-
-              {profile?.thirdPersonality?.name &&
-                valueProfiles[profile.thirdPersonality.name] && (
-                  <SecondaryPersonalityCard
-                    personality={profile.thirdPersonality}
-                    profile={valueProfiles[profile.thirdPersonality.name]}
-                  />
-                )}
-            </div>
-
-            <div className="secondary-icons">
-              <FaPen
-                className="clickable-icon"
-                title="Redigera personlighet"
-                onClick={() => navigate("/test")}
-              />
-              <FaClock
-                className="clickable-icon"
-                title="Visa historik"
-                onClick={() => setShowHistory(true)}
-              />
-            </div>
-          </div>
-
-          <div className="btn-show-matches">
-            <button
-              onClick={() =>
-                setUiStatus((prev) => ({ ...prev, showBrandList: !prev.showBrandList }))
-              }
-              className={uiStatus.showBrandList ? "active btn-small btn-show-matches" : "active btn-show-matches"}
-            >
-              {uiStatus.showBrandList ? (
-                <>
-                  <MdKeyboardDoubleArrowUp className="clickable-icon" />
-                  Dölj mina matchningar
-                  <MdKeyboardDoubleArrowUp className="clickable-icon" />
-                </>
-              ) : (
-                <>
-                  <MdKeyboardDoubleArrowDown className="clickable-icon" />
-                  Utforska mina matchningar
-                  <MdKeyboardDoubleArrowDown className="clickable-icon" />
-                </>
+            {profile?.thirdPersonality?.name &&
+              valueProfiles[profile.thirdPersonality.name] && (
+                <SecondaryPersonalityCard
+                  personality={profile.thirdPersonality}
+                  profile={valueProfiles[profile.thirdPersonality.name]}
+                />
               )}
-            </button>
           </div>
 
-          {uiStatus.showBrandList && (
-            <BrandWardrobe
-              brands={brands}
-              showHidden={showHidden}
-              hiddenBrands={hiddenBrands}
-              setHiddenBrands={setHiddenBrands}
-              handleShowHidden={handleShowHidden}
+          <div className="secondary-icons">
+            <FaPen
+              className="clickable-icon"
+              title="Redigera personlighet"
+              onClick={() => navigate("/test")}
             />
-          )}
-
-          {uiStatus.showBrandList && (
-            <RandomBrand
-              category="all"
-              bearer={token}
-              user={profile}
-              testValues={testValues}
-              currentBrandList={brands}
+            <FaClock
+              className="clickable-icon"
+              title="Visa historik"
+              onClick={() => setShowHistory(true)}
             />
-          )}
-
-          {/* Tribes overview */}
-          <TribeCommunityOverview token={token} title="Tribes" />
-
-          <OverlayModal isOpen={showHistory} onClose={() => setShowHistory(false)}>
-            <div className="history-list">
-              <h3>Tidigare Resultat</h3>
-              {history.map((item, idx) => (
-                <div key={idx} className="history-entry">
-                  <p>
-                    <strong>{new Date(item.createdAt).toLocaleString()}</strong>
-                  </p>
-                  <p>
-                    Primär: {getProfileTitle(item.primaryType)} ({item.primaryMatchPercentage}%)
-                  </p>
-                  <p>
-                    Sekundär: {getProfileTitle(item.secondaryType)} ({item.secondaryMatchPercentage}%)
-                  </p>
-                  <p>
-                    Tredje: {getProfileTitle(item.thirdType)} ({item.thirdMatchPercentage}%)
-                  </p>
-                  <hr />
-                </div>
-              ))}
-            </div>
-          </OverlayModal>
-
-          {/* Settings */}
-          <button
-            className="cogwheel-btn"
-            aria-label="Öppna inställningar"
-            title="Inställningar"
-            onClick={() => setShowSettings(true)}
-          >
-            <FaCog size={28} />
-          </button>
-
-          <OverlayModal isOpen={showSettings} onClose={() => setShowSettings(false)}>
-            <UserSettings userId={userId} onClose={() => setShowSettings(false)} />
-          </OverlayModal>
+          </div>
         </div>
+
+        <div className="btn-show-matches">
+          <button
+            onClick={() => setUiStatus(prev => ({ ...prev, showBrandList: !prev.showBrandList }))}
+            className={uiStatus.showBrandList ? "active btn-small" : "active"}
+          >
+            {uiStatus.showBrandList ? "Dölj mina matchningar" : "Utforska mina matchningar"}
+          </button>
+        </div>
+
+        {uiStatus.showBrandList && (
+          <BrandWardrobe
+            brands={brands}
+            showHidden={showHidden}
+            hiddenBrands={hiddenBrands}
+            setHiddenBrands={setHiddenBrands}
+            handleShowHidden={handleShowHidden}
+          />
+        )}
+
+        {!uiStatus.showBrandList && (
+          <RandomBrand
+            category="all"
+            bearer={token}
+            user={profile}
+            testValues={testValues}
+            currentBrandList={brands}
+          />
+        )}
+
+        {/* Community overview (your compact component) */}
+        <TribeCommunityOverview token={token} title="Tribes" />
+
+        <OverlayModal isOpen={showHistory} onClose={() => setShowHistory(false)}>
+          <div className="history-list">
+            <h3>Tidigare Resultat</h3>
+            {history.map((item, idx) => (
+              <div key={idx} className="history-entry">
+                <p>
+                  <strong>{new Date(item.createdAt).toLocaleString()}</strong>
+                </p>
+                <p>
+                  Primär: {valueProfiles[item.primaryType].title} ({item.primaryMatchPercentage}%)
+                </p>
+                <p>
+                  Sekundär: {valueProfiles[item.secondaryType].title} ({item.secondaryMatchPercentage}%)
+                </p>
+                <p>
+                  Tredje: {valueProfiles[item.thirdType].title} ({item.thirdMatchPercentage}%)
+                </p>
+                <hr />
+              </div>
+            ))}
+          </div>
+        </OverlayModal>
       </div>
     </>
   );
