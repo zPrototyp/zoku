@@ -12,6 +12,7 @@ import Register from "./Pages/RegisterPage";
 import ResultPage from "./Pages/ResultPage";
 import ProfilePage from "./Pages/ProfilePage";
 import ClearAllAtoms from "./Pages/ClearAllAtoms";
+import CommunityPage from "./Pages/CommunityPage";
 import './assets/css/App.css'; 
 
 // import TestPage from "./Pages/TestPage";
@@ -37,6 +38,7 @@ function App() {
 
           <Route path="/profile" element={<ProfilePage/>} />
           <Route path="/feed" element={<FeedPage />} />
+          <Route path="/community" element={<CommunityPage />} />
 
           <Route path="/aboutZoku" element={<AboutZoku />} />
           <Route path="/tribes" element={<Tribes />} />

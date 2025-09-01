@@ -13,7 +13,7 @@ import { FaPen, FaClock} from "react-icons/fa";
 import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
 import { testValuesAtom } from "../Atoms/TestValuesAtom";
 import { API_userSafeFetchJson } from "../Services/API";
-import TribeCommunity from "../Components/TribeCommunity";
+import TribeCommunityOverview from "../Components/TribeCommunityOverview";
 import RandomBrand from "../Components/RandomBrand";
 import { MdKeyboardDoubleArrowDown, MdKeyboardDoubleArrowUp } from "react-icons/md";
 import useMediaQuery from "../Components/MediaQuery";
@@ -210,37 +210,47 @@ function ProfilePage() {
                     testValues={testValues} 
                     currentBrandList={brands} />
                   }
-          
 
-          {/* Tribes: Liked celebs + Following users */}
-          {uiStatus.showBrandList && <TribeCommunity token={token} user={profile} title="Tribes" />}
+        {/* Tribes overview */}
+        <TribeCommunityOverview token={token} title="Tribes" />
 
-          <OverlayModal isOpen={showHistory} onClose={() => setShowHistory(false)}>
-            <div className="history-list">
-              <h3>Tidigare Resultat</h3>
-              {history.map((item, idx) => (
-                <div key={idx} className="history-entry">
-                  <div className={`aboutProfile-${item.primaryType}`}>
-                  {/* <div className="aboutProfile-Traditionalist"> */}
-                  <p>
-                    <strong>{new Date(item.createdAt).toLocaleString()}</strong>
-                  </p>
-                  <p>
-                    Primär: {valueProfiles[item.primaryType].title} ({item.primaryMatchPercentage}%)
-                  </p>
-                  <p>
-                    Sekundär: {valueProfiles[item.secondaryType].title} ({item.secondaryMatchPercentage}%)
-                  </p>
-                  <p>
-                    Tredje: {valueProfiles[item.thirdType].title} ({item.thirdMatchPercentage}%)
-                  </p>
-                  </div>
-                  <hr />
-                </div>
-              ))}
-            </div>
-          </OverlayModal>
-        </div>
+        <OverlayModal isOpen={showHistory} onClose={() => setShowHistory(false)}>
+          <div className="history-list">
+            <h3>Tidigare Resultat</h3>
+            {history.map((item, idx) => (
+              <div key={idx} className="history-entry">
+                <p>
+                  <strong>{new Date(item.createdAt).toLocaleString()}</strong>
+                </p>
+                <p>
+                  Primär: {valueProfiles[item.primaryType].title} ({item.primaryMatchPercentage}%)
+                </p>
+                <p>
+                  Sekundär: {valueProfiles[item.secondaryType].title} ({item.secondaryMatchPercentage}%)
+                </p>
+                <p>
+                  Tredje: {valueProfiles[item.thirdType].title} ({item.thirdMatchPercentage}%)
+                </p>
+                <hr />
+              </div>
+            ))}
+          </div>
+        </OverlayModal>
+
+        {/* Settings */}
+        <button
+          className="cogwheel-btn"
+          aria-label="Öppna inställningar"
+          title="Inställningar"
+          onClick={() => setShowSettings(true)}
+        >
+          <FaCog size={28} />
+        </button>
+
+        <OverlayModal isOpen={showSettings} onClose={() => setShowSettings(false)}>
+          <UserSettings userId={userId} onClose={() => setShowSettings(false)} />
+        </OverlayModal>
+      </div>
       </div> 
     </>
   );
