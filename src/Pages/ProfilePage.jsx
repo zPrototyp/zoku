@@ -15,7 +15,7 @@ import { testValuesAtom } from "../Atoms/TestValuesAtom";
 import { API_userSafeFetchJson } from "../Services/API";
 import RandomBrand from "../Components/RandomBrand";
 import useMediaQuery from "../Components/MediaQuery";
-import TribeCommunityOverview from "../Components/TribeCommunityOverview"; // compact community
+import TribeCommunityOverview from "../Components/TribeCommunityOverview";
 
 // import { comparisonValueAtom } from '../Atoms/ComparisonValueAtom.jsx'
 // import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'

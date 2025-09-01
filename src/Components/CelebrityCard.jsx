@@ -1,34 +1,25 @@
-import React, { useMemo, useState } from "react"; 
+import React, { useMemo, useState } from "react";
 import CelebrityComparisonDial from "./CelebrityComparisonDial";
 import SecondaryPersonalityCard from "./SecondaryPersonalityCard";
 import TopCelebrityBrand from "./TopCelebrityBrand";
 import { valueProfiles } from "../assets/uiData/zoku_profiles_se";
 import "../assets/css/CelebrityCard.css";
 import CelebrityLikeOverlay from "./CelebrityLikeOverlay";
-import { useAtomValue } from "jotai";
-import { authTokenAtom } from "../Atoms/AuthAtom";
-import { ZokuMasks } from "../assets/uiData/PersonalityImages";
 
-function getProfileSafe(type)
-{
+function getProfileSafe(type) {
   if (!type) return null;
   return valueProfiles?.[type] || null;
 }
 
-export default function CelebrityCard({ celeb, user, celebBrands = [], onAfterUnlike, onAfterLike })
-{
+export default function CelebrityCard({ celeb, user, celebBrands = [], onAfterUnlike, onAfterLike }) {
   const [expanded, setExpanded] = useState(false);
   const [showDial, setShowDial] = useState(false);
-  const userToken = useAtomValue(authTokenAtom);
-  
-// console.log(celeb);
 
   if (!celeb || typeof celeb !== "object") return null;
 
   const imgSrc = celeb.imageUrl || celeb.imgUrl || null;
 
-  const matchPct = useMemo(() =>
-  {
+  const matchPct = useMemo(() => {
     const v =
       typeof celeb.matchWithUser === "number"
         ? celeb.matchWithUser
@@ -45,8 +36,7 @@ export default function CelebrityCard({ celeb, user, celebBrands = [], onAfterUn
 
   const hasAnyBlock = Boolean(pProf || sProf || tProf);
 
-  const celebCoords = useMemo(() =>
-  {
+  const celebCoords = useMemo(() => {
     const c = celeb.coordinates || {};
     const x =
       typeof c.compassionVsAmbition === "number"
@@ -73,8 +63,7 @@ export default function CelebrityCard({ celeb, user, celebBrands = [], onAfterUn
 
   const canShowDial = userHasCoords && celebHasCoords;
   const dialUser = user;
-  const dialCeleb =
-  {
+  const dialCeleb = {
     name: celeb.name,
     coordinates: {
       compassionVsAmbition: celebCoords.compassionVsAmbition,
@@ -82,6 +71,7 @@ export default function CelebrityCard({ celeb, user, celebBrands = [], onAfterUn
     },
     personalityProfile: celeb.personalityProfile,
   };
+
   const compareDisabledTitle = !userHasCoords
     ? "Din profil saknar koordinater (compassionVsAmbition / changeVsTradition)."
     : !celebHasCoords
@@ -92,12 +82,12 @@ export default function CelebrityCard({ celeb, user, celebBrands = [], onAfterUn
     <div className="celebCard">
       {/* Header */}
       <div className="celebHeader" style={{ position: "relative" }}>
-        {/* Like overlay (top-right) */}
-        {userToken && <CelebrityLikeOverlay
+        {/* Like overlay*/}
+        <CelebrityLikeOverlay
           celeb={celeb}
           onAfterLike={onAfterLike}
           onAfterUnlike={onAfterUnlike}
-        />}
+        />
 
         {imgSrc && (
           <img
@@ -110,10 +100,7 @@ export default function CelebrityCard({ celeb, user, celebBrands = [], onAfterUn
         <div className="celebMeta">
           <div className="celebTitleRow">
             <h3 className="celebName">{celeb?.name || "Okänd kändis"}</h3>
-            {user ? 
-            <span className="celebMatch">{matchPct}% match</span> : 
-            <span className="type">{celeb?.primaryMatchPercentage}% {valueProfiles[celeb?.personalityType].title}</span>
-            }
+            <span className="celebMatch">{matchPct}% match</span>
           </div>
           {pProf && <div className="celebPrimary">{pProf.title}</div>}
           {celeb?.description && (
@@ -134,7 +121,7 @@ export default function CelebrityCard({ celeb, user, celebBrands = [], onAfterUn
         )}
 
         {/* Compare button */}
-       {user && <button
+        <button
           className="btn btnSlim"
           onClick={() => setShowDial((v) => !v)}
           disabled={!canShowDial}
@@ -142,7 +129,7 @@ export default function CelebrityCard({ celeb, user, celebBrands = [], onAfterUn
           aria-disabled={!canShowDial}
         >
           {showDial ? "Dölj jämförelse" : "Jämför"}
-        </button>}
+        </button>
       </div>
 
       {/* Comparison dial  */}
@@ -160,7 +147,7 @@ export default function CelebrityCard({ celeb, user, celebBrands = [], onAfterUn
             <div className="primaryBlock">
               <img
                 className="primaryMask"
-                src={ZokuMasks[primary.type]}
+                src={pProf.imgSrc}
                 alt={pProf.title}
                 loading="lazy"
               />
@@ -168,7 +155,7 @@ export default function CelebrityCard({ celeb, user, celebBrands = [], onAfterUn
                 <div className="primaryTitleRow">
                   <div className="primaryKanji">{pProf.kanji}</div>
                   <div className="primaryPct">
-                    {primary?.matchPercentage ?? 0}%
+                    {Math.round(primary?.matchPercentage ?? 0)}%
                   </div>
                 </div>
                 <div className="primaryTitle">{pProf.title}</div>
