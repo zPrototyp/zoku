@@ -11,7 +11,7 @@ export default function BrandWardrobe({ brands, showHidden, hiddenBrands, setHid
       <h2>Din garderob</h2>
        <MdOutlinePlaylistRemove 
           className="clickable-icon hidden-brands-toggle"
-          title="Visa gömda varumärken"
+          title={showHidden ? "Visa min varumärkesgarderob": "Visa gömda varumärken"}
           onClick={() => handleShowHidden()}
           />
       </div>
