@@ -80,13 +80,12 @@ function Search({
       if (token) {
         let users = [];
         try {
-          const base = (AZURE_API || "").replace(/\/+$/,"");
+          const base = (AZURE_API || "").replace(/\/+$/, "");
           const hasApiV1 = /\/api\/v1\b/.test(base);
           const root = hasApiV1 ? base : `${base}/api/v1`;
 
           const params = new URLSearchParams({
-            name: term,
-            username: term,
+            searchTerm: term,
             page: "1",
             pageSize: "12",
           });
@@ -155,17 +154,40 @@ function Search({
   );
 
   const normalizedUsers = useMemo(() => {
-  if (!Array.isArray(foundUsers)) return [];
+    if (!Array.isArray(foundUsers)) return [];
 
-  return foundUsers.map((u) => ({
-    id: u.id ?? u.userId ?? "",
-    displayName: u.displayName ?? u.name ?? "",
-    username: u.username ?? "",
-    avatarUrl: u.avatarUrl ?? u.photoUrl ?? "",
-    bio: u.bio ?? u.tagline ?? "",
-    isFollowing: !!u.isFollowing,
-  }));
-}, [foundUsers]);
+    return foundUsers.map((u) => {
+      const personalityType =
+        u.primaryType ??
+        u.personalityType ??
+        u.primaryPersonality?.type ??
+        u.personality?.primary?.type ??
+        u.primaryPersonalityType ??
+        null;
+
+      const rawMatch =
+        u.primaryMatchPercentage ??
+        u.compatibilityScore ??
+        u.matchPercentage ??
+        null;
+
+      const primaryMatchPercentage =
+        typeof rawMatch === "number"
+          ? rawMatch <= 1 ? Math.round(rawMatch * 100) : Math.round(rawMatch)
+          : undefined;
+
+      return {
+        id: u.id ?? u.userId ?? "",
+        displayName: u.displayName ?? u.name ?? u.username ?? "",
+        username: u.username ?? "",
+        avatarUrl: u.avatarUrl ?? u.photoUrl ?? "",
+        bio: u.bio ?? u.tagline ?? "",
+        isFollowing: !!u.isFollowing,
+        personalityType,
+        primaryMatchPercentage,
+      };
+    });
+  }, [foundUsers]);
 
   return (
     <div>
@@ -240,7 +262,7 @@ function Search({
             )}
           </div>
 
-          {/* Brands (from current feed) */}
+          {/* Brands */}
           <div style={{ marginTop: "1.25rem" }}>
             <h3 style={{ marginBottom: ".5rem" }}>Varumärken ({foundBrands.length})</h3>
             {foundBrands.length > 0 ? (
