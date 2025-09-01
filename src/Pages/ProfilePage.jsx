@@ -17,13 +17,7 @@ import TribeCommunityOverview from "../Components/TribeCommunityOverview";
 import RandomBrand from "../Components/RandomBrand";
 import { MdKeyboardDoubleArrowDown, MdKeyboardDoubleArrowUp } from "react-icons/md";
 import useMediaQuery from "../Components/MediaQuery";
-import UserSettings from "../Components/UserSettings"; 
-
-// import { comparisonValueAtom } from '../Atoms/ComparisonValueAtom.jsx'
-// import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
-// import { CreateComparisonDials } from '../Components/CreateComparisonDials.jsx'
-// import { calculateMatchPercentage } from "../Services/type-calculation";
-// import CelebrityComparisonDial from "../Components/CelebrityComparisonDial.jsx";
+import UserSettings from "../Components/UserSettings";
 
 function ProfilePage() {
   const [profile, setProfile] = useAtom(valueProfileAtom);
@@ -36,16 +30,10 @@ function ProfilePage() {
   const [showHidden, setShowHidden] = useState(false);
   const [token] = useAtom(authTokenAtom);
   const navigate = useNavigate();
-  const [showSettings, setShowSettings] = useState(false); // <-- added
-  const [uiStatus, setUiStatus] = useState({
-    showBrandList: false,
-  });
+  const [showSettings, setShowSettings] = useState(false);
+  const [uiStatus, setUiStatus] = useState({ showBrandList: false });
 
   const isComputer = useMediaQuery("(min-width: 1024px)");
-
-  // const [friendValues] = useAtom(comparisonValueAtom)
-  // const [friendProfile] = useAtom(comparisonProfileAtom)
-  // const [showComparison, setShowComparison] = useState(false);
 
   // On load fetch all the profile information
   useEffect(() => {
@@ -98,28 +86,19 @@ function ProfilePage() {
     setShowHidden(true);
   }
 
-  // const { dialA, dialB, hasFriend } = useMemo(() => {
-  //   if (!profile) return { dialA: null, dialB: null, hasFriend: false }
-  //   return CreateComparisonDials({ friendValues, friendProfile, profile })
-  // }, [friendValues, friendProfile, profile])
-
   if (error) return <div className="page-content"><p style={{ color: "red" }}>{error}</p></div>;
   if (!profile) return <div className="page-content"><p>Laddar profil...</p></div>;
 
   // Profile does not contain a userID to set.
   const userId = profile?.userId || profile?.id || null;
 
+  // --- helper: safe lookup for titles from valueProfiles ---
+  const getProfileTitle = (typeKey) =>
+    (typeKey && valueProfiles?.[typeKey]?.title) || String(typeKey ?? "Okänd");
+
   return (
     <>
       <div className="page-content" style={{ position: "relative" }}>
-        {/* {showComparison && hasFriend && dialA && dialB && (
-          <div className="comparison-inline" style={{ marginBottom: '1.25rem' }}>
-            <h2 style={{ marginBottom: '.5rem' }}>Jämförelse {calculateMatchPercentage(friendValues, testValues)}% match</h2>
-            <CelebrityComparisonDial a={dialA} b={dialB} aLabel="Du" bLabel="Vän" size={260} />
-            <button style={{fontSize:"1.2em"}} onClick={()=>setShowComparison(p=> !p)}>Dölj jämförelse</button>
-          </div>
-          )}
-        {!showComparison && hasFriend && (<button style={{fontSize:"1.2em"}} onClick={()=>setShowComparison(p=> !p)}>Visa jämförelse med {valueProfiles[friendProfile?.primaryPersonality.name].title}</button>)} */}
         <h2>Din Personlighet</h2>
 
         <div className="result-content">
@@ -222,13 +201,13 @@ function ProfilePage() {
                     <strong>{new Date(item.createdAt).toLocaleString()}</strong>
                   </p>
                   <p>
-                    Primär: {valueProfiles[item.primaryType].title} ({item.primaryMatchPercentage}%)
+                    Primär: {getProfileTitle(item.primaryType)} ({item.primaryMatchPercentage}%)
                   </p>
                   <p>
-                    Sekundär: {valueProfiles[item.secondaryType].title} ({item.secondaryMatchPercentage}%)
+                    Sekundär: {getProfileTitle(item.secondaryType)} ({item.secondaryMatchPercentage}%)
                   </p>
                   <p>
-                    Tredje: {valueProfiles[item.thirdType].title} ({item.thirdMatchPercentage}%)
+                    Tredje: {getProfileTitle(item.thirdType)} ({item.thirdMatchPercentage}%)
                   </p>
                   <hr />
                 </div>
