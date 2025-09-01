@@ -1,6 +1,5 @@
 export const valueProfiles = {
   Guardian: {
-    imgSrc: "/src/assets/images/Beskyddaren.svg",
     title: "Beskyddaren",
     kanji: "守",
     subtitle: "Den pålitliga väktaren",
@@ -19,7 +18,6 @@ export const valueProfiles = {
     consumerText: "Du väljer det som skapar lugn, trygghet och välmående – för dig och dina nära. Kvalitet över tid, inte status över substans. Du bygger hem och vardag med omsorg.",
   },
   Adventurer: {
-    imgSrc: "/src/assets/images/Aventyraren.svg",
     title: "Äventyraren",
     kanji: "冒",
     subtitle: "Den orädda upptäckaren",
@@ -38,7 +36,6 @@ export const valueProfiles = {
     consumerText: "En flygbiljett, en ryggsäck, en ny app – allt du konsumerar är portaler till nästa upplevelse. Du ser produkter som passager, inte saker. Varumärken som ger dig frihet, inspiration och spontanitet vinner ditt hjärta. Du är ofta först med att testa nya digitala verktyg som berikar resan – bokstavligen eller mentalt."
   },
   Traditionalist: {
-    imgSrc: "/src/assets/images/Bevararen.svg",
     title: "Bevararen",
     kanji: "伝",
     subtitle: "Den lojala traditionsbäraren",
@@ -58,7 +55,6 @@ export const valueProfiles = {
   },
 
   Advocate: {
-    imgSrc: "/src/assets/images/Forkampen.svg",
     title: "Förkämpen",
     kanji: "護",
     subtitle: "Den empatiska aktivisten",
@@ -77,7 +73,6 @@ export const valueProfiles = {
     consumerText: "Du letar efter principer – inte trender. För dig är varje köp ett bevis på vad du tror på. Du väljer varumärken som visar ryggrad, inte bara vision. Du värdesätter mänsklighet över marknadsandelar.",
   },
   Idealist: {
-    imgSrc: "/src/assets/images/Idealisten.svg",
     title: "Idealisten",
     kanji: "理",
     subtitle: "Den visionära humanisten",
@@ -95,7 +90,6 @@ export const valueProfiles = {
     consumerText: "För dig är ett köp ett ställningstagande. Du letar efter varumärken som står för något. Genom ditt konsumtionsval bygger du den framtid du tror på. Du är ofta den som inspirerar andra att tänka efter – och tänka om.",
   },
   Achiever: {
-    imgSrc: "/src/assets/images/Segraren.svg",
     title: "Segraren",
     kanji: "達",
     subtitle: "Den målmedvetna vinnarskallen",
@@ -114,7 +108,6 @@ export const valueProfiles = {
     consumerText: "Allt du använder måste hålla samma nivå som du själv. Du investerar i verktyg, kläder och teknologier som ger dig en edge. Du väljer inte för att imponera – du väljer för att vinna.",
   },
   Strategist: {
-    imgSrc: "/src/assets/images/Strategen.svg",
     title: "Strategen",
     kanji: "策",
     subtitle: "Den smarta kontrollmästaren",
@@ -132,7 +125,6 @@ export const valueProfiles = {
     consumerText: "Du väljer produkter som fungerar direkt och länge. Varje köp ska optimera något i ditt system. Du är en tidshackare som gillar struktur, data och intelligenta lösningar.",
   },
   Caregiver: {
-    imgSrc: "/src/assets/images/Vardgivaren.svg",
     title: "Vårdgivaren",
     kanji: "愛",
     subtitle: "Den trygga beskyddaren",
