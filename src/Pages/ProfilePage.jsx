@@ -29,12 +29,18 @@ function ProfilePage() {
   const [error, setError] = useState("");
   const [brands, setBrands] = useAtom(feedListAtom);
   const [history, setHistory] = useState([]);
-  const [showHistory, setShowHistory] = useState(false);
   const [hiddenBrands, setHiddenBrands] = useState([]);
+
   const [showHidden, setShowHidden] = useState(false);
+
   const [token] = useAtom(authTokenAtom);
   const navigate = useNavigate();
-  const [uiStatus, setUiStatus] = useState({ showBrandList: false });
+  const [uiStatus, setUiStatus] = useState({
+     showBrandList: false,
+     showHistory: false,
+     showHidden: false
+    });
+
   const isComputer = useMediaQuery("(min-width: 1024px)")
 
   // On load fetch all the profile information
@@ -93,8 +99,8 @@ function ProfilePage() {
   }, [profile, testValues]);
 
   async function handleShowHidden() {
-    if (showHidden) {
-      setShowHidden(false);
+    if (uiStatus.showHidden) {
+      setUiStatus((prev) => ({...prev, showHidden: false}))
       return;
     }
     const hidden = await API_userSafeFetchJson(token, "user/brands/hidden", setHiddenBrands);
@@ -102,7 +108,7 @@ function ProfilePage() {
       setError("Kunde inte hämta gömda varumärken");
       return;
     }
-    setShowHidden(true);
+    setUiStatus((prev) => ({...prev, showHidden: true}))
   }
 
   // Early returns AFTER hooks are declared
@@ -161,7 +167,7 @@ function ProfilePage() {
             <FaClock
               className="clickable-icon"
               title="Visa historik"
-              onClick={() => setShowHistory(true)}
+              onClick={() => setUiStatus((prev) => ({...prev, showHistory: true}))}
             />
           </div>
         </div>
@@ -178,7 +184,7 @@ function ProfilePage() {
         {uiStatus.showBrandList && (
           <BrandWardrobe
             brands={brands}
-            showHidden={showHidden}
+            showHidden={uiStatus.showHidden}
             hiddenBrands={hiddenBrands}
             setHiddenBrands={setHiddenBrands}
             handleShowHidden={handleShowHidden}
@@ -198,7 +204,7 @@ function ProfilePage() {
         {/* Community overview (your compact component) */}
         <TribeCommunityOverview token={token} title="Tribes" user={profile}/>
 
-        <OverlayModal isOpen={showHistory} onClose={() => setShowHistory(false)}>
+        <OverlayModal isOpen={uiStatus.showHistory} onClose={() => setUiStatus((prev) => ({...prev, showHistory:false}))}>
           <div className="history-list">
             <h3>Tidigare Resultat</h3>
             {history.map((item, idx) => (

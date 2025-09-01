@@ -22,7 +22,6 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6 , user}) {
       try {
         await API_userSafeFetchJson(token, "user/celebrities/liked", (data) => {
           if (!mounted) return;
-          console.log("data",data);
           setLikedCelebs(Array.isArray(data) ? data.slice(0, limit) : []);
         });
       } catch (err) {
