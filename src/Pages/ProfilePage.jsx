@@ -180,23 +180,25 @@ function ProfilePage() {
         <OverlayModal isOpen={showHistory} onClose={() => setShowHistory(false)}>
           <div className="history-list">
             <h3>Tidigare Resultat</h3>
-            {history.map((item, idx) => (
-              <div key={idx} className="history-entry">
-                <p>
-                  <strong>{new Date(item.createdAt).toLocaleString()}</strong>
-                </p>
-                    <p>
-                        Primär: {valueProfiles?.[item?.primaryType]?.title ?? item?.primaryType ?? "Okänd"} ({item.primaryMatchPercentage}%)
-                    </p>
-                    <p>
-                        Sekundär: {valueProfiles?.[item?.secondaryType]?.title ?? item?.secondaryType ?? "Okänd"} ({item.secondaryMatchPercentage}%)
-                    </p>
-                    <p>
-                        Tredje: {valueProfiles?.[item?.thirdType]?.title ?? item?.thirdType ?? "Okänd"} ({item.thirdMatchPercentage}%)
-                    </p>
-                <hr />
-              </div>
-            ))}
+              {history.map((item, idx) => (
+                <div key={idx} className="history-entry">
+                  <p>
+                    <strong>
+                      {item?.createdAt ? new Date(item.createdAt).toLocaleString() : "Okänt datum"}
+                    </strong>
+                  </p>
+                  <p>
+                    Primär: {valueProfiles?.[item?.primaryType]?.title ?? item?.primaryType ?? "Okänd"} ({item?.primaryMatchPercentage ?? "–"}%)
+                  </p>
+                  <p>
+                    Sekundär: {valueProfiles?.[item?.secondaryType]?.title ?? item?.secondaryType ?? "Okänd"} ({item?.secondaryMatchPercentage ?? "–"}%)
+                  </p>
+                  <p>
+                    Tredje: {valueProfiles?.[item?.thirdType]?.title ?? item?.thirdType ?? "Okänd"} ({item?.thirdMatchPercentage ?? "–"}%)
+                  </p>
+                  <hr />
+                </div>
+              ))}
           </div>
         </OverlayModal>
       </div>
