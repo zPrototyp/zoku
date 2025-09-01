@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import {
   PersonalityImages,
-  PersonalityImageNameMap,
   ZokuMasks,
 } from "../assets/uiData/PersonalityImages";
 import "../assets/css/CelebrityDial.css";
@@ -25,7 +24,8 @@ function resolveMaskImage(entity) {
   if (!entity) return PersonalityImages.Mask;
 
   // 1. Primary personality name → ZokuMasks
-  const name = entity?.primaryPersonality?.name;
+  const name = entity?.primaryPersonality?.name || entity?.personalityType || entity.personalityProfile.primary.type;
+  
   if (name && ZokuMasks[name]) return ZokuMasks[name];
 
   return PersonalityImages.Mask;
@@ -40,6 +40,7 @@ export default function CelebrityComparisonDial({
   bLabel = "Vän",
   size = 300,
 }) {
+  console.log(celeb);
   const left = a ?? user ?? null;
   const right = b ?? celeb ?? null;
 
