@@ -204,18 +204,16 @@ function ProfilePage() {
             {history.map((item, idx) => (
               <div key={idx} className="history-entry">
                 <p>
-                  <strong>
-                    {item?.createdAt ? new Date(item.createdAt).toLocaleString() : "Okänt datum"}
-                  </strong>
+                  <strong>{new Date(item.createdAt).toLocaleString()}</strong>
                 </p>
                 <p>
-                  Primär: {valueProfiles?.[item?.primaryType]?.title ?? item?.primaryType ?? "Okänd"} ({item?.primaryMatchPercentage ?? "–"}%)
+                  Primär: {item.primaryType} ({item.primaryMatchPercentage}%)
                 </p>
                 <p>
-                  Sekundär: {valueProfiles?.[item?.secondaryType]?.tilte ?? item?.secondaryType ?? "Okänd"} ({item?.secondaryMatchPercentage ?? "–"}%)
+                  Sekundär: {item.secondaryType} ({item.secondaryMatchPercentage}%)
                 </p>
                 <p>
-                  Tredje: {valueProfiles?.[item?.thirdType]?.title ?? item?.thirdType ?? "Okänd"} ({item?.thirdMatchPercentage ?? "–"}%)
+                  Tredje: {item.thirdType} ({item.thirdMatchPercentage}%)
                 </p>
                 <hr />
               </div>
