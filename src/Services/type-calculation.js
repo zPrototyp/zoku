@@ -6,7 +6,7 @@ export function calculatePersonalityType(changeVsTradition, compassionVsAmbition
 // Helper to calculate match percentage between two personalities
 export function calculateMatchPercentage(personalityOne, personalityTwo)
 {
-   if (
+       if (
     !personalityOne || 
     !personalityTwo ||
     typeof personalityOne.changeVsTradition !== "number" ||
