@@ -14,7 +14,7 @@ import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
 import { testValuesAtom } from "../Atoms/TestValuesAtom";
 import { API_userSafeFetchJson } from "../Services/API";
 import RandomBrand from "../Components/RandomBrand";
-import TribeCommunityOverview from "../Components/TribeCommunityOverview"; // <-- your compact community
+import TribeCommunityOverview from "../Components/TribeCommunityOverview"; // compact community
 
 // import { comparisonValueAtom } from '../Atoms/ComparisonValueAtom.jsx'
 // import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
@@ -33,9 +33,7 @@ function ProfilePage() {
   const [showHidden, setShowHidden] = useState(false);
   const [token] = useAtom(authTokenAtom);
   const navigate = useNavigate();
-  const [uiStatus, setUiStatus] = useState({
-    showBrandList: false,
-  });
+  const [uiStatus, setUiStatus] = useState({ showBrandList: false });
 
   // On load fetch all the profile information
   useEffect(() => {
@@ -67,25 +65,10 @@ function ProfilePage() {
         compassionVsAmbition: profile.compassionVsAmbition,
       });
     }
-  }, [profile]);
+  }, [profile, setTestValues]);
 
-  async function handleShowHidden() {
-    if (showHidden) {
-      setShowHidden(false);
-      return;
-    }
-    const hidden = await API_userSafeFetchJson(token, "user/brands/hidden", setHiddenBrands);
-    if (!hidden) {
-      setError("Kunde inte hämta gömda varumärken");
-      return;
-    }
-    setShowHidden(true);
-  }
-
-  if (error) return <div className="page-content"><p style={{ color: "red" }}>{error}</p></div>;
-  if (!profile) return <div className="page-content"><p>Laddar profil...</p></div>;
-
-  // Safe test values so children never see null
+  // ---- ALWAYS call hooks before any early returns ----
+  // Safe test values so children never see null (prevents crashes)
   const safeTestValues = useMemo(() => {
     if (profile) {
       return {
@@ -101,6 +84,23 @@ function ProfilePage() {
     }
     return { changeVsTradition: 0, compassionVsAmbition: 0 };
   }, [profile, testValues]);
+
+  async function handleShowHidden() {
+    if (showHidden) {
+      setShowHidden(false);
+      return;
+    }
+    const hidden = await API_userSafeFetchJson(token, "user/brands/hidden", setHiddenBrands);
+    if (!hidden) {
+      setError("Kunde inte hämta gömda varumärken");
+      return;
+    }
+    setShowHidden(true);
+  }
+
+  // Early returns AFTER hooks are declared
+  if (error) return <div className="page-content"><p style={{ color: "red" }}>{error}</p></div>;
+  if (!profile) return <div className="page-content"><p>Laddar profil...</p></div>;
 
   return (
     <>
@@ -194,25 +194,25 @@ function ProfilePage() {
         <OverlayModal isOpen={showHistory} onClose={() => setShowHistory(false)}>
           <div className="history-list">
             <h3>Tidigare Resultat</h3>
-              {history.map((item, idx) => (
-                <div key={idx} className="history-entry">
-                  <p>
-                    <strong>
-                      {item?.createdAt ? new Date(item.createdAt).toLocaleString() : "Okänt datum"}
-                    </strong>
-                  </p>
-                  <p>
-                    Primär: {valueProfiles?.[item?.primaryType]?.title ?? item?.primaryType ?? "Okänd"} ({item?.primaryMatchPercentage ?? "–"}%)
-                  </p>
-                  <p>
-                    Sekundär: {valueProfiles?.[item?.secondaryType]?.title ?? item?.secondaryType ?? "Okänd"} ({item?.secondaryMatchPercentage ?? "–"}%)
-                  </p>
-                  <p>
-                    Tredje: {valueProfiles?.[item?.thirdType]?.title ?? item?.thirdType ?? "Okänd"} ({item?.thirdMatchPercentage ?? "–"}%)
-                  </p>
-                  <hr />
-                </div>
-              ))}
+            {history.map((item, idx) => (
+              <div key={idx} className="history-entry">
+                <p>
+                  <strong>
+                    {item?.createdAt ? new Date(item.createdAt).toLocaleString() : "Okänt datum"}
+                  </strong>
+                </p>
+                <p>
+                  Primär: {valueProfiles?.[item?.primaryType]?.title ?? item?.primaryType ?? "Okänd"} ({item?.primaryMatchPercentage ?? "–"}%)
+                </p>
+                <p>
+                  Sekundär: {valueProfiles?.[item?.secondaryType]?.title ?? item?.secondaryType ?? "Okänd"} ({item?.secondaryMatchPercentage ?? "–"}%)
+                </p>
+                <p>
+                  Tredje: {valueProfiles?.[item?.thirdType]?.title ?? item?.thirdType ?? "Okänd"} ({item?.thirdMatchPercentage ?? "–"}%)
+                </p>
+                <hr />
+              </div>
+            ))}
           </div>
         </OverlayModal>
       </div>
