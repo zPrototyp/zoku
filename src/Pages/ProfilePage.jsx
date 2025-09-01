@@ -17,6 +17,7 @@ import TribeCommunityOverview from "../Components/TribeCommunityOverview";
 import RandomBrand from "../Components/RandomBrand";
 import { MdKeyboardDoubleArrowDown, MdKeyboardDoubleArrowUp } from "react-icons/md";
 import useMediaQuery from "../Components/MediaQuery";
+import UserSettings from "../Components/UserSettings"; 
 
 // import { comparisonValueAtom } from '../Atoms/ComparisonValueAtom.jsx'
 // import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
