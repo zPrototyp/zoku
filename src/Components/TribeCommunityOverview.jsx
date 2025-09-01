@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_userSafeFetchJson } from "../Services/API";
 
-function TribeCommunityOverview({ token, title = "Tribes", limit = 18 }) {
+function TribeCommunityOverview({ token, title = "Tribes", limit = 6 , user}) {
+  const [likedCelebs, setLikedCelebs] = useState([]);
   const [followingUsers, setFollowingUsers] = useState([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
