@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_userSafeFetchJson } from "../Services/API";
+import CelebrityCard from "./CelebrityCard";
+import UserCard from "./UserCard";
+import { PiFileXlsDuotone } from "react-icons/pi";
 
 function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user }) {
   const [followingUsers, setFollowingUsers] = useState([]);
@@ -16,6 +19,18 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user }) {
       if (!token) { setIsLoading(false); return; }
       setIsLoading(true);
       setError("");
+
+      try {
+        await API_userSafeFetchJson(token, "user/celebrities/liked", (data) => {
+          if (!mounted) return;
+          console.log("data",data);
+          setLikedCelebs(Array.isArray(data) ? data.slice(0, limit) : []);
+        });
+      } catch (err) {
+        if (!mounted) return;
+        console.error("Fel vid hämtning av gillade kändisar:", err);
+        setError((prev) => prev || "Kunde inte hämta gillade kändisar");
+      }
 
       try {
         await API_userSafeFetchJson(token, "user/relationships/following", (data) => {
@@ -43,10 +58,30 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user }) {
     return () => { mounted = false; };
   }, [token, limit]);
 
-  const scrollBy = (dir = 1) => {
-    const node = scrollerRef.current;
-    if (!node) return;
-    node.scrollBy({ left: dir * 320, behavior: "smooth" });
+
+  // console.log(likedCelebs);
+
+  const Grid = ({ children }) => (
+    <div style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))",
+      gap: "0.75rem"
+    }}>
+      {children}
+    </div>
+  );
+
+  const handleAfterUnlikeCeleb = (celeb) => {
+    const id = celeb?.id;
+    setLikedCelebs((prev) => prev.filter((c) => (c.id || c.celebrityId) !== id));
+  };
+  const handleAfterLikeCeleb = (celeb) => {
+    const id = celeb?.id;
+    setLikedCelebs((prev) => {
+      const exists = prev.some((c) => (c.id || c.celebrityId) === id);
+      if (exists) return prev;
+      return [{ id, name: celeb?.name, imageUrl: celeb?.imageUrl, isLiked: true }, ...prev].slice(0, limit);
+    });
   };
 
   const getInitials = (name = "") => {
@@ -73,21 +108,32 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user }) {
       {error && <p style={{ color: "red", marginTop: ".5rem" }}>{error}</p>}
       {isLoading && <p style={{ opacity: 0.75, marginTop: ".5rem" }}>Laddar...</p>}
 
-      {!isLoading && followingUsers.length > 0 && (
-        <div style={{ position: "relative", marginTop: ".75rem", padding: "0 .25rem" }}>
-          {/* Left arrow */}
-          <button
-            type="button"
-            aria-label="Scrolla vänster"
-            onClick={() => scrollBy(-1)}
-            className="btn btnSlim"
-            style={{
-              position: "absolute", left: 0, top: "50%",
-              transform: "translateY(-50%)", zIndex: 2, opacity: 0.9,
-            }}
-          >
-            ‹
-          </button>
+      {/* Liked Celebrities (compact) */}
+      <div style={{ marginTop: ".75rem", marginBottom: ".75rem" }}>
+        <h3 style={{ marginBottom: ".5rem" }}>Kändisar du gillar</h3>
+        {likedCelebs && likedCelebs.length > 0 ? (
+          // <Grid>
+          <div style={{display: "flex",
+            flexDirection: "column"
+          }}>
+            {likedCelebs.map((c) => {
+              return (
+                <CelebrityCard
+                  key={c.id || c.name}
+                  celeb={c}
+                  user={user}
+                  celebBrands={[]}
+                  onAfterUnlike={handleAfterUnlikeCeleb}
+                  onAfterLike={handleAfterLikeCeleb}
+                />
+              );
+            })}
+            </div>
+          // </Grid>
+        ) : (
+          <p style={{ opacity: 0.75 }}>Inga kändisar ännu.</p>
+        )}
+      </div>
 
           {/* Carousel scroller */}
           <div
@@ -193,8 +239,6 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user }) {
           </p>
         </div>
       )}
-    </div>
-  );
-}
+
 
 export default TribeCommunityOverview;
