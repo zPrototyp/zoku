@@ -85,8 +85,22 @@ function ProfilePage() {
   if (error) return <div className="page-content"><p style={{ color: "red" }}>{error}</p></div>;
   if (!profile) return <div className="page-content"><p>Laddar profil...</p></div>;
 
-  // Profile does not contain a userID to set.
-  const userId = profile?.userId || profile?.id || null;
+  // Safe test values so children never see null
+  const safeTestValues = useMemo(() => {
+    if (profile) {
+      return {
+        changeVsTradition: Number(profile.changeVsTradition ?? 0),
+        compassionVsAmbition: Number(profile.compassionVsAmbition ?? 0),
+      };
+    }
+    if (testValues) {
+      return {
+        changeVsTradition: Number(testValues.changeVsTradition ?? 0),
+        compassionVsAmbition: Number(testValues.compassionVsAmbition ?? 0),
+      };
+    }
+    return { changeVsTradition: 0, compassionVsAmbition: 0 };
+  }, [profile, testValues]);
 
   return (
     <>
@@ -108,7 +122,7 @@ function ProfilePage() {
                 personality={profile.primaryPersonality}
                 profile={valueProfiles[profile.primaryPersonality.name]}
                 fullProfile={profile}
-                testValues={testValues}
+                testValues={safeTestValues}
                 highlight
               />
             )}
@@ -169,7 +183,7 @@ function ProfilePage() {
             category="all"
             bearer={token}
             user={profile}
-            testValues={testValues}
+            testValues={safeTestValues}
             currentBrandList={brands}
           />
         )}
