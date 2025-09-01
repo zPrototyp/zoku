@@ -185,15 +185,15 @@ function ProfilePage() {
                 <p>
                   <strong>{new Date(item.createdAt).toLocaleString()}</strong>
                 </p>
-                <p>
-                  Primär: {valueProfiles[item.primaryType].title} ({item.primaryMatchPercentage}%)
-                </p>
-                <p>
-                  Sekundär: {valueProfiles[item.secondaryType].title} ({item.secondaryMatchPercentage}%)
-                </p>
-                <p>
-                  Tredje: {valueProfiles[item.thirdType].title} ({item.thirdMatchPercentage}%)
-                </p>
+                    <p>
+                        Primär: {valueProfiles?.[item?.primaryType]?.title ?? item?.primaryType ?? "Okänd"} ({item.primaryMatchPercentage}%)
+                    </p>
+                    <p>
+                        Sekundär: {valueProfiles?.[item?.secondaryType]?.title ?? item?.secondaryType ?? "Okänd"} ({item.secondaryMatchPercentage}%)
+                    </p>
+                    <p>
+                        Tredje: {valueProfiles?.[item?.thirdType]?.title ?? item?.thirdType ?? "Okänd"} ({item.thirdMatchPercentage}%)
+                    </p>
                 <hr />
               </div>
             ))}
