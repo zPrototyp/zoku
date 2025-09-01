@@ -14,7 +14,7 @@ import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
 import { testValuesAtom } from "../Atoms/TestValuesAtom";
 import UserSettings from "../Components/UserSettings";
 import { API_userSafeFetchJson } from "../Services/API";
-import TribeCommunity from "../Components/TribeCommunity";
+import TribeCommunityOverview from "../Components/TribeCommunityOverview";
 
 // import { comparisonValueAtom } from '../Atoms/ComparisonValueAtom.jsx'
 // import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
@@ -161,8 +161,8 @@ function ProfilePage() {
           handleShowHidden={handleShowHidden}
         />
 
-        {/* Tribes: Liked celebs + Following users */}
-        <TribeCommunity token={token} title="Tribes" />
+        {/* Tribes overview */}
+        <TribeCommunityOverview token={token} title="Tribes" />
 
         <OverlayModal isOpen={showHistory} onClose={() => setShowHistory(false)}>
           <div className="history-list">

@@ -80,19 +80,50 @@ function Search({
       if (token) {
         let users = [];
         try {
-          let res = await fetch(
-            `${AZURE_API}/user/discovery/search?query=${encodeURIComponent(term)}&limit=12`,
-            { headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` } }
-          );
-          if (!res.ok) {
-            res = await fetch(
-              `${AZURE_API}/user/discovery/search?q=${encodeURIComponent(term)}&limit=12`,
-              { headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` } }
-            );
-          }
+          const base = (AZURE_API || "").replace(/\/+$/,"");
+          const hasApiV1 = /\/api\/v1\b/.test(base);
+          const root = hasApiV1 ? base : `${base}/api/v1`;
+
+          const params = new URLSearchParams({
+            name: term,
+            username: term,
+            page: "1",
+            pageSize: "12",
+          });
+
+          const url = `${root}/user/discovery/search?${params.toString()}`;
+
+          const res = await fetch(url, {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
           if (res.ok) {
-            const data = await res.json();
-            users = Array.isArray(data) ? data : data?.data || [];
+            const payload = await res.json();
+
+            // Flexible responses
+            if (Array.isArray(payload)) {
+              users = payload;
+            } else if (Array.isArray(payload?.data)) {
+              users = payload.data;
+            } else if (Array.isArray(payload?.data?.items)) {
+              users = payload.data.items;
+            } else if (Array.isArray(payload?.items)) {
+              users = payload.items;
+            } else if (Array.isArray(payload?.results)) {
+              users = payload.results;
+            } else if (Array.isArray(payload?.data?.results)) {
+              users = payload.data.results;
+            } else if (Array.isArray(payload?.data?.users)) {
+              users = payload.data.users;
+            } else {
+              users = [];
+            }
+          } else {
+            console.warn("User search failed with status:", res.status);
           }
         } catch (e) {
           console.error("User search failed:", e);

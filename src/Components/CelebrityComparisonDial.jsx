@@ -28,20 +28,6 @@ function resolveMaskImage(entity) {
   const name = entity?.primaryPersonality?.name;
   if (name && ZokuMasks[name]) return ZokuMasks[name];
 
-  // 2. Primary profile type → ZokuMasks
-  const type = entity?.personalityProfile?.primary?.type;
-  if (type && ZokuMasks[type]) return ZokuMasks[type];
-
-  // 3. Try various keys → PersonalityImages
-  const key = entity.personalityType ?? entity.primaryType ?? entity.type ?? entity.name;
-  const mapped = key ? PersonalityImageNameMap[key] || key : null;
-  if (mapped && PersonalityImages[mapped]) return PersonalityImages[mapped];
-
-  // 4. Direct image fields
-
-  if (entity?.imgUrl) return entity.imgUrl;
-  if (entity?.imageUrl) return entity.imageUrl;
-
   return PersonalityImages.Mask;
 }
 
