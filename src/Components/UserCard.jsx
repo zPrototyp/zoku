@@ -1,11 +1,13 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useAtomValue } from "jotai";
 import { authTokenAtom } from "../Atoms/AuthAtom.jsx";
+import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
 import { FaUserPlus, FaUserMinus } from "react-icons/fa6";
 import { API_followUser, API_unfollowUser } from "../Services/API.jsx";
 import { valueProfiles } from "../assets/uiData/zoku_profiles_se";
 import { ZokuMasks } from "../assets/uiData/PersonalityImages";
 import SecondaryPersonalityCard from "./SecondaryPersonalityCard";
+import CelebrityComparisonDial from "./CelebrityComparisonDial";
 import "../assets/css/CelebrityCard.css";
 
 const AZURE_API = import.meta.env.VITE_AZURE_API;
@@ -18,12 +20,18 @@ function userProfileUrl(targetUserId) {
     : `${base}/api/v1/user/discovery/profile/${targetUserId}`;
 }
 
-function UserCard({ user, onAfterFollow, onAfterUnfollow }) {
+function UserCard({ user, viewer = null, onAfterFollow, onAfterUnfollow }) {
   const token = useAtomValue(authTokenAtom);
+  const myProfileFromAtom = useAtomValue(valueProfileAtom);
   const [following, setFollowing] = useState(Boolean(user?.isFollowing));
+
   const [profile, setProfile] = useState(null);
   const [loadingProfile, setLoadingProfile] = useState(false);
   const [profileErr, setProfileErr] = useState("");
+
+  const [expanded, setExpanded] = useState(false);
+  const [showDial, setShowDial] = useState(false);
+
   const targetUserId = user?.id || user?.userId;
 
   useEffect(() => {
@@ -67,13 +75,20 @@ function UserCard({ user, onAfterFollow, onAfterUnfollow }) {
     };
 
     fetchProfile();
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, [token, targetUserId]);
 
-  useEffect(() => { setFollowing(Boolean(user?.isFollowing)); }, [user?.isFollowing]);
+  useEffect(() => {
+    setFollowing(Boolean(user?.isFollowing));
+  }, [user?.isFollowing]);
 
   const toggleFollow = async () => {
-    if (!token) { alert("Logga in för att följa användare."); return; }
+    if (!token) {
+      alert("Logga in för att följa användare.");
+      return;
+    }
     try {
       if (following) {
         await API_unfollowUser(targetUserId, token);
@@ -90,6 +105,7 @@ function UserCard({ user, onAfterFollow, onAfterUnfollow }) {
   };
 
   const displayName = user?.displayName || user?.name || user?.username || "Användare";
+
   const primaryType = profile?.primaryType || null;
   const secondaryType = profile?.secondaryType || null;
   const thirdType = profile?.thirdType || null;
@@ -107,11 +123,46 @@ function UserCard({ user, onAfterFollow, onAfterUnfollow }) {
 
   const coverImg = user?.avatarUrl || user?.photoUrl || null;
 
-  const [expanded, setExpanded] = useState(false);
+  // Comparison Dial
+  const viewerProfile = viewer || myProfileFromAtom || null;
+
+  const viewerHasCoords =
+    viewerProfile &&
+    typeof viewerProfile.compassionVsAmbition === "number" &&
+    typeof viewerProfile.changeVsTradition === "number";
+
+  const targetHasCoords =
+    profile &&
+    typeof profile.compassionVsAmbition === "number" &&
+    typeof profile.changeVsTradition === "number";
+
+  const canShowDial = viewerHasCoords && targetHasCoords;
+
+  const dialUser = viewerProfile || undefined;
+  const dialOther = profile
+    ? {
+        name: displayName,
+        coordinates: {
+          compassionVsAmbition: profile.compassionVsAmbition,
+          changeVsTradition: profile.changeVsTradition,
+        },
+        personalityProfile: {
+          primary: primaryType ? { type: primaryType, matchPercentage: profile.primaryMatchPercentage } : undefined,
+          secondary: secondaryType ? { type: secondaryType, matchPercentage: profile.secondaryMatchPercentage } : undefined,
+          third: thirdType ? { type: thirdType, matchPercentage: profile.thirdMatchPercentage } : undefined,
+        },
+      }
+    : undefined;
+
+  const compareDisabledTitle = !viewerHasCoords
+    ? "Din profil saknar koordinater (compassionVsAmbition / changeVsTradition)."
+    : !targetHasCoords
+    ? "Användaren saknar koordinater för jämförelse."
+    : "";
 
   return (
-    <div className="celebCard">
-      {/* Follow overlay top-right */}
+    <div className="celebCard" style={{ position: "relative" }}>
+      {/* Follow overlay  */}
       <div
         style={{ position: "absolute", top: 8, right: 8, cursor: "pointer", zIndex: 2 }}
         onClick={toggleFollow}
@@ -123,28 +174,22 @@ function UserCard({ user, onAfterFollow, onAfterUnfollow }) {
       {/* Header */}
       <div className="celebHeader" style={{ position: "relative" }}>
         {coverImg && (
-          <img
-            className="celebCover"
-            src={coverImg}
-            alt={displayName}
-            loading="lazy"
-          />
+          <img className="celebCover" src={coverImg} alt={displayName} loading="lazy" />
         )}
         <div className="celebMeta">
-          <div className="celebTitleRow" style={{ alignItems: "center", gap: ".5rem" }}>
-            {/* Primary mask next to the name */}
+          <div className="celebTitleRow" style={{ alignItems: "center", gap: ".6rem" }}>
             {primaryType && (
               <img
                 src={ZokuMasks[primaryType]}
                 alt={pProf?.title || primaryType}
-                style={{ width: 36, height: 36, objectFit: "contain" }}
+                style={{ width: 56, height: 56, objectFit: "contain" }}
               />
             )}
             <h3 className="celebName" style={{ margin: 0 }}>{displayName}</h3>
             {Number.isFinite(matchPct) && <span className="celebMatch">{matchPct}% match</span>}
           </div>
 
-          {/* Primary title under name */}
+          {/* Title */}
           {pProf && <div className="celebPrimary">{pProf.title}</div>}
 
           {/* Loading / error status */}
@@ -153,19 +198,39 @@ function UserCard({ user, onAfterFollow, onAfterUnfollow }) {
         </div>
       </div>
 
-      {/* Actions (expand if there are secondary/third) */}
-      {hasAnyBlock && (
+      {/* Expand */}
+      {(hasAnyBlock || true) && (
         <div className="celebActions">
-          <button className="btn btnSlim" onClick={() => setExpanded((v) => !v)}>
-            {expanded ? "Visa mindre" : "Visa mer"}
+          {hasAnyBlock && (
+            <button className="btn btnSlim" onClick={() => setExpanded((v) => !v)}>
+              {expanded ? "Visa mindre" : "Visa mer"}
+            </button>
+          )}
+
+          {/* Compare */}
+          <button
+            className="btn btnSlim"
+            onClick={() => setShowDial((v) => !v)}
+            disabled={!canShowDial}
+            title={canShowDial ? "" : compareDisabledTitle}
+            aria-disabled={!canShowDial}
+          >
+            {showDial ? "Dölj jämförelse" : "Jämför"}
           </button>
         </div>
       )}
 
-      {/* Expanded view with secondary/third personalities like CelebrityCard */}
+      {/* Comparison dial */}
+      {showDial && canShowDial && (
+        <div className="celebDial">
+          <CelebrityComparisonDial user={dialUser} celeb={dialOther} />
+        </div>
+      )}
+
+      {/* Personalities */}
       {expanded && (
         <div className="celebExpanded">
-          {/* Primary block */}
+          {/* Primary */}
           {pProf && primaryType && (
             <div className="primaryBlock">
               <img
@@ -182,9 +247,7 @@ function UserCard({ user, onAfterFollow, onAfterUnfollow }) {
                   </div>
                 </div>
                 <div className="primaryTitle">{pProf.title}</div>
-                {pProf.subtitle && (
-                  <div className="primarySubtitle">{pProf.subtitle}</div>
-                )}
+                {pProf.subtitle && <div className="primarySubtitle">{pProf.subtitle}</div>}
                 {Array.isArray(pProf.text) &&
                   pProf.text.slice(0, 2).map((t, i) => (
                     <p key={i} className="primaryText">
@@ -195,7 +258,7 @@ function UserCard({ user, onAfterFollow, onAfterUnfollow }) {
             </div>
           )}
 
-          {/* Secondary / Third circles */}
+          {/* Secondary */}
           <div className="secondary-container">
             {sProf && secondaryType && (
               <SecondaryPersonalityCard

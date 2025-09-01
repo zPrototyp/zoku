@@ -2,8 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_userSafeFetchJson } from "../Services/API";
 
-function TribeCommunityOverview({ token, title = "Tribes", limit = 6 , user}) {
-  const [likedCelebs, setLikedCelebs] = useState([]);
+function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user }) {
   const [followingUsers, setFollowingUsers] = useState([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -22,10 +21,10 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6 , user}) {
         await API_userSafeFetchJson(token, "user/relationships/following", (data) => {
           if (!mounted) return;
           const list = Array.isArray(data) ? data : [];
-          const normalized = list.map(u => ({
+          const normalized = list.map((u) => ({
             id: u.id || u.userId,
             displayName: u.displayName || u.name || u.username || "Användare",
-            username: u.username,
+            username: u.username || "",
             avatarUrl: u.avatarUrl || u.photoUrl || null,
             bio: u.bio || u.tagline || "",
           }));
@@ -58,7 +57,12 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6 , user}) {
   };
 
   return (
-    <div style={{ marginTop: "1.25rem" }}>
+    <div style={{ marginTop: "1.25rem", position: "relative" }}>
+      <style>{`
+        .tribe-scroll { scrollbar-width: none; -ms-overflow-style: none; }
+        .tribe-scroll::-webkit-scrollbar { display: none; }
+      `}</style>
+
       <div style={{ display: "flex", alignItems: "center", gap: ".75rem", justifyContent: "space-between" }}>
         <h2 style={{ margin: 0 }}>{title}</h2>
         <button className="btn btnSlim" onClick={() => navigate("/community")}>
@@ -70,13 +74,7 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6 , user}) {
       {isLoading && <p style={{ opacity: 0.75, marginTop: ".5rem" }}>Laddar...</p>}
 
       {!isLoading && followingUsers.length > 0 && (
-        <div
-          style={{
-            position: "relative",
-            marginTop: ".75rem",
-            padding: "0 .25rem",
-          }}
-        >
+        <div style={{ position: "relative", marginTop: ".75rem", padding: "0 .25rem" }}>
           {/* Left arrow */}
           <button
             type="button"
@@ -84,12 +82,8 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6 , user}) {
             onClick={() => scrollBy(-1)}
             className="btn btnSlim"
             style={{
-              position: "absolute",
-              left: 0,
-              top: "50%",
-              transform: "translateY(-50%)",
-              zIndex: 2,
-              opacity: 0.9,
+              position: "absolute", left: 0, top: "50%",
+              transform: "translateY(-50%)", zIndex: 2, opacity: 0.9,
             }}
           >
             ‹
@@ -98,25 +92,16 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6 , user}) {
           {/* Carousel scroller */}
           <div
             ref={scrollerRef}
+            className="tribe-scroll"
             style={{
               display: "flex",
               gap: "0.75rem",
               overflowX: "auto",
               padding: "0.5rem 2.25rem",
               scrollSnapType: "x mandatory",
-              scrollbarWidth: "none", 
-              msOverflowStyle: "none",
             }}
           >
-            {/* hide scrollbar*/}
-            <style>
-              {`
-                /* Hide scrollbar for Chrome, Safari and Opera */
-                .tribe-scroll::-webkit-scrollbar { display: none; }
-              `}
-            </style>
-
-            {followingUsers.map(u => (
+            {followingUsers.map((u) => (
               <div
                 key={u.id || u.username}
                 className="tribe-user-chip"
@@ -138,8 +123,7 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6 , user}) {
                     alt={u.displayName}
                     style={{
                       width: 64, height: 64, borderRadius: "50%",
-                      objectFit: "cover", margin: "0 auto 0.5rem",
-                      display: "block",
+                      objectFit: "cover", margin: "0 auto 0.5rem", display: "block",
                     }}
                     loading="lazy"
                   />
@@ -193,12 +177,8 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6 , user}) {
             onClick={() => scrollBy(1)}
             className="btn btnSlim"
             style={{
-              position: "absolute",
-              right: 0,
-              top: "50%",
-              transform: "translateY(-50%)",
-              zIndex: 2,
-              opacity: 0.9,
+              position: "absolute", right: 0, top: "50%",
+              transform: "translateY(-50%)", zIndex: 2, opacity: 0.9,
             }}
           >
             ›
@@ -211,9 +191,6 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6 , user}) {
           <p style={{ opacity: 0.75, marginBottom: ".5rem" }}>
             Du följer inga användare ännu.
           </p>
-          <button className="btn btnSlim" onClick={() => navigate("/community")}>
-            Hitta personer att följa
-          </button>
         </div>
       )}
     </div>
