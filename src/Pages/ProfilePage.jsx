@@ -14,6 +14,7 @@ import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
 import { testValuesAtom } from "../Atoms/TestValuesAtom";
 import { API_userSafeFetchJson } from "../Services/API";
 import RandomBrand from "../Components/RandomBrand";
+import useMediaQuery from "../Components/MediaQuery";
 import TribeCommunityOverview from "../Components/TribeCommunityOverview"; // compact community
 
 // import { comparisonValueAtom } from '../Atoms/ComparisonValueAtom.jsx'
@@ -34,6 +35,7 @@ function ProfilePage() {
   const [token] = useAtom(authTokenAtom);
   const navigate = useNavigate();
   const [uiStatus, setUiStatus] = useState({ showBrandList: false });
+  const isComputer = useMediaQuery("(min-width: 1024px)")
 
   // On load fetch all the profile information
   useEffect(() => {
@@ -56,6 +58,11 @@ function ProfilePage() {
       console.error("Fel vid hämtning av historik:", err);
     }
   }, [token]);
+  useEffect(() => {
+    if (isComputer) {
+      setUiStatus(prev => ({ ...prev, showBrandList: true }));
+    }
+  }, [isComputer]);
 
   // update testValues when we have a profile
   useEffect(() => {
