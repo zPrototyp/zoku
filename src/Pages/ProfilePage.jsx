@@ -9,7 +9,7 @@ import SecondaryPersonalityCard from "../Components/SecondaryPersonalityCard";
 import BrandWardrobe from "../Components/BrandWadrobe";
 import OverlayModal from "../Components/OverlayModal";
 import "../assets/css/App.css";
-import { FaPen, FaClock} from "react-icons/fa";
+import { FaPen, FaClock, FaCog } from "react-icons/fa";
 import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
 import { testValuesAtom } from "../Atoms/TestValuesAtom";
 import { API_userSafeFetchJson } from "../Services/API";
