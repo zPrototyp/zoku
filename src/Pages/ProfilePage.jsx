@@ -209,16 +209,19 @@ function ProfilePage() {
               <div key={idx} className="history-entry">
                 <div className={`aboutProfile-${item.primaryType}`}>
                 <p>
+                  {console.log(item)}
                   <strong>{new Date(item.createdAt).toLocaleString()}</strong>
                 </p>
+                <p>Förändring vs Tradition: <strong>{item.changeVsTradition}</strong></p>
+                <p>Omsorg vs Ambition: <strong>{item.compassionVsAmbition}</strong></p>
                 <p>
-                  Primär: {item.primaryType} ({item.primaryMatchPercentage}%)
+                  Primär: <strong>{valueProfiles[item.primaryType].title}</strong> ({item.primaryMatchPercentage}%)
                 </p>
                 <p>
-                  Sekundär: {item.secondaryType} ({item.secondaryMatchPercentage}%)
+                  Sekundär: <strong>{valueProfiles[item.secondaryType].title}</strong> ({item.secondaryMatchPercentage}%)
                 </p>
                 <p>
-                  Tredje: {item.thirdType} ({item.thirdMatchPercentage}%)
+                  Tredje: <strong>{valueProfiles[item.thirdType].title}</strong> ({item.thirdMatchPercentage}%)
                 </p>
                 </div>
                 <hr />
