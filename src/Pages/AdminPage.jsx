@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import LoginForm from "../Components/LoginForm";
 import { useAtom, useSetAtom } from "jotai";
 import { adminAtom } from "../Atoms/AdminAtom";
-import { API_logout, API_seeding, API_userSafeFetchJson, API_seedingCheck } from "../Services/API";
+import { API_logout, API_seeding, API_userSafeFetchJson, API_seedingCheck, API_seedingCancel } from "../Services/API";
 import { authTokenAtom } from "../Atoms/AuthAtom";
 import { feedListAtom } from "../Atoms/FeedListAtom";
 import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
@@ -20,7 +20,8 @@ function AdminPage(){
         seedExecuteType: "",
         seedExecuteOperation: "",
         pendingSeeds: {},
-        history: {}
+        history: {},
+        loading: false
         })
 
   const handleLogout = () => {
@@ -47,6 +48,7 @@ function AdminPage(){
             showSeedOps: true
         }))
         API_userSafeFetchJson(token, 'admin/seeding/sources', setResult)
+        fetchSeedingHistory();
     }
     }
 
@@ -66,6 +68,7 @@ function AdminPage(){
     const setSeedHistory = (data) => {
         data.operations.map(item=>setSeedExecuted(item));
     }
+
     const performSeed = (type, operation, url) =>
     {
         let onSuccess;
@@ -81,9 +84,15 @@ function AdminPage(){
     const checkSeed = (seedId) => {
         API_seedingCheck(`admin/seeding/status/${seedId}`, token, setSeedExecuted)
     }
+    const cancelSeed = (seedId) => {
+        const result = API_seedingCancel(seedId, token);
+        result && fetchSeedingHistory();
+    }
 
     const fetchSeedingHistory = () => {
+        setUiState(p => ({...p, loading: true}))
         API_seedingCheck(`admin/seeding/history?page=1&pageSize=20`, token, setSeedHistory)
+        setUiState(p => ({...p, loading: false}))
     }
 
     if (!admin) {
@@ -147,14 +156,22 @@ function AdminPage(){
             <div>
                 <h3>pending seedings</h3>
                 <button className="active" onClick={()=>fetchSeedingHistory()}>
-                    Fetch Seeding History
+                    Update Seeding History
                 </button>
                 {Object.values(uiState.pendingSeeds).map(item => (
                 <p key={item.operationId}>
-                    {item.operationId} - {item.sourceName} {item.operationType} {item.status}
+                    {item.operationId} - {item.sourceName} {item.operationType} <strong>{item.status}</strong>
+                    {(item.status != 'cancelled' ) &&
+                    <>
                     <button className="active btn-small"
-                    onClick={()=>checkSeed(item.operationId)}
-                    >Check </button>
+                        onClick={()=>checkSeed(item.operationId)}>
+                        Check 
+                    </button>
+                     <button className="active btn-small"
+                        onClick={()=>cancelSeed(item.operationId)}>
+                        Cancel 
+                    </button>
+                    </>}
                 </p>
                 ))}
             
