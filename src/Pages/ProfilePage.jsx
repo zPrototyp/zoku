@@ -209,7 +209,6 @@ function ProfilePage() {
               <div key={idx} className="history-entry">
                 <div className={`aboutProfile-${item.primaryType}`}>
                 <p>
-                  {console.log(item)}
                   <strong>{new Date(item.createdAt).toLocaleString()}</strong>
                 </p>
                 <p>Förändring vs Tradition: <strong>{item.changeVsTradition}</strong></p>
