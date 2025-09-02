@@ -144,7 +144,7 @@ function Search({
 
   return foundUsers.map((u) => ({
     id: u.id ?? u.userId ?? "",
-    displayName: u.displayName ?? u.name ?? "",
+    displayName: u.displayName ?? u.name ?? u.fullName ?? "",
     username: u.username ?? "",
     avatarUrl: u.avatarUrl ?? u.photoUrl ?? "",
     bio: u.bio ?? u.tagline ?? "",
