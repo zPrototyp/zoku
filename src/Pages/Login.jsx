@@ -7,7 +7,7 @@ export default function Login() {
     <div className="page-content">
       <h1>Login</h1>
       <p>Fyll i dina uppgifter för att logga in.</p>
-      <LoginForm />
+      <LoginForm admin={false} />
     </div>
   );
 }
