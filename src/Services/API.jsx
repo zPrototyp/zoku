@@ -226,6 +226,7 @@ export const API_seeding = async (url, bearer, category, operation, onSuccess) =
         
     return data.data;
 }
+
 export const API_seedingCheck = async (url, bearer, onSuccess) => {
   const res = await fetch(`${AZURE_API}/${url}`, {
       method: 'GET',
@@ -239,6 +240,20 @@ export const API_seedingCheck = async (url, bearer, onSuccess) => {
 
     onSuccess(data.data);
         
+    return data.data;
+}
+export const API_seedingCancel = async (seed, bearer) => {
+  const res = await fetch(`${AZURE_API}/admin/seeding/cancel/${seed}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${bearer}`
+      }
+    });
+    if (!res.ok) throw new Error('Seeding Cancel failed');
+    
+    const data = await res.json();
+       
     return data.data;
 }
 
