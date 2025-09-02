@@ -145,7 +145,7 @@ export default function FeedPage() {
             </select>
           </div>
 
-          {sortedFeed.length ==0 && 
+          {sortedFeed && sortedFeed.length ==0 && 
           <div className="feed">Inga varumärken att visa just nu</div>
           }
           {sortedFeed && sortedFeed.length > 0 (
