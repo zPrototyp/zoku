@@ -145,7 +145,10 @@ export default function FeedPage() {
             </select>
           </div>
 
-          {sortedFeed && (
+          {sortedFeed.length ==0 && 
+          <div className="feed">Inga varumärken att visa just nu</div>
+          }
+          {sortedFeed && sortedFeed.length > 0 (
             <div className="feed">
               <BrandCards brandList={sortedFeed} categorize={false}/>
             </div>
