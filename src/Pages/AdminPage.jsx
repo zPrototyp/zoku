@@ -14,11 +14,13 @@ function AdminPage(){
     const setValueProfile = useSetAtom(valueProfileAtom);
     const [result, setResult] = useState(null);
     const [uiState, setUiState]= useState({
-            seedingSources: null,
-            seedResult: null,
-            seedExecuteType: "",
-            seedExecuteOperation: "",
-            pendingSeeds: {}
+        showSeedOps: false,
+        seedingSources: null,
+        seedResult: null,
+        seedExecuteType: "",
+        seedExecuteOperation: "",
+        pendingSeeds: {},
+        history: {}
         })
 
   const handleLogout = () => {
@@ -34,26 +36,39 @@ function AdminPage(){
   };
 
     const fetchSeedingSrc = () => {
+        if (uiState.showSeedOps) {
+            setUiState(p => ({
+            ...p,
+            showSeedOps: false
+        }))
+        } else {
+        setUiState(p => ({
+            ...p,
+            showSeedOps: true
+        }))
         API_userSafeFetchJson(token, 'admin/seeding/sources', setResult)
+    }
     }
 
     const setSeedResult = (data) => {
         setUiState((prev) => ({...prev, seedResult: data}));
     }
     const setSeedExecuted = (data) => {
+        if (data.status === 'completed') return;
         setUiState(prev => ({ 
             ...prev, 
             pendingSeeds: {
                  ...prev.pendingSeeds,
                   [data.operationId]: data // will overwrite if it already exists
          } }));
-        console.log(data);
+        // console.log(data);
+    }
+    const setSeedHistory = (data) => {
+        data.operations.map(item=>setSeedExecuted(item));
     }
     const performSeed = (type, operation, url) =>
     {
         let onSuccess;
-        console.log("type:", type)
-        console.log("operation:", operation)
         setUiState((p)=>
         ({...p, seedExecuteType: type, seedExecuteOperation: operation}))
         if (url=='preview')
@@ -65,7 +80,10 @@ function AdminPage(){
     }
     const checkSeed = (seedId) => {
         API_seedingCheck(`admin/seeding/status/${seedId}`, token, setSeedExecuted)
+    }
 
+    const fetchSeedingHistory = () => {
+        API_seedingCheck(`admin/seeding/history?page=1&pageSize=20`, token, setSeedHistory)
     }
 
     if (!admin) {
@@ -96,12 +114,13 @@ function AdminPage(){
         >Log out</button>
 
         <button
-        onClick={()=>fetchSeedingSrc()}>
-        fetch seeding options
+            onClick={()=>fetchSeedingSrc()}>
+        {uiState.showSeedOps ? 'Hide seeding options': 'Show seeding options'}
         </button>
 
-        {result && (
+        {uiState.showSeedOps && result && (
             <>
+            <h2>Seeding operations</h2>
             {result.map((type) => (
                 <span key={type.name}>
                 <h2>{type.name} - {type.displayName}</h2>
@@ -127,20 +146,23 @@ function AdminPage(){
 
             <div>
                 <h3>pending seedings</h3>
+                <button className="active" onClick={()=>fetchSeedingHistory()}>
+                    Fetch Seeding History
+                </button>
                 {Object.values(uiState.pendingSeeds).map(item => (
                 <p key={item.operationId}>
                     {item.operationId} - {item.sourceName} {item.operationType} {item.status}
-                    <button
+                    <button className="active btn-small"
                     onClick={()=>checkSeed(item.operationId)}
                     >Check </button>
                 </p>
-))}
+                ))}
             
             </div>
 
             </>
         )}
-            
+        
         </div>)
     }
 
