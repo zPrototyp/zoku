@@ -47,6 +47,7 @@ function AdminPage(){
             showSeedOps: true
         }))
         API_userSafeFetchJson(token, 'admin/seeding/sources', setResult)
+        fetchSeedingHistory();
     }
     }
 
@@ -147,7 +148,7 @@ function AdminPage(){
             <div>
                 <h3>pending seedings</h3>
                 <button className="active" onClick={()=>fetchSeedingHistory()}>
-                    Fetch Seeding History
+                    Update Seeding History
                 </button>
                 {Object.values(uiState.pendingSeeds).map(item => (
                 <p key={item.operationId}>
