@@ -142,7 +142,7 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6 , user}) {
             {followingUsers.map((u) => {
               const normalized = {
                 id: u.id || u.userId,
-                displayName: u.displayName || u.name,
+                displayName: u.displayName || u.fullName,
                 username: u.username,
                 avatarUrl: u.avatarUrl || u.photoUrl,
                 bio: u.bio || u.tagline,
