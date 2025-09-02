@@ -19,7 +19,7 @@ const HamburgerMenu = () => {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   const userId = valueProfile?.userId || valueProfile?.id || null;
-// Needs to be sent to backend to log out user as well
+
   const handleLogout = () => {
     const loggedOut = API_logout(token);
     if (loggedOut) {
