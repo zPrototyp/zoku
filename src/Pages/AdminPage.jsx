@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import LoginForm from "../Components/LoginForm";
 import { useAtom, useSetAtom } from "jotai";
 import { adminAtom } from "../Atoms/AdminAtom";
-import { API_logout, API_seeding, API_userSafeFetchJson } from "../Services/API";
+import { API_logout, API_seeding, API_userSafeFetchJson, API_seedingCheck } from "../Services/API";
 import { authTokenAtom } from "../Atoms/AuthAtom";
 import { feedListAtom } from "../Atoms/FeedListAtom";
 import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
@@ -41,13 +41,12 @@ function AdminPage(){
         setUiState((prev) => ({...prev, seedResult: data}));
     }
     const setSeedExecuted = (data) => {
-        setUiState(prev => ({
-        ...prev,
-        pendingSeeds: {
-            ...prev.pendingSeeds,
-            [data.operationId]: data   // will overwrite if it already exists
-        }
-        }));
+        setUiState(prev => ({ 
+            ...prev, 
+            pendingSeeds: {
+                 ...prev.pendingSeeds,
+                  [data.operationId]: data // will overwrite if it already exists
+         } }));
         console.log(data);
     }
     const performSeed = (type, operation, url) =>
@@ -63,6 +62,10 @@ function AdminPage(){
             onSuccess = setSeedExecuted;
         
         API_seeding(`admin/seeding/${url}`, token, type, operation, onSuccess)
+    }
+    const checkSeed = (seedId) => {
+        API_seedingCheck(`admin/seeding/status/${seedId}`, token, setSeedExecuted)
+
     }
 
     if (!admin) {
@@ -122,8 +125,18 @@ function AdminPage(){
                 - {uiState.seedResult ? uiState.seedResult.totalAvailableItems: ''}
             </button>
 
-            <div style={{border: "1px solid red"}}
-            >{uiState.pendingSeeds?.length}</div>
+            <div>
+                <h3>pending seedings</h3>
+                {Object.values(uiState.pendingSeeds).map(item => (
+                <p key={item.operationId}>
+                    {item.operationId} - {item.sourceName} {item.operationType} {item.status}
+                    <button
+                    onClick={()=>checkSeed(item.operationId)}
+                    >Check </button>
+                </p>
+))}
+            
+            </div>
 
             </>
         )}

@@ -225,7 +225,21 @@ export const API_seeding = async (url, bearer, category, operation, onSuccess) =
     onSuccess(data.data);
         
     return data.data;
+}
+export const API_seedingCheck = async (url, bearer, onSuccess) => {
+  const res = await fetch(`${AZURE_API}/${url}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${bearer}`
+      }})
+      if (!res.ok) throw new Error('Seeding failed');
+    
+    const data = await res.json();
 
+    onSuccess(data.data);
+        
+    return data.data;
 }
 
 
