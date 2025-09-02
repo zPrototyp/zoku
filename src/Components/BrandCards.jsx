@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import OverlayModal from "./OverlayModal";
 import { useAtomValue } from "jotai";
 import { authTokenAtom } from "../Atoms/AuthAtom";
@@ -10,7 +10,7 @@ import { ShareOverlay } from "./ShareOverlay";
 import "../assets/css/BrandCarousel.css";
 import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
 
-export default function BrandCards({ brandList, categorize }) {
+export default function BrandCards({ brandList = [], categorize }) {
 
   const token = useAtomValue(authTokenAtom);
   const user = useAtomValue(valueProfileAtom);
@@ -18,30 +18,30 @@ export default function BrandCards({ brandList, categorize }) {
   const closeModal = () => setActiveModal(null);
   const [selectedCategory, setSelectedCategory] = useState("all");
 
-  // Grouped list to use in the Carousel
-  const grouped = brandList?.reduce((acc, brand) => {
-        acc[brand.category] = acc[brand.category] || [];
-        acc[brand.category].push(brand);
-        return acc;
-      }, {});
-  
+   // Always default grouped to an object so it's never undefined
+  const grouped = React.useMemo(() => {
+    return brandList?.reduce((acc, brand) => {
+      acc[brand.category] = acc[brand.category] || [];
+      acc[brand.category].push(brand);
+      return acc;
+    }, {});
+  }, [brandList]);
+
   // hook to update the active modal
-  useEffect(() => {
-    if (!activeModal || !brandList) return;
-    
+    useEffect(() => {
+    if (!activeModal || brandList.length === 0) return;
+
     const updatedBrand = brandList.find((b) => b.id === activeModal.id);
     if (updatedBrand && updatedBrand !== activeModal) {
       setActiveModal(updatedBrand);
-    }
-    if (!updatedBrand) {
-      setActiveModal(null); // or show a message
+    } else if (!updatedBrand) {
+      setActiveModal(null);
     }
   }, [brandList, activeModal]);
-  
+
   // Carousel component to print brands per category
   const BrandCarousel = ({ brands, category }) => {
   const total = brands.length;
-
   return (
     <div>
       <h3>{brandCategories[category]} - {total}</h3>
@@ -58,28 +58,6 @@ export default function BrandCards({ brandList, categorize }) {
     </div>
   );
 };
-// const BrandCarousel = ({ brands, category }) => {
-//   const [index, setIndex] = useState(0);
-//   const total = brands.length;
-
-//   const next = () => setIndex((prev) => (prev + 1) % total);
-//   const prev = () => setIndex((prev) => (prev - 1 + total) % total);
-
-//   const brand = brands[index];
-
-//   return (
-//     <div>
-//       <h3>{brandCategories[category]} - {index + 1} / {total}</h3>
-
-//       <div className="brand-carousel">
-//           <button className={`brandcarousel prev${total > 1 ? '' : ' inactive'}`} onClick={prev}>  &lt; </button>
-//           <PrintBrandCard brand={brand} setActiveModal={setActiveModal} />     
-//           <button className={`brandcarousel next${total > 1 ? '' : ' inactive'}`} onClick={next}> &gt;  </button>
-//           </div>
-//       </div>
-
-//   );
-// };
 
   return (
     <>
@@ -96,7 +74,7 @@ export default function BrandCards({ brandList, categorize }) {
           </select>
           </div>
 
-        {selectedCategory != "all"
+        {/* {selectedCategory != "all"
         ? grouped[selectedCategory] && (
           <BrandCarousel
             key={selectedCategory}
@@ -105,7 +83,7 @@ export default function BrandCards({ brandList, categorize }) {
           />
         )
       :  Object.keys(brandCategories)
-          .filter(cat => grouped[cat]?.length > 0)
+          .filter(cat => cat !== "all" && grouped[cat]?.length > 0)
           .map(cat => (
             <BrandCarousel
               key={cat}
@@ -113,7 +91,26 @@ export default function BrandCards({ brandList, categorize }) {
               category={cat}
             />
           ))
-        }
+        } */}
+          {selectedCategory !== "all" ? (
+            grouped[selectedCategory] && (
+              <BrandCarousel
+                key={selectedCategory}
+                brands={grouped[selectedCategory]}
+                category={selectedCategory}
+              />
+            )
+          ) : (
+            Object.keys(brandCategories)
+              .filter((cat) => cat !== "all" && grouped[cat]?.length > 0)
+              .map((cat) => (
+                <BrandCarousel
+                  key={cat}
+                  brands={grouped[cat]}
+                  category={cat}
+                />
+              ))
+          )}
         </>)
     }
 
