@@ -23,7 +23,7 @@ function AdminPage(){
         history: {},
         loading: false
         })
-
+    
   const handleLogout = () => {
     const loggedOut = API_logout(token);
     if (loggedOut) {
@@ -60,8 +60,8 @@ function AdminPage(){
         setUiState(prev => ({ 
             ...prev, 
             pendingSeeds: {
-                 ...prev.pendingSeeds,
-                  [data.operationId]: data // will overwrite if it already exists
+                [data.operationId]: data, // will overwrite if it already exists
+                ...prev.pendingSeeds,
          } }));
         // console.log(data);
     }
@@ -154,12 +154,13 @@ function AdminPage(){
             </button>
 
             <div>
-                <h3>pending seedings</h3>
+                <h3>Pending seedings</h3>
                 <button className="active" onClick={()=>fetchSeedingHistory()}>
                     Update Seeding History
                 </button>
                 {Object.values(uiState.pendingSeeds).map(item => (
-                <p key={item.operationId}>
+                <p key={item.operationId} 
+                    style={{ fontSize: item.status === "cancelled" ? "10px" : "unset" }}>
                     {item.operationId} - {item.sourceName} {item.operationType} <strong>{item.status}</strong>
                     {(item.status != 'cancelled' ) &&
                     <>
