@@ -151,6 +151,7 @@ function TribeCommunity({ token, user, title = "Tribes" }) {
                 <UserCard
                   key={normalized.id || normalized.username}
                   user={normalized}
+                  viewer={user}
                   onAfterUnfollow={handleAfterUnfollowUser}
                   onAfterFollow={handleAfterFollowUser}
                 />
