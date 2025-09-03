@@ -4,8 +4,9 @@ import { API_userSafeFetchJson } from "../Services/API";
 import CelebrityCard from "./CelebrityCard";
 import UserCard from "./UserCard";
 import "../assets/css/CelebrityCard.css";
+import SuggestedUsers from "./TribeSuggestedUsers";
 
-function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user }) {
+function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user, uiStatus, setUiStatus }) {
   const [likedCelebs, setLikedCelebs] = useState([]);
   const [followingUsers, setFollowingUsers] = useState([]);
   const [error, setError] = useState("");
@@ -243,9 +244,19 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user }) {
           !isLoading && (
             <div style={{ marginTop: ".75rem" }}>
               <p style={{ opacity: 0.75, marginBottom: ".5rem" }}>Du följer inga användare ännu.</p>
-              <button className="btn btnSlim" onClick={() => navigate("/feed")}>
-                Hitta personer att följa
+              
+            <button className="btn-small"
+              onClick={() => setUiStatus((p)=>({...p, showSuggestedUsers:!p.showSuggestedUsers}))}
+              >
+               {uiStatus.showSuggestedUsers ? 'Dölj förslag': 'Föreslå andra användare'}
               </button>
+              {uiStatus.showSuggestedUsers && (
+                <>
+                <SuggestedUsers token={token} user={user} setUiState={setUiStatus} />
+                </>
+              )
+              }
+            
             </div>
           )
         )}

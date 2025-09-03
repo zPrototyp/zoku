@@ -21,6 +21,7 @@ import CelebrityCard from '../Components/CelebrityCard'
 import RandomBrand from '../Components/RandomBrand.jsx'
 import { MdKeyboardDoubleArrowDown, MdKeyboardDoubleArrowUp } from "react-icons/md";
 import useMediaQuery from '../Components/MediaQuery.jsx'
+import SuggestedUsers from '../Components/TribeSuggestedUsers.jsx'
 
 // Create a local instance since API.jsx exports the class, not a default singleton
 const apiService = new ApiService();
@@ -37,6 +38,7 @@ function ResultPage () {
     error: null,
     showBrandList: false,
     showComparison: true,
+    showSuggestedUsers: false
   })
 
   // Added sessionToken for sending to backend
@@ -251,7 +253,6 @@ function ResultPage () {
           testValues={testValues} 
           currentBrandList={feedList} />
         }
-      
 
         <button
           onClick={() => navigate('/register', { state: result })}
