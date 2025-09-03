@@ -60,7 +60,6 @@ useEffect(() => {
   }
   
   if (memoizedLengths.celebLength > 0) {
-    console.log(celebs);
     updates.celebLength = memoizedLengths.celebLength;
   }
   

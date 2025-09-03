@@ -30,9 +30,9 @@ const CelebrityDashboard = ({ data }) => {
               <h4>{celeb.name}</h4>
               <p className="category">{celeb.category}</p>
               <div className="metrics">
-                <span>👍 {celeb.likeCount}</span>
-                <span>💬 {celeb.interactionCount}</span>
-                <span>⭐ {celeb.popularityScore}</span>
+                <span>👍Likes: {celeb.likeCount}</span>
+                <span>💬 Interactions: {celeb.interactionCount}</span>
+                <span>⭐ Popularity: {celeb.popularityScore}</span>
               </div>
             </div>
           ))}
