@@ -1,5 +1,4 @@
-const RAW_AZURE = (import.meta.env.VITE_AZURE_API || "").replace(/\/+$/,"");
-const AZURE_API = /\/api\/v1$/i.test(RAW_AZURE) ? RAW_AZURE : `${RAW_AZURE}/api/v1`;
+const AZURE_API = import.meta.env.VITE_AZURE_API;
 
 // Function to send share interaction to API can be used by guest or authenticated users
 export const API_shareProfile = async (platform, bearer, entity, entityId) => {
@@ -257,6 +256,21 @@ export const API_seedingCancel = async (seed, bearer) => {
     return data.data;
 }
 
+export const API_addCelebrities = async (bearer, inputData) => {
+  const res = await fetch(`${AZURE_API}/admin/celebrities/batch`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${bearer}`
+      },
+        body: JSON.stringify(inputData),
+    });
+    if (!res.ok) throw new Error('Batch upload failed');
+    
+    const data = await res.json();
+    
+    return data;
+}
 
 
 

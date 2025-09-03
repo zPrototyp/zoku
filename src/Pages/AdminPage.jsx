@@ -9,6 +9,7 @@ import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
 import "../assets/css/Admin.css";
 import BrandCard from "../Components/AdminBrandCard";
 import CelebrityDashboard from "../Components/AdminCelebrities";
+import CelebrityUploader from "../Components/AdminCelebrityUploader";
 
 function AdminPage(){
     const [admin, setAdmin] = useAtom(adminAtom);
@@ -258,7 +259,10 @@ useEffect(() => {
     }
     {uiState.showCelebs && (
         <div>
-            <CelebrityDashboard data={celebs} />
+            {celebs && <CelebrityDashboard data={celebs} />}
+            <h2>Add new file of celebrities</h2>
+            <CelebrityUploader bearer={token} />
+
         </div>)
     }
         
