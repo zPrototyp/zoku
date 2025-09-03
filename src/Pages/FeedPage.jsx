@@ -112,9 +112,10 @@ export default function FeedPage() {
   return (
      <div className="page-content">
             <div className="feed-page-user-details">
-                <h1><img className="mask80" src={ZokuMasks[userProfile?.primaryPersonality.name]} alt={valueProfiles[userProfile?.primaryPersonality.name]?.title} />
-                    {valueProfiles[userProfile?.primaryPersonality.name]?.title}
-                     {valueProfiles[userProfile?.primaryPersonality.name]?.kanji}
+                <h1>
+                  <img className="mask80" src={ZokuMasks[userProfile?.primaryPersonality.name]} alt={valueProfiles[userProfile?.primaryPersonality.name]?.title} />
+                  <span>  {valueProfiles[userProfile?.primaryPersonality.name]?.title}</span>
+                  <span>  {valueProfiles[userProfile?.primaryPersonality.name]?.kanji}</span>
                 </h1>
                 <h3>{valueProfiles[userProfile?.primaryPersonality.name]?.consumerHeader}</h3>
                 <p>{valueProfiles[userProfile?.primaryPersonality.name]?.consumerText}</p>

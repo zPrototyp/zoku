@@ -509,6 +509,12 @@ ul.no-dots {
   max-width: 450px;
   margin: 0 0.5em;
 }
+.feed-page-user-details h1 {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1em;
+}
 .feed-sort-options {
   display: grid;
   grid-template-columns: 40% auto;
