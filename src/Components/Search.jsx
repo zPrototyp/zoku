@@ -190,7 +190,7 @@ function Search({
               users = [];
             }
 
-            users = (users || []).filter((u) => !shouldExcludeUser(u, currentUserId));
+            users = (users || []);
           } else {
             console.warn("User search failed with status:", res.status);
           }
