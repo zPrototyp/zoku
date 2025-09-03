@@ -12,7 +12,7 @@ const CelebrityDashboard = ({ data }) => {
   } = data;
 
   return (
-    <div className="celebrity-dashboard">
+    <div className="admincelebrity-dashboard">
       {/* Summary Section */}
       <div className="summary-section">
         <SummaryCard title="Total Celebrities" value={totalCelebrities} />
@@ -26,7 +26,7 @@ const CelebrityDashboard = ({ data }) => {
         <h3>Most Popular Celebrities</h3>
         <div className="popular-list">
           {mostPopular.map((celeb) => (
-            <div className="celeb-card" key={celeb.id}>
+            <div className="adminceleb-card" key={celeb.id}>
               <h4>{celeb.name}</h4>
               <p className="category">{celeb.category}</p>
               <div className="metrics">

@@ -148,7 +148,7 @@ useEffect(() => {
 
     if (!admin) {
         return (
-            <div className="page-content"
+            <div className="page-content admin"
             style={{
                 maxWidth: "700px",
                 margin: "0 auto",
@@ -162,7 +162,7 @@ useEffect(() => {
     )}
     else {
         return(
-        <div className="page-content"
+        <div className="page-content admin"
         style={{
             maxWidth: "700px",
             margin: "0 auto",
