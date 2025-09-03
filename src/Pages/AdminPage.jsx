@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import LoginForm from "../Components/LoginForm";
 import { useAtom, useSetAtom } from "jotai";
 import { adminAtom } from "../Atoms/AdminAtom";
@@ -13,6 +13,8 @@ function AdminPage(){
     const setFeedList = useSetAtom(feedListAtom);
     const setValueProfile = useSetAtom(valueProfileAtom);
     const [result, setResult] = useState(null);
+    const [brands, setBrands] = useState(null)
+    const [celebs, setCelebs] = useState(null)
     const [uiState, setUiState]= useState({
         showSeedOps: false,
         seedingSources: null,
@@ -21,7 +23,10 @@ function AdminPage(){
         seedExecuteOperation: "",
         pendingSeeds: {},
         history: {},
-        loading: false
+        loading: false,
+        updateDate: new Date,
+        brandLength: 0,
+        celebLength: celebs?.totalCelebrities || 0
         })
     
   const handleLogout = () => {
@@ -35,6 +40,29 @@ function AdminPage(){
     setAdmin(false);
     window.location.href = "/zoku/"; // Redirect to home page
   };
+
+const memoizedLengths = useMemo(() => ({
+  brandLength: brands?.length || 0,
+  celebLength: celebs?.totalCelebrities || 0
+}), [brands?.length, celebs?.totalCelebrities]);
+
+useEffect(() => {
+  const updates = {};
+  if (memoizedLengths.brandLength > 0) {
+    console.log(brands);
+    updates.brandLength = memoizedLengths.brandLength;
+  }
+  
+  if (memoizedLengths.celebLength > 0) {
+    console.log(celebs);
+    updates.celebLength = memoizedLengths.celebLength;
+  }
+  
+  // Only update state if there are actual changes
+  if (Object.keys(updates).length > 0) {
+    setUiState(p => ({ ...p, ...updates }));
+  }
+}, [memoizedLengths.brandLength, memoizedLengths.celebLength, brands, celebs]);
 
     const fetchSeedingSrc = () => {
         if (uiState.showSeedOps) {
@@ -51,14 +79,21 @@ function AdminPage(){
         fetchSeedingHistory();
     }
     }
+    const fetchAnalytics = (type) => {
+        if (type ==='brands')
+            API_userSafeFetchJson(token, `admin/analytics/${type}`, setBrands)
+        else API_userSafeFetchJson(token, `admin/analytics/${type}`, setCelebs)
+    }
 
     const setSeedResult = (data) => {
         setUiState((prev) => ({...prev, seedResult: data}));
     }
     const setSeedExecuted = (data) => {
-        if (data.status === 'completed') return;
+        // if (data.status === 'completed') return;
+        let now  = new Date;
         setUiState(prev => ({ 
             ...prev, 
+            updateDate: now,
             pendingSeeds: {
                 [data.operationId]: data, // will overwrite if it already exists
                 ...prev.pendingSeeds,
@@ -66,6 +101,7 @@ function AdminPage(){
         // console.log(data);
     }
     const setSeedHistory = (data) => {
+        setUiState(p => ({...p, pendingSeeds: {}}))
         data.operations.map(item=>setSeedExecuted(item));
     }
 
@@ -88,11 +124,8 @@ function AdminPage(){
         const result = API_seedingCancel(seedId, token);
         result && fetchSeedingHistory();
     }
-
     const fetchSeedingHistory = () => {
-        setUiState(p => ({...p, loading: true}))
         API_seedingCheck(`admin/seeding/history?page=1&pageSize=20`, token, setSeedHistory)
-        setUiState(p => ({...p, loading: false}))
     }
 
     if (!admin) {
@@ -127,6 +160,19 @@ function AdminPage(){
         {uiState.showSeedOps ? 'Hide seeding options': 'Show seeding options'}
         </button>
 
+        
+        <button
+            onClick={()=>fetchAnalytics('brands')}
+        >
+            Show Brand Analytics
+        </button>
+        <button
+            onClick={()=>fetchAnalytics('celebrities')}
+        >
+            Show Celeb Analytics
+        </button>
+
+
         {uiState.showSeedOps && result && (
             <>
             <h2>Seeding operations</h2>
@@ -156,13 +202,13 @@ function AdminPage(){
             <div>
                 <h3>Pending seedings</h3>
                 <button className="active" onClick={()=>fetchSeedingHistory()}>
-                    Update Seeding History
+                    Update Seeding History ({uiState.updateDate.toLocaleTimeString()})
                 </button>
                 {Object.values(uiState.pendingSeeds).map(item => (
                 <p key={item.operationId} 
-                    style={{ fontSize: item.status === "cancelled" ? "10px" : "unset" }}>
+                    style={{ fontSize: item.status === "pending" ? "unset": "10px" }}>
                     {item.operationId} - {item.sourceName} {item.operationType} <strong>{item.status}</strong>
-                    {(item.status != 'cancelled' ) &&
+                    {(item.status == 'pending' ) &&
                     <>
                     <button className="active btn-small"
                         onClick={()=>checkSeed(item.operationId)}>
@@ -180,6 +226,17 @@ function AdminPage(){
 
             </>
         )}
+
+    {brands && (
+        <div>Brands: 
+            {uiState.brandLength} items
+        </div>)
+    }
+    {celebs && (
+        <div>Celebs: 
+            {uiState.celebLength} items
+        </div>)
+    }
         
         </div>)
     }
