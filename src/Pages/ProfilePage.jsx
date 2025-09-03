@@ -16,6 +16,7 @@ import { API_userSafeFetchJson } from "../Services/API";
 import RandomBrand from "../Components/RandomBrand";
 import useMediaQuery from "../Components/MediaQuery";
 import TribeCommunityOverview from "../Components/TribeCommunityOverview";
+import SuggestedUsers from "../Components/TribeSuggestedUsers";
 
 // import { comparisonValueAtom } from '../Atoms/ComparisonValueAtom.jsx'
 // import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
@@ -200,7 +201,8 @@ function ProfilePage() {
         )}
 
         {/* Community overview (your compact component) */}
-        <TribeCommunityOverview token={token} title="Tribes" user={profile}/>
+        <TribeCommunityOverview token={token} title="Tribes" user={profile} uiStatus={uiStatus} setUiStatus={setUiStatus}/>
+
 
         <OverlayModal isOpen={uiStatus.showHistory} onClose={() => setUiStatus((prev) => ({...prev, showHistory:false}))}>
           <div className="history-list">

@@ -675,6 +675,8 @@ ul.no-dots {
   color: var(--dark);
   margin-right: 1em;
   margin-left: auto;
+  position: fixed;
+  bottom: 200px;
 }
 .clickable-icon:hover {
   color: var(--highlightContrastLt);
@@ -1053,6 +1055,10 @@ text-align: left;
   .btn-go-to-register{
     align-self: start;
     grid-column: 1/2;
+  }
+
+  .admin-icon {
+    bottom: 30px;
   }
 
 }

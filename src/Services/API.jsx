@@ -272,6 +272,22 @@ export const API_addCelebrities = async (bearer, inputData) => {
     return data;
 }
 
+export const API_findSuggestedUsers = async (bearer, alternatives, onSuccess) => {
+  const res = await fetch(`${AZURE_API}/user/discovery/compatible?minCompatibility=0.7&count=${alternatives}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${bearer}`
+      }})
+      if (!res.ok) throw new Error('Failed to fetch suggeste users');
+    
+    const data = await res.json();
+
+    onSuccess(data.data);
+        
+    return data.data;
+}
+
 
 
 // Below: copied from Backend_Peter
