@@ -659,13 +659,17 @@ ul.no-dots {
   padding-top: 1rem;
 }
 
-.clickable-icon {
+.clickable-icon, .admin-icon {
   font-size: 24px;
   color: var(--darkContrast);
   cursor: pointer;
   transition: transform 0.2s ease, color 0.2s ease;
 }
-
+.admin-icon {
+  color: var(--dark);
+  margin-right: 1em;
+  margin-left: auto;
+}
 .clickable-icon:hover {
   color: var(--highlightContrastLt);
   transform: scale(1.2);
