@@ -66,6 +66,7 @@ function AdminPage(){
         // console.log(data);
     }
     const setSeedHistory = (data) => {
+        setUiState(p => ({...p, pendingSeeds: {}}))
         data.operations.map(item=>setSeedExecuted(item));
     }
 
