@@ -6,6 +6,9 @@ import { API_logout, API_seeding, API_userSafeFetchJson, API_seedingCheck, API_s
 import { authTokenAtom } from "../Atoms/AuthAtom";
 import { feedListAtom } from "../Atoms/FeedListAtom";
 import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
+import "../assets/css/Admin.css";
+import BrandCard from "../Components/AdminBrandCard";
+import CelebrityDashboard from "../Components/AdminCelebrities";
 
 function AdminPage(){
     const [admin, setAdmin] = useAtom(adminAtom);
@@ -26,7 +29,9 @@ function AdminPage(){
         loading: false,
         updateDate: new Date,
         brandLength: 0,
-        celebLength: celebs?.totalCelebrities || 0
+        celebLength: celebs?.totalCelebrities || 0,
+        showBrands: false,
+        showCelebs: false
         })
     
   const handleLogout = () => {
@@ -49,7 +54,6 @@ const memoizedLengths = useMemo(() => ({
 useEffect(() => {
   const updates = {};
   if (memoizedLengths.brandLength > 0) {
-    console.log(brands);
     updates.brandLength = memoizedLengths.brandLength;
   }
   
@@ -80,9 +84,22 @@ useEffect(() => {
     }
     }
     const fetchAnalytics = (type) => {
-        if (type ==='brands')
-            API_userSafeFetchJson(token, `admin/analytics/${type}`, setBrands)
-        else API_userSafeFetchJson(token, `admin/analytics/${type}`, setCelebs)
+        if (type ==='brands'){
+            if (!uiState.showBrands) {
+                API_userSafeFetchJson(token, `admin/analytics/${type}`, setBrands)
+                setUiState((prev) => ({...prev, showBrands: true}))
+            } else {
+                setUiState((prev) => ({...prev, showBrands: false}))
+            }
+        }
+        else {
+            if (!uiState.showCelebs){
+                API_userSafeFetchJson(token, `admin/analytics/${type}`, setCelebs);
+                setUiState((prev) => ({...prev, showCelebs: true}))
+            } else {
+                setUiState((prev) => ({...prev, showCelebs: false}))
+            }
+        }
     }
 
     const setSeedResult = (data) => {
@@ -164,12 +181,13 @@ useEffect(() => {
         <button
             onClick={()=>fetchAnalytics('brands')}
         >
-            Show Brand Analytics
+            {uiState.showBrands ? 'Hide Brand Analytics': 'Show Brand Analytics'}
         </button>
         <button
             onClick={()=>fetchAnalytics('celebrities')}
         >
-            Show Celeb Analytics
+            {uiState.showCelebs ? 'Hide Celeb Analytics': 'Show Celeb Analytics'}
+            
         </button>
 
 
@@ -227,14 +245,20 @@ useEffect(() => {
             </>
         )}
 
-    {brands && (
-        <div>Brands: 
-            {uiState.brandLength} items
-        </div>)
+    {uiState.showBrands && (
+        <><p>Brands:  {uiState.brandLength} items</p>
+        <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)"
+        }}>
+            {brands?.map((b) => <BrandCard key={b.id} brand={b} />)}
+        </div>
+        </>
+        )
     }
-    {celebs && (
-        <div>Celebs: 
-            {uiState.celebLength} items
+    {uiState.showCelebs && (
+        <div>
+            <CelebrityDashboard data={celebs} />
         </div>)
     }
         
