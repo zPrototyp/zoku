@@ -19,13 +19,28 @@ export default function BrandCards({ brandList = [], categorize }) {
   const [selectedCategory, setSelectedCategory] = useState("all");
 
    // Always default grouped to an object so it's never undefined
-  const grouped = React.useMemo(() => {
-    return brandList?.reduce((acc, brand) => {
-      acc[brand.category] = acc[brand.category] || [];
-      acc[brand.category].push(brand);
-      return acc;
-    }, {});
-  }, [brandList]);
+// Add safety checks
+const grouped = useMemo(() => {
+  if (!brandList || !Array.isArray(brandList)) return {};
+  
+  return brandList.reduce((acc, brand) => {
+    // Make sure brand and brand.category exist
+    const category = brand?.category || 'uncategorized';
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(brand);
+    return acc;
+  }, {});
+}, [brandList]);
+
+  //  const grouped = React.useMemo(() => {
+  //   return brandList?.reduce((acc, brand) => {
+  //     acc[brand.category] = acc[brand.category] || [];
+  //     acc[brand.category].push(brand);
+  //     return acc;
+  //   }, {});
+  // }, [brandList]);
 
   // hook to update the active modal
     useEffect(() => {
@@ -84,13 +99,13 @@ export default function BrandCards({ brandList = [], categorize }) {
             )
           ) : (
             Object.keys(brandCategories)
-              .filter((cat) => cat !== "all" && grouped[cat]?.length > 0)
-              .map((cat) => (
-                <BrandCarousel
-                  key={cat}
-                  brands={grouped[cat]}
-                  category={cat}
-                />
+            .filter((cat) => cat !== "all" && grouped[cat] && grouped[cat].length > 0)
+            .map((cat) => (
+              <BrandCarousel
+                key={cat}
+                brands={grouped[cat]}
+                category={cat}
+              />
               ))
           )}
         </>)
