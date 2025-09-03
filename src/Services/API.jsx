@@ -256,6 +256,21 @@ export const API_seedingCancel = async (seed, bearer) => {
     return data.data;
 }
 
+export const API_addCelebrities = async (bearer, inputData) => {
+  const res = await fetch(`${AZURE_API}/admin/celebrities/batch`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${bearer}`
+      },
+        body: JSON.stringify(inputData),
+    });
+    if (!res.ok) throw new Error('Batch upload failed');
+    
+    const data = await res.json();
+    
+    return data;
+}
 
 
 
