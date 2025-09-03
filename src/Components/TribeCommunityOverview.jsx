@@ -211,6 +211,7 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user }) {
                 >
                   <UserCard
                     user={u}
+                    viewer={user}
                     onAfterUnfollow={(unfollowed) =>
                       setFollowingUsers((prev) =>
                         prev.filter((x) => (x.id || x.userId) !== (unfollowed?.id || unfollowed?.userId))

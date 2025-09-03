@@ -9,6 +9,7 @@ import { ZokuMasks } from "../assets/uiData/PersonalityImages";
 import SecondaryPersonalityCard from "./SecondaryPersonalityCard";
 import CelebrityComparisonDial from "./CelebrityComparisonDial";
 import "../assets/css/CelebrityCard.css";
+import { calculateMatchPercentage } from "../Services/type-calculation.js";
 
 const AZURE_API = import.meta.env.VITE_AZURE_API;
 
@@ -115,9 +116,8 @@ function UserCard({ user, viewer = null, onAfterFollow, onAfterUnfollow }) {
   const tProf = useMemo(() => (thirdType ? valueProfiles?.[thirdType] : null), [thirdType]);
 
   const matchPct = useMemo(() => {
-    const v = profile?.primaryMatchPercentage;
-    return Math.round(Number.isFinite(v) ? v : 0);
-  }, [profile?.primaryMatchPercentage]);
+    return calculateMatchPercentage(viewer, profile);
+  }, [viewer, profile]);
 
   const hasAnyBlock = Boolean(pProf || sProf || tProf);
 

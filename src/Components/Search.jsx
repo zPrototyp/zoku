@@ -224,6 +224,7 @@ function Search({
   );
 
   const normalizedUsers = useMemo(() => {
+    // console.log(foundUsers)
     if (!Array.isArray(foundUsers)) return [];
     return foundUsers.map((u) => ({
       id: u.id ?? u.userId ?? "",
@@ -280,7 +281,7 @@ function Search({
                 }}
               >
                 {normalizedUsers.map((u) => (
-                  <UserCard key={u.id || u.displayName} user={u} />
+                  <UserCard key={u.id || u.displayName} user={u} viewer={userProfile} />
                 ))}
               </div>
             ) : (
