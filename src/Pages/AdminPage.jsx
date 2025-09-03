@@ -10,6 +10,7 @@ import "../assets/css/Admin.css";
 import BrandCard from "../Components/AdminBrandCard";
 import CelebrityDashboard from "../Components/AdminCelebrities";
 import CelebrityUploader from "../Components/AdminCelebrityUploader";
+import { NavLink } from "react-router";
 
 function AdminPage(){
     const [admin, setAdmin] = useAtom(adminAtom);
@@ -158,6 +159,10 @@ useEffect(() => {
                 Log in as administrator
                 <p>Fyll i dina uppgifter för att logga in.</p>
                 <LoginForm admin={true} setAdmin={setAdmin} />
+                
+                
+                <NavLink to="/"><button>Back to Zoku</button></NavLink>
+
             </div>
     )}
     else {
@@ -265,7 +270,7 @@ useEffect(() => {
 
         </div>)
     }
-        
+        <NavLink to="/"><button onClick={()=>handleLogout()}>Back to Zoku</button></NavLink>
         </div>)
     }
 

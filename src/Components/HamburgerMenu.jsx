@@ -9,6 +9,7 @@ import { API_logout } from '../Services/API.jsx';
 import { FaCog } from 'react-icons/fa';
 import OverlayModal from './OverlayModal.jsx';
 import UserSettings from './UserSettings.jsx';
+import { MdOutlineAdminPanelSettings } from "react-icons/md";
 
 const HamburgerMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -58,6 +59,7 @@ const HamburgerMenu = () => {
               <UserSettings userId={userId} onClose={() => setShowSettings(false)} />
             </OverlayModal>
           </>}
+          <NavLink to="/admin"><MdOutlineAdminPanelSettings className="admin-icon" onClick={()=> setIsOpen(false)}/></NavLink>
         </ul>
       </div>
     </div>
