@@ -44,8 +44,8 @@ export default function BrandCards({ brandList = [], categorize }) {
   const total = brands.length;
   return (
     <div>
-      <h3>{brandCategories[category]} - {total}</h3>
-
+      <h3>{brandCategories?.[category] ?? category} - {total}</h3>
+    
       <div className="brand-carousel">
         {brands.map((brand) => (
           <PrintBrandCard
@@ -65,7 +65,7 @@ export default function BrandCards({ brandList = [], categorize }) {
       <>
         <div className='feed-sort-options'>
           <label htmlFor="sortSelect">Varumärken: </label>
-          <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+          <select value={selectedCategory ||"all"} onChange={(e) => setSelectedCategory(e.target.value)}>
               {Object.entries(brandCategories).map(([value, label]) => (
                   <option key={value} value={value}>
                       {label}
@@ -74,24 +74,6 @@ export default function BrandCards({ brandList = [], categorize }) {
           </select>
           </div>
 
-        {/* {selectedCategory != "all"
-        ? grouped[selectedCategory] && (
-          <BrandCarousel
-            key={selectedCategory}
-            brands={grouped[selectedCategory]}
-            category={selectedCategory}
-          />
-        )
-      :  Object.keys(brandCategories)
-          .filter(cat => cat !== "all" && grouped[cat]?.length > 0)
-          .map(cat => (
-            <BrandCarousel
-              key={cat}
-              brands={grouped[cat]}
-              category={cat}
-            />
-          ))
-        } */}
           {selectedCategory !== "all" ? (
             grouped[selectedCategory] && (
               <BrandCarousel
