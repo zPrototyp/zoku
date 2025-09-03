@@ -26,7 +26,7 @@ function AdminPage(){
         loading: false,
         updateDate: new Date,
         brandLength: 0,
-        celebLength: 0
+        celebLength: celebs?.totalCelebrities || 0
         })
     
   const handleLogout = () => {
@@ -43,12 +43,11 @@ function AdminPage(){
 
 const memoizedLengths = useMemo(() => ({
   brandLength: brands?.length || 0,
-  celebLength: celebs?.length || 0
-}), [brands?.length, celebs?.length]);
+  celebLength: celebs?.totalCelebrities || 0
+}), [brands?.length, celebs?.totalCelebrities]);
 
 useEffect(() => {
   const updates = {};
-  
   if (memoizedLengths.brandLength > 0) {
     console.log(brands);
     updates.brandLength = memoizedLengths.brandLength;
