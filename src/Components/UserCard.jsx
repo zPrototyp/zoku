@@ -104,7 +104,7 @@ function UserCard({ user, viewer = null, onAfterFollow, onAfterUnfollow }) {
     }
   };
 
-  const displayName = user?.displayName || user?.name || user?.username || "Användare";
+  const displayName = user?.displayName || user?.name || user?.fullName || "Användare";
 
   const primaryType = profile?.primaryType || null;
   const secondaryType = profile?.secondaryType || null;

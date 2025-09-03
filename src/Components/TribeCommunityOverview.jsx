@@ -3,91 +3,82 @@ import { useNavigate } from "react-router-dom";
 import { API_userSafeFetchJson } from "../Services/API";
 import CelebrityCard from "./CelebrityCard";
 import UserCard from "./UserCard";
-import { PiFileXlsDuotone } from "react-icons/pi";
+import "../assets/css/CelebrityCard.css";
 
 function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user }) {
+  const [likedCelebs, setLikedCelebs] = useState([]);
   const [followingUsers, setFollowingUsers] = useState([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const scrollerRef = useRef(null);
+
+  const celebsRef = useRef(null);
+  const usersRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     let mounted = true;
 
-    const fetchFollowing = async () => {
+    const fetchAll = async () => {
       if (!token) { setIsLoading(false); return; }
       setIsLoading(true);
       setError("");
 
+      // Celebrities
       try {
         await API_userSafeFetchJson(token, "user/celebrities/liked", (data) => {
           if (!mounted) return;
-          setLikedCelebs(Array.isArray(data) ? data.slice(0, limit) : []);
+          const items = Array.isArray(data) ? data : [];
+          const normalized = items.map((c) => ({
+            id: c.id ?? c.celebrityId,
+            name: c.name ?? c.celebrityName,
+            imageUrl: c.imageUrl ?? c.photoUrl,
+            description: c.description,
+            coordinates: c.coordinates,
+            personalityProfile: c.personalityProfile,
+            matchPercentage: c.matchWithUser ?? c.matchPercentage,
+            isLiked: true,
+          }));
+          setLikedCelebs(normalized.slice(0, limit));
         });
       } catch (err) {
-        if (!mounted) return;
-        console.error("Fel vid hämtning av gillade kändisar:", err);
-        setError((prev) => prev || "Kunde inte hämta gillade kändisar");
+        if (mounted) {
+          console.error("Fel vid hämtning av gillade kändisar:", err);
+          setError((prev) => prev || "Kunde inte hämta gillade kändisar");
+        }
       }
 
+      // Users
       try {
         await API_userSafeFetchJson(token, "user/relationships/following", (data) => {
           if (!mounted) return;
           const list = Array.isArray(data) ? data : [];
-          const normalized = list.map((u) => ({
+          const minimalUsers = list.map((u) => ({
             id: u.id || u.userId,
-            displayName: u.displayName || u.name || u.username || "Användare",
+            displayName: u.displayName || u.name || u.fullName || "Användare",
             username: u.username || "",
-            avatarUrl: u.avatarUrl || u.photoUrl || null,
+            avatarUrl: u.avatarUrl || u.photoUrl || "",
             bio: u.bio || u.tagline || "",
+            isFollowing: true,
           }));
-          setFollowingUsers(normalized.slice(0, limit));
+          setFollowingUsers(minimalUsers.slice(0, limit));
         });
       } catch (err) {
-        if (!mounted) return;
-        console.error("Fel vid hämtning av följda användare:", err);
-        setError("Kunde inte hämta följda användare");
+        if (mounted) {
+          console.error("Fel vid hämtning av följda användare:", err);
+          setError((prev) => prev || "Kunde inte hämta följda användare");
+        }
       } finally {
         if (mounted) setIsLoading(false);
       }
     };
 
-    fetchFollowing();
+    fetchAll();
     return () => { mounted = false; };
   }, [token, limit]);
 
-
-  // console.log(likedCelebs);
-
-  const Grid = ({ children }) => (
-    <div style={{
-      display: "grid",
-      gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))",
-      gap: "0.75rem"
-    }}>
-      {children}
-    </div>
-  );
-
-  const handleAfterUnlikeCeleb = (celeb) => {
-    const id = celeb?.id;
-    setLikedCelebs((prev) => prev.filter((c) => (c.id || c.celebrityId) !== id));
-  };
-  const handleAfterLikeCeleb = (celeb) => {
-    const id = celeb?.id;
-    setLikedCelebs((prev) => {
-      const exists = prev.some((c) => (c.id || c.celebrityId) === id);
-      if (exists) return prev;
-      return [{ id, name: celeb?.name, imageUrl: celeb?.imageUrl, isLiked: true }, ...prev].slice(0, limit);
-    });
-  };
-
-  const getInitials = (name = "") => {
-    const parts = String(name).trim().split(/\s+/);
-    const first = parts[0]?.[0] || "";
-    const second = parts[1]?.[0] || "";
-    return (first + second).toUpperCase() || "U";
+  const scrollBy = (ref, dir = 1) => {
+    const node = ref?.current;
+    if (node) node.scrollBy({ left: dir * 320, behavior: "smooth" });
   };
 
   return (
@@ -107,137 +98,159 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user }) {
       {error && <p style={{ color: "red", marginTop: ".5rem" }}>{error}</p>}
       {isLoading && <p style={{ opacity: 0.75, marginTop: ".5rem" }}>Laddar...</p>}
 
-      {/* Liked Celebrities (compact) */}
-      <div style={{ marginTop: ".75rem", marginBottom: ".75rem" }}>
+      {/* Liked celebrities */}
+      <div style={{ marginTop: ".75rem", marginBottom: ".75rem", position: "relative" }}>
         <h3 style={{ marginBottom: ".5rem" }}>Kändisar du gillar</h3>
-        {likedCelebs && likedCelebs.length > 0 ? (
-          
-          <div style={{display: "flex",
-            flexDirection: "column"
-          }}>
-            {likedCelebs.map((c) => {
-              return (
-                <CelebrityCard
+
+        {likedCelebs.length > 0 ? (
+          <div style={{ position: "relative", padding: "0 .25rem" }}>
+            <button
+              type="button"
+              aria-label="Scrolla vänster"
+              onClick={() => scrollBy(celebsRef, -1)}
+              className="btn btnSlim"
+              style={{ position: "absolute", left: 0, top: "50%", transform: "translateY(-50%)", zIndex: 2, opacity: 0.9 }}
+            >
+              ‹
+            </button>
+
+            <div
+              ref={celebsRef}
+              className="tribe-scroll"
+              style={{
+                display: "flex",
+                gap: "0.75rem",
+                overflowX: "auto",
+                padding: "0.5rem 2.25rem",
+                scrollSnapType: "x mandatory",
+              }}
+            >
+              {likedCelebs.map((c) => (
+                <div
                   key={c.id || c.name}
-                  celeb={c}
-                  user={user}
-                  celebBrands={[]}
-                  onAfterUnlike={handleAfterUnlikeCeleb}
-                  onAfterLike={handleAfterLikeCeleb}
-                />
-              );
-            })}
+                  style={{
+                    minWidth: 300,
+                    maxWidth: 340,
+                    flex: "0 0 auto",
+                    scrollSnapAlign: "start",
+                  }}
+                >
+                  <CelebrityCard
+                    celeb={c}
+                    user={user}
+                    celebBrands={[]}
+                    onAfterUnlike={(celeb) =>
+                      setLikedCelebs((prev) =>
+                        prev.filter((x) => (x.id || x.celebrityId) !== (celeb?.id || celeb?.celebrityId))
+                      )
+                    }
+                    onAfterLike={(celeb) =>
+                      setLikedCelebs((prev) => {
+                        const id = celeb?.id;
+                        const exists = prev.some((x) => (x.id || x.celebrityId) === id);
+                        if (exists) return prev;
+                        return [{ id, name: celeb?.name, imageUrl: celeb?.imageUrl, isLiked: true }, ...prev].slice(0, limit);
+                      })
+                    }
+                  />
+                </div>
+              ))}
             </div>
-          
+
+            <button
+              type="button"
+              aria-label="Scrolla höger"
+              onClick={() => scrollBy(celebsRef, 1)}
+              className="btn btnSlim"
+              style={{ position: "absolute", right: 0, top: "50%", transform: "translateY(-50%)", zIndex: 2, opacity: 0.9 }}
+            >
+              ›
+            </button>
+          </div>
         ) : (
-          <p style={{ opacity: 0.75 }}>Inga kändisar ännu.</p>
+          !isLoading && <p style={{ opacity: 0.75 }}>Inga kändisar ännu.</p>
         )}
       </div>
 
-          {/* Carousel scroller */}
-          <div
-            ref={scrollerRef}
-            className="tribe-scroll"
-            style={{
-              display: "flex",
-              gap: "0.75rem",
-              overflowX: "auto",
-              padding: "0.5rem 2.25rem",
-              scrollSnapType: "x mandatory",
-            }}
-          >
-            {followingUsers.map((u) => (
-              <div
-                key={u.id || u.username}
-                className="tribe-user-chip"
-                style={{
-                  minWidth: 120,
-                  maxWidth: 140,
-                  flex: "0 0 auto",
-                  background: "var(--card-bg, #141414)",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  borderRadius: 12,
-                  padding: "0.75rem",
-                  textAlign: "center",
-                  scrollSnapAlign: "start",
-                }}
-              >
-                {u.avatarUrl ? (
-                  <img
-                    src={u.avatarUrl}
-                    alt={u.displayName}
-                    style={{
-                      width: 64, height: 64, borderRadius: "50%",
-                      objectFit: "cover", margin: "0 auto 0.5rem", display: "block",
-                    }}
-                    loading="lazy"
-                  />
-                ) : (
-                  <div
-                    aria-hidden
-                    style={{
-                      width: 64, height: 64, borderRadius: "50%",
-                      margin: "0 auto 0.5rem",
-                      display: "grid", placeItems: "center",
-                      background: "rgba(255,255,255,0.08)",
-                      fontWeight: 700, fontSize: 18,
-                    }}
-                  >
-                    {getInitials(u.displayName)}
-                  </div>
-                )}
+      {/* Followed users */}
+      <div style={{ marginTop: ".75rem", position: "relative" }}>
+        <h3 style={{ marginBottom: ".5rem" }}>Användare du följer</h3>
+
+        {followingUsers.length > 0 ? (
+          <div style={{ position: "relative", padding: "0 .25rem" }}>
+            <button
+              type="button"
+              aria-label="Scrolla vänster"
+              onClick={() => scrollBy(usersRef, -1)}
+              className="btn btnSlim"
+              style={{ position: "absolute", left: 0, top: "50%", transform: "translateY(-50%)", zIndex: 2, opacity: 0.9 }}
+            >
+              ‹
+            </button>
+
+            <div
+              ref={usersRef}
+              className="tribe-scroll"
+              style={{
+                display: "flex",
+                gap: "0.75rem",
+                overflowX: "auto",
+                padding: "0.5rem 2.25rem",
+                scrollSnapType: "x mandatory",
+              }}
+            >
+              {followingUsers.map((u) => (
                 <div
-                  title={u.displayName}
+                  key={u.id || u.username}
                   style={{
-                    fontSize: 14,
-                    fontWeight: 600,
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
+                    minWidth: 300,
+                    maxWidth: 340,
+                    flex: "0 0 auto",
+                    scrollSnapAlign: "start",
                   }}
                 >
-                  {u.displayName}
-                </div>
-                {u.username && (
-                  <div
-                    style={{
-                      fontSize: 12,
-                      opacity: 0.7,
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
+                  <UserCard
+                    user={u}
+                    onAfterUnfollow={(unfollowed) =>
+                      setFollowingUsers((prev) =>
+                        prev.filter((x) => (x.id || x.userId) !== (unfollowed?.id || unfollowed?.userId))
+                      )
+                    }
+                    onAfterFollow={(followed) => {
+                      setFollowingUsers((prev) => {
+                        const id = followed?.id || followed?.userId;
+                        if (!id || prev.some((x) => (x.id || x.userId) === id)) return prev;
+                        return [{ ...followed, isFollowing: true }, ...prev].slice(0, limit);
+                      });
                     }}
-                  >
-                    @{u.username}
-                  </div>
-                )}
-              </div>
-            ))}
+                  />
+                </div>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              aria-label="Scrolla höger"
+              onClick={() => scrollBy(usersRef, 1)}
+              className="btn btnSlim"
+              style={{ position: "absolute", right: 0, top: "50%", transform: "translateY(-50%)", zIndex: 2, opacity: 0.9 }}
+            >
+              ›
+            </button>
           </div>
-
-          {/* Right arrow */}
-          <button
-            type="button"
-            aria-label="Scrolla höger"
-            onClick={() => scrollBy(1)}
-            className="btn btnSlim"
-            style={{
-              position: "absolute", right: 0, top: "50%",
-              transform: "translateY(-50%)", zIndex: 2, opacity: 0.9,
-            }}
-          >
-            ›
-          </button>
-        </div>
-      )}
-
-      {!isLoading && followingUsers.length === 0 && (
-        <div style={{ marginTop: ".75rem" }}>
-          <p style={{ opacity: 0.75, marginBottom: ".5rem" }}>
-            Du följer inga användare ännu.
-          </p>
-        </div>
-      )}
-
+        ) : (
+          !isLoading && (
+            <div style={{ marginTop: ".75rem" }}>
+              <p style={{ opacity: 0.75, marginBottom: ".5rem" }}>Du följer inga användare ännu.</p>
+              <button className="btn btnSlim" onClick={() => navigate("/feed")}>
+                Hitta personer att följa
+              </button>
+            </div>
+          )
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default TribeCommunityOverview;
