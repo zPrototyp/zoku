@@ -37,7 +37,7 @@ function TribeCommunity({ token, user, title = "Tribes" }) {
   }, [token]);
 
   const TribeGrid = ({ children }) => (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: "1rem" }}>
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(380px, 1fr))", gap: "1rem" }}>
       {children}
     </div>
   );
@@ -119,7 +119,7 @@ function TribeCommunity({ token, user, title = "Tribes" }) {
               return (
                 <CelebrityCard
                   key={normalized.id || normalized.name}
-                  celeb={normalized}
+                  celeb={c}
                   user={user}
                   celebBrands={[]}
                   onAfterUnlike={handleAfterUnlikeCeleb}
@@ -141,7 +141,7 @@ function TribeCommunity({ token, user, title = "Tribes" }) {
             {followingUsers.map((u) => {
               const normalized = {
                 id: u.id || u.userId,
-                displayName: u.displayName || u.name,
+                displayName: u.displayName || u.fullName,
                 username: u.username,
                 avatarUrl: u.avatarUrl || u.photoUrl,
                 bio: u.bio || u.tagline,

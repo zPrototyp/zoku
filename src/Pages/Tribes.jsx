@@ -55,7 +55,7 @@ export default function Tribes() {
     });
   }, []);
     
-    console.log(celebsByPersonality['Achiever']);
+    // console.log(celebsByPersonality['Achiever']);
     // Print out the Zoku cards
 
     function ZokuCards() {

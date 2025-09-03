@@ -1,7 +1,6 @@
 
 import React from "react";
 import { HashRouter as Router, Routes, Route, Link } from "react-router-dom";
-import StartPage from "./Pages/StartPage";
 import Layout from "./Components/Layout";
 import AboutZoku from "./Pages/AboutZoku";
 import Tribes from "./Pages/Tribes";
@@ -13,13 +12,10 @@ import ResultPage from "./Pages/ResultPage";
 import ProfilePage from "./Pages/ProfilePage";
 import ClearAllAtoms from "./Pages/ClearAllAtoms";
 import CommunityPage from "./Pages/CommunityPage";
-import './assets/css/App.css'; 
-
-// import TestPage from "./Pages/TestPage";
 import TestPage from "./Pages/ComboTestPage";
-
 import NewStartPage from "./Pages/NewStartPage";
-import NewTestPage from "./Pages/NewTestPage";
+import './assets/css/App.css'; 
+import AdminPage from "./Pages/AdminPage";
 
 function App() { 
   return (
@@ -29,9 +25,6 @@ function App() {
     
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/start" element={<NewStartPage />} />
-          <Route path="/newtest" element={<NewTestPage />} />
-
           <Route path="/" element={<NewStartPage />} />
           <Route path="/test" element={<TestPage />} />
           <Route path="/result" element={<ResultPage/>} />
@@ -47,10 +40,10 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register/>} />
 
-
           <Route path="/clear" element={<ClearAllAtoms />} />
-
         </Route>
+        {/* Admin page not within the site Layout */}
+        <Route path="/admin" element={<AdminPage />} />
       </Routes>
     </Router>
   );

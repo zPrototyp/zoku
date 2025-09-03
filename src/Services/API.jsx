@@ -206,6 +206,59 @@ export const API_safeGetCelebrities = async (personality, variations, onSuccess)
     return data.data;}
 }
 
+export const API_seeding = async (url, bearer, category, operation, onSuccess) => {
+  const res = await fetch(`${AZURE_API}/${url}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${bearer}`
+      },
+      body: JSON.stringify({
+        sourceName: category,
+        operationType: operation
+      })
+    });
+    if (!res.ok) throw new Error('Seeding failed');
+    
+    const data = await res.json();
+
+    onSuccess(data.data);
+        
+    return data.data;
+}
+
+export const API_seedingCheck = async (url, bearer, onSuccess) => {
+  const res = await fetch(`${AZURE_API}/${url}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${bearer}`
+      }})
+      if (!res.ok) throw new Error('Seeding failed');
+    
+    const data = await res.json();
+
+    onSuccess(data.data);
+        
+    return data.data;
+}
+export const API_seedingCancel = async (seed, bearer) => {
+  const res = await fetch(`${AZURE_API}/admin/seeding/cancel/${seed}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${bearer}`
+      }
+    });
+    if (!res.ok) throw new Error('Seeding Cancel failed');
+    
+    const data = await res.json();
+       
+    return data.data;
+}
+
+
+
 
 // Below: copied from Backend_Peter
 // const API_BASE_URL = '/api/v1';

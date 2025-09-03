@@ -23,7 +23,6 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user }) {
       try {
         await API_userSafeFetchJson(token, "user/celebrities/liked", (data) => {
           if (!mounted) return;
-          console.log("data",data);
           setLikedCelebs(Array.isArray(data) ? data.slice(0, limit) : []);
         });
       } catch (err) {
@@ -112,7 +111,7 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user }) {
       <div style={{ marginTop: ".75rem", marginBottom: ".75rem" }}>
         <h3 style={{ marginBottom: ".5rem" }}>Kändisar du gillar</h3>
         {likedCelebs && likedCelebs.length > 0 ? (
-          // <Grid>
+          
           <div style={{display: "flex",
             flexDirection: "column"
           }}>
@@ -129,7 +128,7 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user }) {
               );
             })}
             </div>
-          // </Grid>
+          
         ) : (
           <p style={{ opacity: 0.75 }}>Inga kändisar ännu.</p>
         )}

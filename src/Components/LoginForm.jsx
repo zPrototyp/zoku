@@ -6,7 +6,7 @@ import { guestTokenAtom } from "../Atoms/GuestTokenAtom";
 
 const AZURE_API = import.meta.env.VITE_AZURE_API;
 
-function LoginForm()
+function LoginForm({admin, setAdmin})
 {
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
@@ -44,8 +44,13 @@ function LoginForm()
         const userId = data.data.userId;
         setAuthToken(data.data.token);
         setGuestToken(null); // Clear guest token on successful login
-        
-        navigate("/profile");
+        if ((data.data.email ==="admin@zoku.se") 
+          && (data.data.fullName==="System Administrator") 
+          && admin){
+          setAdmin(true);
+          navigate("/admin");
+        } else {
+        navigate("/profile");}
       }
     }
     catch (err)

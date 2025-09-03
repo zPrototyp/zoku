@@ -138,56 +138,18 @@ function Search({
     doSearch();
   }, [debouncedTerm, token, brandsFeed]);
 
-  const normalizedCelebs = useMemo(
-    () =>
-      (foundCelebs || []).map((c) => ({
-        id: c.id ?? c.celebrityId,
-        name: c.name ?? c.celebrityName,
-        imageUrl: c.imageUrl ?? c.photoUrl,
-        description: c.description,
-        coordinates: c.coordinates,
-        personalityProfile: c.personalityProfile,
-        matchPercentage: c.matchWithUser ?? c.matchPercentage,
-        isLiked: c.isLiked,
-      })),
-    [foundCelebs]
-  );
-
   const normalizedUsers = useMemo(() => {
     if (!Array.isArray(foundUsers)) return [];
 
-    return foundUsers.map((u) => {
-      const personalityType =
-        u.primaryType ??
-        u.personalityType ??
-        u.primaryPersonality?.type ??
-        u.personality?.primary?.type ??
-        u.primaryPersonalityType ??
-        null;
-
-      const rawMatch =
-        u.primaryMatchPercentage ??
-        u.compatibilityScore ??
-        u.matchPercentage ??
-        null;
-
-      const primaryMatchPercentage =
-        typeof rawMatch === "number"
-          ? rawMatch <= 1 ? Math.round(rawMatch * 100) : Math.round(rawMatch)
-          : undefined;
-
-      return {
-        id: u.id ?? u.userId ?? "",
-        displayName: u.displayName ?? u.name ?? u.username ?? "",
-        username: u.username ?? "",
-        avatarUrl: u.avatarUrl ?? u.photoUrl ?? "",
-        bio: u.bio ?? u.tagline ?? "",
-        isFollowing: !!u.isFollowing,
-        personalityType,
-        primaryMatchPercentage,
-      };
-    });
-  }, [foundUsers]);
+  return foundUsers.map((u) => ({
+    id: u.id ?? u.userId ?? "",
+    displayName: u.displayName ?? u.name ?? u.fullName ?? "",
+    username: u.username ?? "",
+    avatarUrl: u.avatarUrl ?? u.photoUrl ?? "",
+    bio: u.bio ?? u.tagline ?? "",
+    isFollowing: !!u.isFollowing,
+  }));
+}, [foundUsers]);
 
   return (
     <div>
@@ -244,8 +206,8 @@ function Search({
 
           {/* Celebrities */}
           <div style={{ marginTop: "1.25rem" }}>
-            <h3 style={{ marginBottom: ".5rem" }}>Kändisar ({normalizedCelebs.length})</h3>
-            {normalizedCelebs.length > 0 ? (
+            <h3 style={{ marginBottom: ".5rem" }}>Kändisar ({foundCelebs.length})</h3>
+            {foundCelebs.length > 0 ? (
               <div
                 style={{
                   display: "grid",
@@ -253,7 +215,7 @@ function Search({
                   gap: "1rem",
                 }}
               >
-                {normalizedCelebs.map((c) => (
+                {foundCelebs.map((c) => (
                   <CelebrityCard key={c.id || c.name} celeb={c} user={userProfile} />
                 ))}
               </div>
