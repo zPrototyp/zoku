@@ -1,7 +1,7 @@
 .admin h1,.admin  h2,.admin  h3,.admin  h4,.admin  h5,.admin h6 {
     font-family: var(--fontNav)
 }
-.brand-card {
+.adminbrand-card {
   max-width: 300px;
   margin: 1rem auto;
   padding: 1.5rem;
@@ -12,35 +12,35 @@
   color: #333;
 }
 
-.brand-card.inactive {
+.adminbrand-card.inactive {
   opacity: 0.6;
 }
 
-.brand-image {
+.adminbrand-image {
   width: 100%;
   height: auto;
   border-radius: 8px;
   margin-bottom: 1rem;
 }
 
-.brand-header h2 {
+.adminbrand-header h2 {
   margin: 0;
   font-size: 1.8rem;
 }
 
-.brand-category {
+.adminbrand-category {
   font-style: italic;
   color: #666;
   margin-top: 0.25rem;
 }
 
-.brand-description {
+.adminbrand-description {
   margin: 1rem 0;
 }
 
-.brand-info,
-.brand-personality,
-.brand-stats {
+.adminbrand-info,
+.adminbrand-personality,
+.adminbrand-stats {
   margin-top: 1.2rem;
 }
 
@@ -73,7 +73,7 @@
 }
 
 
-.celebrity-dashboard {
+.admincelebrity-dashboard {
   max-width: 1000px;
   margin: auto;
   padding: 2rem;
@@ -119,7 +119,7 @@
   gap: 1rem;
 }
 
-.celeb-card {
+.adminceleb-card {
   background: #ffffff;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
@@ -127,17 +127,17 @@
   box-shadow: 0 1px 4px rgba(0,0,0,0.05);
 }
 
-.celeb-card h4 {
+.adminceleb-card h4 {
   margin: 0 0 0.25rem 0;
 }
 
-.celeb-card .category {
+.adminceleb-card .category {
   font-size: 0.9rem;
   color: #888;
   margin-bottom: 0.5rem;
 }
 
-.celeb-card .metrics span {
+.adminceleb-card .metrics span {
   display: inline-block;
   margin-right: 1rem;
   font-size: 0.85rem;

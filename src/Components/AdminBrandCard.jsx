@@ -34,21 +34,21 @@ const BrandCard = ({ brand }) => {
 
   return (
     <div className={`brand-card ${!isActive ? 'inactive' : ''}`}>
-      {imageUrl && <img src={imageUrl} alt={name} className="brand-image" />}
+      {imageUrl && <img src={imageUrl} alt={name} className="adminbrand-image" />}
 
-      <div className="brand-header">
+      <div className="adminbrand-header">
         <h2>{name} ({category})</h2>
-        <p className="brand-description">{shortDescription}</p>
+        <p className="adminbrand-description">{shortDescription}</p>
         {url && <a href={url} target="_blank" rel="noopener noreferrer">Visit Website</a>}
       </div>
 
 
-      <div className="brand-personality">
+      <div className="adminbrand-personality">
         <h4>Brand Personality</h4>
         {renderPersonality()}
       </div>
 
-      <div className="brand-stats">
+      <div className="adminbrand-stats">
         <h4>Engagement</h4>
         <p><strong>Likes:</strong> {totalUsersLikes}</p>
         <p><strong>Unlikes:</strong> {totalUsersUnlikes}</p>
