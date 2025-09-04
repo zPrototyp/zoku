@@ -366,6 +366,53 @@ export const API_adminFetchUserInteractions = async (bearer, userId, onSuccess) 
     return data.data;
 }
 
+export const API_adminCurrentSessions = async (bearer, onSuccess) => {
+    const res = await fetch(`${AZURE_API}/admin/analytics/sessions/active`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${bearer}`
+      }
+    });
+    if (!res.ok) throw new Error('Brand fetch failed');
+    
+    const data = await res.json();
+    onSuccess(data);
+    return data;
+}
+
+export const API_adminSettingsAutolike = async (bearer, onSuccess) => {
+    const res = await fetch(`${AZURE_API}/admin/settings/autolike`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${bearer}`
+      }
+    });
+    if (!res.ok) throw new Error('Brand fetch failed');
+    
+    const data = await res.json();
+    onSuccess(data.data);
+    return data.data;
+}
+
+export const API_adminSettingsSetAutolike = async (bearer, inputData, onSuccess) => {
+const res = await fetch(`${AZURE_API}/admin/settings/autolike`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${bearer}`
+      },
+        body: JSON.stringify({
+          count: inputData
+        }),
+    });
+    if (!res.ok) throw new Error('Failed to update Autolike');
+    
+    const data = await res.json();
+    onSuccess(data.data);
+    return data.data;
+}
 
 
 // Below: copied from Backend_Peter

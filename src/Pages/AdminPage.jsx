@@ -5,7 +5,10 @@ import { adminAtom } from "../Atoms/AdminAtom";
 import { API_logout, API_seeding, 
     API_userSafeFetchJson, API_seedingCheck, API_seedingCancel, 
     API_adminAddBrand, API_adminBrandUpdate, 
-    API_adminFetchUsers, API_adminFetchUserInteractions } from "../Services/API";
+    API_adminFetchUsers, API_adminFetchUserInteractions, 
+    API_adminCurrentSessions,
+    API_adminSettingsAutolike,
+    API_adminSettingsSetAutolike} from "../Services/API";
 import { authTokenAtom } from "../Atoms/AuthAtom";
 import { feedListAtom } from "../Atoms/FeedListAtom";
 import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
@@ -16,6 +19,7 @@ import CelebrityUploader from "../Components/AdminCelebrityUploader";
 import { NavLink } from "react-router";
 import AddBrandForm from "../Components/AdminBrandAdd";
 import AdminUserCard, { UserInteractionCard } from "../Components/AdminUserCard";
+import { NumberForm } from "../Components/AdminSettings";
 
 function AdminPage(){
     const [admin, setAdmin] = useAtom(adminAtom);
@@ -29,6 +33,8 @@ function AdminPage(){
     const [fullUser, setFullUser] = useState(null);
     const [fullbrand, setFullbrand] = useState(null);
     const [uiState, setUiState]= useState({
+        activeSessions: 0,
+        autolikes: 0,
         showSeedOps: false,
         seedingSources: null,
         seedResult: null,
@@ -46,48 +52,82 @@ function AdminPage(){
         showBrandEdit: false,
         showUsers: false,
         showFullUser: false,
+        showSettings: false,
         })
     
-  const handleLogout = () => {
-    const loggedOut = API_logout(token);
-    if (loggedOut) {
-      console.log("User logged out successfully");
+  
+    useEffect(() => {
+        token && updateActiveSessions(); 
+        token && getAutoLikes();
+    }, [token]);
+
+    const getAutoLikes = () => {
+        API_adminSettingsAutolike(token, (data)=>{setUiState(p => ({...p, autolikes: data.count}))})
     }
-    setToken(null);
-    setFeedList(null);
-    setValueProfile(null);
-    setAdmin(false);
-    window.location.href = "/zoku/"; // Redirect to home page
-  };
 
-const memoizedLengths = useMemo(() => ({
-  brandLength: brands?.length || 0,
-  celebLength: celebs?.totalCelebrities || 0
-}), [brands?.length, celebs?.totalCelebrities]);
+    const handleLogout = () => {
+        const loggedOut = API_logout(token);
+        if (loggedOut) {
+            console.log("User logged out successfully");
+        }
+        setToken(null);
+        setFeedList(null);
+        setValueProfile(null);
+        setAdmin(false);
+        window.location.href = "/zoku/"; // Redirect to home page
+    };
 
-useEffect(() => {
-  const updates = {};
-  if (memoizedLengths.brandLength > 0) {
-    updates.brandLength = memoizedLengths.brandLength;
-  }
-  
-  if (memoizedLengths.celebLength > 0) {
-    updates.celebLength = memoizedLengths.celebLength;
-  }
-  
-  // Only update state if there are actual changes
-  if (Object.keys(updates).length > 0) {
-    setUiState(p => ({ ...p, ...updates }));
-  }
-}, [memoizedLengths.brandLength, memoizedLengths.celebLength, brands, celebs]);
+    const memoizedLengths = useMemo(() => ({
+        brandLength: brands?.length || 0,
+        celebLength: celebs?.totalCelebrities || 0
+    }), [brands?.length, celebs?.totalCelebrities]);
 
-useEffect(() => {
-   if (uiState.showUsers) {
-    // Fetch users!
-    API_adminFetchUsers(token, setUsers);
-   }
-},[uiState.showUsers])
+    useEffect(() => {
+        const updates = {};
+        if (memoizedLengths.brandLength > 0) {
+            updates.brandLength = memoizedLengths.brandLength;
+        }
+        
+        if (memoizedLengths.celebLength > 0) {
+            updates.celebLength = memoizedLengths.celebLength;
+        }
+        
+        // Only update state if there are actual changes
+        if (Object.keys(updates).length > 0) {
+            setUiState(p => ({ ...p, ...updates }));
+        }
+    }, [memoizedLengths.brandLength, memoizedLengths.celebLength, brands, celebs]);
 
+    useEffect(() => {
+    if (uiState.showUsers) {
+        // Fetch users!
+        API_adminFetchUsers(token, setUsers);
+    }
+    },[uiState.showUsers])
+
+    const updateActiveSessions = () => {
+        API_adminCurrentSessions(token, (data) => {
+            setUiState(p=>({...p, activeSessions: data.data.length}))
+        })
+    }
+    const handleAutolikeSetting = async (count)=> {
+        const confirmed = window.confirm(
+        "Are you sure you want to change the autolikes setting? " +
+        "This is how many brands a user automatically gets on their Brand Wardrobe."
+        );
+
+        if (!confirmed) return; // user clicked cancel
+
+        try {
+        let res = await API_adminSettingsSetAutolike(token, count, (data) => {
+            setUiState((p) => ({ ...p, autolikes: data.count }));
+        });
+
+        } catch (err) {
+        console.error("Failed to update autolikes:", err);
+        }
+    }
+    
     const fetchSeedingSrc = () => {
         if (uiState.showSeedOps) {
             setUiState(p => ({
@@ -217,34 +257,40 @@ useEffect(() => {
             padding: "20px",
             fontFamily: "var(--fontNav)"
         }}>
-        <button
-        onClick={()=>handleLogout()}
-        >Log out</button>
+      
+    <div className="admin-page-buttons">
+        <button  onClick={()=>handleLogout()}> 🛑 Log out  </button>
 
-        <button
-            onClick={()=>fetchSeedingSrc()}>
-        {uiState.showSeedOps ? 'Hide seeding options': 'Show seeding options'}
+        <button onClick={()=>updateActiveSessions()}>
+              {uiState.activeSessions} Active sessions ↻ Update
+        </button>  
+
+        <button onClick={()=>fetchSeedingSrc()} className={uiState.showSeedOps? 'active':''}>
+        {uiState.showSeedOps ? 'Hide seeding options': '⇕ Show seeding options'}
         </button>
 
+        <button onClick={()=>fetchAnalytics('brands')} className={uiState.showBrands? 'active':''}>
+            {uiState.showBrands ? 'Hide Brand Analytics': '📈 Show Brand Analytics'}
+        </button>
         
-        <button
-            onClick={()=>fetchAnalytics('brands')}
-        >
-            {uiState.showBrands ? 'Hide Brand Analytics': 'Show Brand Analytics'}
-        </button>
-        <button
-            onClick={()=>fetchAnalytics('celebrities')}
-        >
-            {uiState.showCelebs ? 'Hide Celeb Analytics': 'Show Celeb Analytics'}
-            
+        <button onClick={()=>fetchAnalytics('celebrities')} className={uiState.showCelebs? 'active':''}>
+            {uiState.showCelebs ? 'Hide Celeb Analytics': '📈 Show Celeb Analytics'}
         </button>
 
-        <button
-            onClick={() => setUiState(p => ({...p, showUsers: !p.showUsers}))}
-        >
-            {uiState.showUsers ? 'Hide Users': 'Show Users'}
+        <button onClick={() => setUiState(p => ({...p, showUsers: !p.showUsers}))} className={uiState.showUsers? 'active':''}>
+            {uiState.showUsers ? 'Hide Users': '👤 Show Users'}
         </button>
+        <button onClick={() => setUiState(p => ({...p, showSettings: !p.showSettings}))} className={uiState.showSettings? 'active':''}>
+            {uiState.showSettings ? 'Hide settings': '⚙ Show Setings'}
+        </button>
+    </div>
 
+
+    {uiState.showSettings &&    <div>
+        <h2>Settings</h2>
+        {/* <p>Autolikes: {uiState.autolikes} </p> */}
+        <NumberForm likes={uiState.autolikes} limit="40" onSubmit={handleAutolikeSetting} />
+    </div>}
 
         {uiState.showSeedOps && result && (
             <>
@@ -350,7 +396,7 @@ useEffect(() => {
 
     }
 
-        <NavLink to="/"><button onClick={()=>handleLogout()}>Back to Zoku</button></NavLink>
+        {!token && <NavLink to="/"><button onClick={()=>handleLogout()}>Back to Zoku</button></NavLink>}
         </div>)
     }
 
