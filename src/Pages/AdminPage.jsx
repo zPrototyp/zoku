@@ -51,6 +51,7 @@ function AdminPage(){
         showBrandAdd: false,
         showBrandEdit: false,
         showUsers: false,
+        userCount: 0,
         showFullUser: false,
         showSettings: false,
         })
@@ -59,7 +60,13 @@ function AdminPage(){
     useEffect(() => {
         token && updateActiveSessions(); 
         token && getAutoLikes();
-    }, [token]);
+        token && API_adminFetchUsers(token, (users) => 
+            { setUsers(users.filter(user => user.email !== "admin@zoku.se"))});
+        token && users && setUiState((p)=>({
+            ...p,
+            userCount: users.length
+        }))
+    }, [token, users]);
 
     const getAutoLikes = () => {
         API_adminSettingsAutolike(token, (data)=>{setUiState(p => ({...p, autolikes: data.count}))})
@@ -101,7 +108,8 @@ function AdminPage(){
     useEffect(() => {
     if (uiState.showUsers) {
         // Fetch users!
-        API_adminFetchUsers(token, setUsers);
+     API_adminFetchUsers(token, (users) => {
+      setUsers(users.filter(user => user.email !== "admin@zoku.se"))});
     }
     },[uiState.showUsers])
 
@@ -234,7 +242,7 @@ function AdminPage(){
         return (
             <div className="page-content admin"
             style={{
-                maxWidth: "700px",
+                maxWidth: "1000px",
                 margin: "0 auto",
                 padding: "20px",
                 fontFamily: "var(--fontNav)"
@@ -252,7 +260,7 @@ function AdminPage(){
         return(
         <div className="page-content admin"
         style={{
-            maxWidth: "700px",
+            maxWidth: "1000px",
             margin: "0 auto",
             padding: "20px",
             fontFamily: "var(--fontNav)"
@@ -278,7 +286,7 @@ function AdminPage(){
         </button>
 
         <button onClick={() => setUiState(p => ({...p, showUsers: !p.showUsers}))} className={uiState.showUsers? 'active':''}>
-            {uiState.showUsers ? 'Hide Users': '👤 Show Users'}
+            {uiState.showUsers ? `Hide ${uiState.userCount} Users`: `👤 Show ${uiState.userCount} Users`}
         </button>
         <button onClick={() => setUiState(p => ({...p, showSettings: !p.showSettings}))} className={uiState.showSettings? 'active':''}>
             {uiState.showSettings ? 'Hide settings': '⚙ Show Setings'}
@@ -361,10 +369,8 @@ function AdminPage(){
         {uiState.showBrandAdd && <AddBrandForm onSubmit={handleAddBrand} />}
         {uiState.showBrandEdit && fullbrand && <AddBrandForm onSubmit={handleEditSubmit} formState={fullbrand} />}
 
-        {!uiState.showBrandEdit && <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)"
-        }}>
+        {!uiState.showBrandEdit && <div className="admin-brand-panel">
+   
             {brands?.map((b) => <BrandCard key={b.id} brand={b} handleEdit={handleEdit} />)}
         </div>}
         </>

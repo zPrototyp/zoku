@@ -46,20 +46,7 @@ export default function AdminUserCard({ user, fetchUser }) {
                 <strong>Compassion vs Ambition:</strong> {personalityProfile?.compassionVsAmbition}
             </p>
           </div>
-          {/* <div className="admin-user-profile__types">
-            <h4 className="admin-user-profile__types-title">Personalities</h4>
-            <ul className="admin-user-profile__types-list">
-              <li className="admin-user-profile__type">
-                <strong>Primary:</strong> {personalityProfile?.primaryType} ({personalityProfile?.primaryMatchPercentage}%)
-              </li>
-              <li className="admin-user-profile__type">
-                <strong>Secondary:</strong> {personalityProfile?.secondaryType} ({personalityProfile?.secondaryMatchPercentage}%)
-              </li>
-              <li className="admin-user-profile__type">
-                <strong>Third:</strong> {personalityProfile?.thirdType} ({personalityProfile?.thirdMatchPercentage}%)
-              </li>
-            </ul>
-          </div> */}
+
           <div className="admin-personality-circles">
             <SecondaryPersonalityCard 
                 personality={{name: personalityProfile?.primaryType,
