@@ -2,7 +2,7 @@ import React from "react";
 import SecondaryPersonalityCard from "./SecondaryPersonalityCard";
 import { valueProfiles } from '../assets/uiData/zoku_profiles_se';
 
-export default function AdminUserCard({ user }) {
+export default function AdminUserCard({ user, fetchUser }) {
       if (!user) return <p className="user-loading">Loading...</p>;
 
   const {
@@ -19,7 +19,11 @@ export default function AdminUserCard({ user }) {
       <h2 className="admin-user-profile__name">{fullName}</h2>
 
       <div className="admin-user-profile__basic-info">
-
+        <div>
+            <button
+                onClick={() => fetchUser(user.id)}
+            >Fetch all info</button>    
+        </div>
         <p className="admin-user-profile__email">
           <strong>Email:</strong> {email} {emailConfirmed ? "(Confirmed)" : "(Not confirmed)"}
         </p>
@@ -75,6 +79,44 @@ export default function AdminUserCard({ user }) {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+
+
+export function UserInteractionCard({ user }) {
+    
+  if (!user) return <p>Loading...</p>;
+
+  const { userName, totalInteractions, brandInteractions, summary } = user;
+
+  // Show only top 5 brand interactions for compactness
+  const topBrands = brandInteractions || [];
+
+  return (
+    <div className="user-card">
+      <div>
+      <h3 className="user-card__name">{userName}</h3>
+      <p className="user-card__total">Total Interactions: {totalInteractions}</p>
+      <div className="user-card__summary">
+        <p><strong>Liked:</strong> {summary?.isLiked ? "Yes" : "No"}</p>
+        <p><strong>Unliked:</strong> {summary?.isUnliked ? "Yes" : "No"}</p>
+        <p><strong>Total Shares:</strong> {summary?.totalShares || 0}</p>
+        <p><strong>View Count:</strong> {summary?.viewCount || 0}</p>
+      </div>
+      </div>
+      <div className="user-card__brands">
+        <strong>Recent Likes:</strong>
+        <ul className="user-card__brand-list">
+          {topBrands.map((b) => (
+            <li key={b.id} className="user-card__brand-item">
+              {b.brandName} ({b.interactionType})
+            </li>
+          ))}
+        </ul>
+      </div>
+
     </div>
   );
 }

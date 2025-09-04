@@ -2,7 +2,10 @@ import { useEffect, useState, useMemo } from "react";
 import LoginForm from "../Components/LoginForm";
 import { useAtom, useSetAtom } from "jotai";
 import { adminAtom } from "../Atoms/AdminAtom";
-import { API_logout, API_seeding, API_userSafeFetchJson, API_seedingCheck, API_seedingCancel, API_adminAddBrand, API_adminBrandUpdate, API_adminFetchUsers } from "../Services/API";
+import { API_logout, API_seeding, 
+    API_userSafeFetchJson, API_seedingCheck, API_seedingCancel, 
+    API_adminAddBrand, API_adminBrandUpdate, 
+    API_adminFetchUsers, API_adminFetchUserInteractions } from "../Services/API";
 import { authTokenAtom } from "../Atoms/AuthAtom";
 import { feedListAtom } from "../Atoms/FeedListAtom";
 import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
@@ -12,7 +15,7 @@ import CelebrityDashboard from "../Components/AdminCelebrities";
 import CelebrityUploader from "../Components/AdminCelebrityUploader";
 import { NavLink } from "react-router";
 import AddBrandForm from "../Components/AdminBrandAdd";
-import AdminUserCard from "../Components/AdminUserCard";
+import AdminUserCard, { UserInteractionCard } from "../Components/AdminUserCard";
 
 function AdminPage(){
     const [admin, setAdmin] = useAtom(adminAtom);
@@ -42,6 +45,7 @@ function AdminPage(){
         showBrandAdd: false,
         showBrandEdit: false,
         showUsers: false,
+        showFullUser: false,
         })
     
   const handleLogout = () => {
@@ -56,33 +60,33 @@ function AdminPage(){
     window.location.href = "/zoku/"; // Redirect to home page
   };
 
-    const memoizedLengths = useMemo(() => ({
-        brandLength: brands?.length || 0,
-        celebLength: celebs?.totalCelebrities || 0
-    }), [brands?.length, celebs?.totalCelebrities]);
+const memoizedLengths = useMemo(() => ({
+  brandLength: brands?.length || 0,
+  celebLength: celebs?.totalCelebrities || 0
+}), [brands?.length, celebs?.totalCelebrities]);
 
-    useEffect(() => {
-        const updates = {};
-        if (memoizedLengths.brandLength > 0) {
-            updates.brandLength = memoizedLengths.brandLength;
-        }
+useEffect(() => {
+  const updates = {};
+  if (memoizedLengths.brandLength > 0) {
+    updates.brandLength = memoizedLengths.brandLength;
+  }
+  
+  if (memoizedLengths.celebLength > 0) {
+    updates.celebLength = memoizedLengths.celebLength;
+  }
+  
+  // Only update state if there are actual changes
+  if (Object.keys(updates).length > 0) {
+    setUiState(p => ({ ...p, ...updates }));
+  }
+}, [memoizedLengths.brandLength, memoizedLengths.celebLength, brands, celebs]);
 
-        if (memoizedLengths.celebLength > 0) {
-            updates.celebLength = memoizedLengths.celebLength;
-        }
-
-    // Only update state if there are actual changes
-        if (Object.keys(updates).length > 0) {
-            setUiState(p => ({ ...p, ...updates }));
-        }
-    }, [memoizedLengths.brandLength, memoizedLengths.celebLength, brands, celebs]);
-
-    useEffect(() => {
-    if (uiState.showUsers) {
-        // Fetch users!
-        API_adminFetchUsers(token, setUsers);
-    }
-    },[uiState.showUsers])
+useEffect(() => {
+   if (uiState.showUsers) {
+    // Fetch users!
+    API_adminFetchUsers(token, setUsers);
+   }
+},[uiState.showUsers])
 
     const fetchSeedingSrc = () => {
         if (uiState.showSeedOps) {
@@ -180,6 +184,11 @@ function AdminPage(){
         } )
         setFullbrand(null);
     }
+    const fetchUser = (userId) => {
+        // console.log(userId);
+        API_adminFetchUserInteractions(token, userId, setFullUser);
+        setUiState(p => ({...p, showFullUser: true}))
+    }
 
     if (!admin) {
         return (
@@ -193,6 +202,7 @@ function AdminPage(){
                 Log in as administrator
                 <p>Fyll i dina uppgifter för att logga in.</p>
                 <LoginForm admin={true} setAdmin={setAdmin} />
+                
                 
                 <NavLink to="/"><button>Back to Zoku</button></NavLink>
 
@@ -326,8 +336,14 @@ function AdminPage(){
     {uiState.showUsers && (
         <div>
         <h2>Users in the system</h2>
-        {fullUser && console.log(fullUser)}
-        {users && users.map(u => <AdminUserCard key={u.id} user={u}  />)}
+        {fullUser && <button onClick={()=>{
+            setFullUser(null);
+            setUiState(p => ({...p, showFullUser: false}))
+            }}>
+            Clear user details & show all users
+        </button>}
+        {fullUser && <UserInteractionCard user={fullUser} />}
+        {!uiState.showFullUser && users && users.map(u => <AdminUserCard key={u.id} user={u} fetchUser={fetchUser} />)}
 
         </div>
     )
