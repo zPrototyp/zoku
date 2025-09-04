@@ -14,7 +14,7 @@ const [suggestions, setSuggestions] = useState([])
             console.error("Error fetching feed list:", error);
         }
         finally {
-            console.log(suggestions);
+            // console.log(suggestions);
             setUiState && setUiState((p)=>({...p, showSuggestedUsers:true}))
         }
 
