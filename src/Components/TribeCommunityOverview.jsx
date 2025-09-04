@@ -29,17 +29,7 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user, uiSt
         await API_userSafeFetchJson(token, "user/celebrities/liked", (data) => {
           if (!mounted) return;
           const items = Array.isArray(data) ? data : [];
-          const normalized = items.map((c) => ({
-            id: c.id ?? c.celebrityId,
-            name: c.name ?? c.celebrityName,
-            imageUrl: c.imageUrl ?? c.photoUrl,
-            description: c.description,
-            coordinates: c.coordinates,
-            personalityProfile: c.personalityProfile,
-            matchPercentage: c.matchWithUser ?? c.matchPercentage,
-            isLiked: true,
-          }));
-          setLikedCelebs(normalized.slice(0, limit));
+          setLikedCelebs(items.slice(0, limit));
         });
       } catch (err) {
         if (mounted) {
