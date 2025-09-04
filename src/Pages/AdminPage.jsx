@@ -361,11 +361,8 @@ function AdminPage(){
         {uiState.showBrandAdd && <AddBrandForm onSubmit={handleAddBrand} />}
         {uiState.showBrandEdit && fullbrand && <AddBrandForm onSubmit={handleEditSubmit} formState={fullbrand} />}
 
-        {!uiState.showBrandEdit && <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: "0.5em"
-        }}>
+        {!uiState.showBrandEdit && <div className="admin-brand-panel">
+   
             {brands?.map((b) => <BrandCard key={b.id} brand={b} handleEdit={handleEdit} />)}
         </div>}
         </>

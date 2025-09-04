@@ -1,6 +1,12 @@
 .admin h1,.admin  h2,.admin  h3,.admin  h4,.admin  h5,.admin h6 {
     font-family: var(--fontNav)
 }
+
+.admin-brand-panel {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5em;
+}
 .adminbrand-card {
   max-width: 300px;
   padding: 1.5rem;
@@ -213,4 +219,12 @@ display: inline-block;
   flex-direction: row;
   gap: 2em;
   justify-content: center;
+}
+
+@media (max-width: 450px) {
+  .admin-brand-panel {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5em;
+  }
 }
