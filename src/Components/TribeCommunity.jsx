@@ -153,11 +153,8 @@ function TribeCommunity({ token, user, title = "Tribes" }) {
         ) : (
           <>
           <p style={{ opacity: 0.75 }}>Du följer inga användare ännu.</p>
-                   
           <SuggestedUsers token={token} user={user} setUiState={null} />
           </>
-              
-              
         )}
       </div>
     </div>
