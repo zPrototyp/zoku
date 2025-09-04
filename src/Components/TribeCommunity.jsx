@@ -16,7 +16,14 @@ function TribeCommunity({ token, user, title = "Tribes" }) {
     setError("");
 
     try {
-      await API_userSafeFetchJson(token, "user/celebrities/liked", setLikedCelebs);
+      await API_userSafeFetchJson(token, "user/celebrities/liked", (data) => {
+      // Add isLiked: true to each item
+      const updated = data.map((celeb) => ({
+        ...celeb,
+        isLiked: true,
+      }));
+      setLikedCelebs(updated);
+    });
     } catch (err) {
       console.error("Fel vid hämtning av gillade kändisar:", err);
       setError((prev) => prev || "Kunde inte hämta gillade kändisar");
