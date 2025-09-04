@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { API_findSuggestedUsers } from "../Services/API"
 import UserCard from "./UserCard";
 
-const SuggestedUsers = ({token, user, setUiState}) =>{
+const SuggestedUsers = ({token, user, setUiState = null}) =>{
 const [suggestions, setSuggestions] = useState([])
     useEffect(() => {
         try {
@@ -15,7 +15,7 @@ const [suggestions, setSuggestions] = useState([])
         }
         finally {
             console.log(suggestions);
-            setUiState((p)=>({...p, showSuggestedUsers:true}))
+            setUiState && setUiState((p)=>({...p, showSuggestedUsers:true}))
         }
 
     }, [])

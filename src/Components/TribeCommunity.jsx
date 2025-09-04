@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { API_userSafeFetchJson } from "../Services/API";
 import CelebrityCard from "../Components/CelebrityCard";
 import UserCard from "../Components/UserCard";
+import SuggestedUsers from "./TribeSuggestedUsers";
 
 function TribeCommunity({ token, user, title = "Tribes" }) {
   const [likedCelebs, setLikedCelebs] = useState([]);
@@ -106,19 +107,10 @@ function TribeCommunity({ token, user, title = "Tribes" }) {
         {likedCelebs && likedCelebs.length > 0 ? (
           <TribeGrid>
             {likedCelebs.map((c) => {
-              const normalized = {
-                id: c.id || c.celebrityId,
-                name: c.name || c.celebrityName,
-                imageUrl: c.imageUrl || c.photoUrl,
-                description: c.description,
-                isLiked: true,
-                coordinates: c.coordinates,
-                personalityProfile: c.personalityProfile,
-                matchPercentage: c.matchWithUser ?? c.matchPercentage,
-              };
+   
               return (
                 <CelebrityCard
-                  key={normalized.id || normalized.name}
+                  key={c.id || c.name}
                   celeb={c}
                   user={user}
                   celebBrands={[]}
@@ -159,7 +151,13 @@ function TribeCommunity({ token, user, title = "Tribes" }) {
             })}
           </TribeGrid>
         ) : (
+          <>
           <p style={{ opacity: 0.75 }}>Du följer inga användare ännu.</p>
+                   
+          <SuggestedUsers token={token} user={user} setUiState={null} />
+          </>
+              
+              
         )}
       </div>
     </div>
