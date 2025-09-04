@@ -28,7 +28,25 @@ function shouldExcludeUser(u, meId) {
   return false;
 }
 
-// Fetch all brands
+function filterBrandsByName(items, term) {
+  const tl = lc(term);
+  const exact = [];
+  const starts = [];
+  const partial = [];
+
+  for (const b of items || []) {
+    const name = lc(b?.name);
+    if (!name) continue;
+    if (name === tl) exact.push(b);
+    else if (name.startsWith(tl)) starts.push(b);
+    else if (name.includes(tl)) partial.push(b);
+  }
+  if (exact.length) return exact;
+  if (starts.length) return starts;
+  return partial;
+}
+
+// Fetch brands 
 async function searchAllBrands(term) {
   const base = toBase();
   const q = encodeURIComponent(term);
@@ -39,6 +57,7 @@ async function searchAllBrands(term) {
     `/brands?name=${q}`,
   ];
 
+  // Brand filter
   for (const path of tries) {
     try {
       const res = await fetch(`${base}${path}`, { headers: { "Content-Type": "application/json" } });
@@ -52,7 +71,8 @@ async function searchAllBrands(term) {
       else if (Array.isArray(data?.data?.brands)) items = data.data.brands;
       else if (Array.isArray(data?.results)) items = data.results;
 
-      if (items?.length) return items;
+      const filtered = filterBrandsByName(items, term);
+      if (filtered.length) return filtered;
     } catch (e) {
       if (import.meta?.env?.DEV) console.warn(`[searchAllBrands] attempt failed for ${path}:`, e?.message ?? e);
       continue;
@@ -68,13 +88,7 @@ async function searchAllBrands(term) {
     else if (Array.isArray(payload?.data)) all = payload.data;
     else if (Array.isArray(payload?.data?.brands)) all = payload.data.brands;
 
-    const tl = term.toLowerCase();
-    return (all || []).filter(
-      (b) =>
-        (b?.name || "").toLowerCase().includes(tl) ||
-        (b?.category || "").toLowerCase().includes(tl) ||
-        (b?.shortDescription || "").toLowerCase().includes(tl)
-    );
+    return filterBrandsByName(all, term);
   } catch {
     return [];
   }
@@ -209,7 +223,6 @@ function Search({
   }, [debouncedTerm, token, currentUserKey]);
 
   const normalizedUsers = useMemo(() => {
-    // console.log(foundUsers)
     if (!Array.isArray(foundUsers)) return [];
     return foundUsers.map((u) => ({
       id: u.id ?? u.userId ?? "",
