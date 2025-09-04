@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_userSafeFetchJson } from "../Services/API";
-import CelebrityCard from "./CelebrityCard";
-import UserCard from "./UserCard";
 import "../assets/css/CelebrityCard.css";
 import SuggestedUsers from "./TribeSuggestedUsers";
+import ProfileOverviewCard from "./ProfileOverviewCard";
 
 function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user, uiStatus, setUiStatus }) {
   const [likedCelebs, setLikedCelebs] = useState([]);
@@ -13,8 +12,8 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user, uiSt
   const [isLoading, setIsLoading] = useState(true);
 
   const celebsRef = useRef(null);
-  const usersRef = useRef(null);
-  const navigate = useNavigate();
+  const usersRef   = useRef(null);
+  const navigate   = useNavigate();
 
   useEffect(() => {
     let mounted = true;
@@ -24,15 +23,12 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user, uiSt
       setIsLoading(true);
       setError("");
 
-      // Celebrities
+      // Celebrities you like
       try {
         await API_userSafeFetchJson(token, "user/celebrities/liked", (data) => {
           if (!mounted) return;
           const items = Array.isArray(data) ? data : [];
-          const updated = items.map((celeb) => ({
-            ...celeb,
-            isLiked: true,
-          }));
+          const updated = items.map((celeb) => ({ ...celeb, isLiked: true }));
           setLikedCelebs(updated.slice(0, limit));
         });
       } catch (err) {
@@ -42,16 +38,18 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user, uiSt
         }
       }
 
-      // Users
+      // Users you follow
       try {
         await API_userSafeFetchJson(token, "user/relationships/following", (data) => {
           if (!mounted) return;
           const list = Array.isArray(data) ? data : [];
           const minimalUsers = list.map((u) => ({
             id: u.id || u.userId,
-            displayName: u.displayName || u.name || u.fullName || "Användare",
+            fullName: u.fullName || u.displayName || u.name || "Användare",
+            // ProfileOverviewCard can auto-pick mask via profile fetch later if needed,
+            // we keep minimal data here for the overview
             username: u.username || "",
-            avatarUrl: u.avatarUrl || u.photoUrl || "",
+            profileImageUrl: u.avatarUrl || u.photoUrl || "",
             bio: u.bio || u.tagline || "",
             isFollowing: true,
           }));
@@ -71,9 +69,12 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user, uiSt
     return () => { mounted = false; };
   }, [token, limit]);
 
+  // Scroll one full card at a time (the visible width of the scroller)
   const scrollBy = (ref, dir = 1) => {
     const node = ref?.current;
-    if (node) node.scrollBy({ left: dir * 320, behavior: "smooth" });
+    if (!node) return;
+    const step = node.clientWidth; // one viewport “page”
+    node.scrollBy({ left: dir * step, behavior: "smooth" });
   };
 
   return (
@@ -114,40 +115,25 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user, uiSt
               className="tribe-scroll"
               style={{
                 display: "flex",
-                gap: "0.75rem",
                 overflowX: "auto",
                 padding: "0.5rem 2.25rem",
                 scrollSnapType: "x mandatory",
+                gap: 0,                 // single-card viewport; no gaps between slides
               }}
             >
               {likedCelebs.map((c) => (
                 <div
                   key={c.id || c.name}
                   style={{
-                    minWidth: 300,
-                    maxWidth: 340,
-                    flex: "0 0 auto",
+                    flex: "0 0 100%",    // show one card at a time
+                    minWidth: "100%",
+                    maxWidth: "100%",
                     scrollSnapAlign: "start",
+                    display: "grid",
+                    placeItems: "center",
                   }}
                 >
-                  <CelebrityCard
-                    celeb={c}
-                    user={user}
-                    celebBrands={[]}
-                    onAfterUnlike={(celeb) =>
-                      setLikedCelebs((prev) =>
-                        prev.filter((x) => (x.id || x.celebrityId) !== (celeb?.id || celeb?.celebrityId))
-                      )
-                    }
-                    onAfterLike={(celeb) =>
-                      setLikedCelebs((prev) => {
-                        const id = celeb?.id;
-                        const exists = prev.some((x) => (x.id || x.celebrityId) === id);
-                        if (exists) return prev;
-                        return [{ id, name: celeb?.name, imageUrl: celeb?.imageUrl, isLiked: true }, ...prev].slice(0, limit);
-                      })
-                    }
-                  />
+                  <ProfileOverviewCard entity={c} kind="celeb" size={112} />
                 </div>
               ))}
             </div>
@@ -188,38 +174,25 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user, uiSt
               className="tribe-scroll"
               style={{
                 display: "flex",
-                gap: "0.75rem",
                 overflowX: "auto",
                 padding: "0.5rem 2.25rem",
                 scrollSnapType: "x mandatory",
+                gap: 0,
               }}
             >
               {followingUsers.map((u) => (
                 <div
-                  key={u.id || u.username}
+                  key={u.id || u.fullName}
                   style={{
-                    minWidth: 300,
-                    maxWidth: 340,
-                    flex: "0 0 auto",
+                    flex: "0 0 100%",
+                    minWidth: "100%",
+                    maxWidth: "100%",
                     scrollSnapAlign: "start",
+                    display: "grid",
+                    placeItems: "center",
                   }}
                 >
-                  <UserCard
-                    user={u}
-                    viewer={user}
-                    onAfterUnfollow={(unfollowed) =>
-                      setFollowingUsers((prev) =>
-                        prev.filter((x) => (x.id || x.userId) !== (unfollowed?.id || unfollowed?.userId))
-                      )
-                    }
-                    onAfterFollow={(followed) => {
-                      setFollowingUsers((prev) => {
-                        const id = followed?.id || followed?.userId;
-                        if (!id || prev.some((x) => (x.id || x.userId) === id)) return prev;
-                        return [{ ...followed, isFollowing: true }, ...prev].slice(0, limit);
-                      });
-                    }}
-                  />
+                  <ProfileOverviewCard entity={u} kind="user" size={112} />
                 </div>
               ))}
             </div>
@@ -238,19 +211,17 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user, uiSt
           !isLoading && (
             <div style={{ marginTop: ".75rem" }}>
               <p style={{ opacity: 0.75, marginBottom: ".5rem" }}>Du följer inga användare ännu.</p>
-              
-            <button className="btn-small"
-              onClick={() => setUiStatus((p)=>({...p, showSuggestedUsers:!p.showSuggestedUsers}))}
+
+              <button
+                className="btn-small"
+                onClick={() => setUiStatus((p) => ({ ...p, showSuggestedUsers: !p.showSuggestedUsers }))}
               >
-               {uiStatus.showSuggestedUsers ? 'Dölj förslag': 'Föreslå andra användare'}
+                {uiStatus.showSuggestedUsers ? "Dölj förslag" : "Föreslå andra användare"}
               </button>
+
               {uiStatus.showSuggestedUsers && (
-                <>
                 <SuggestedUsers token={token} user={user} setUiState={setUiStatus} />
-                </>
-              )
-              }
-            
+              )}
             </div>
           )
         )}
