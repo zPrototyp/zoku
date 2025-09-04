@@ -153,3 +153,40 @@
 .category-list li {
   margin-bottom: 0.5rem;
 }
+
+.admin-add-brand-form {
+  max-width: 500px;
+  border: 1px dotted grey;
+  margin: 0 auto;
+}
+.admin-error-text{
+  color: red;
+  font-size: 10px;
+}
+.admin-add-brand-form div.flex{
+  /* border: 1px solid blue; */
+  width: 100%;  
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+}
+label.font-medium {
+  /* border: 1px solid red; */
+  /* margin-right: auto; */
+  margin-left: 1em;
+  max-width: 150px;
+  width: 150px;
+}
+input.border, select.border, textarea.border {
+  /* border: 1px solid red; */
+  margin-right: 1em;
+  min-width: 150px;
+  width: 100%;
+}
+textarea.border{
+  line-height: 1em;
+}
+input.numeric {
+  margin-left: 1em;
+  width: 50px;
+}

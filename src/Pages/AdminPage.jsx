@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import LoginForm from "../Components/LoginForm";
 import { useAtom, useSetAtom } from "jotai";
 import { adminAtom } from "../Atoms/AdminAtom";
-import { API_logout, API_seeding, API_userSafeFetchJson, API_seedingCheck, API_seedingCancel } from "../Services/API";
+import { API_logout, API_seeding, API_userSafeFetchJson, API_seedingCheck, API_seedingCancel, API_adminAddBrand, API_adminBrandUpdate, API_adminBrandFetch } from "../Services/API";
 import { authTokenAtom } from "../Atoms/AuthAtom";
 import { feedListAtom } from "../Atoms/FeedListAtom";
 import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
@@ -11,6 +11,7 @@ import BrandCard from "../Components/AdminBrandCard";
 import CelebrityDashboard from "../Components/AdminCelebrities";
 import CelebrityUploader from "../Components/AdminCelebrityUploader";
 import { NavLink } from "react-router";
+import AddBrandForm from "../Components/AdminBrandAdd";
 
 function AdminPage(){
     const [admin, setAdmin] = useAtom(adminAtom);
@@ -18,8 +19,9 @@ function AdminPage(){
     const setFeedList = useSetAtom(feedListAtom);
     const setValueProfile = useSetAtom(valueProfileAtom);
     const [result, setResult] = useState(null);
-    const [brands, setBrands] = useState(null)
-    const [celebs, setCelebs] = useState(null)
+    const [brands, setBrands] = useState(null);
+    const [celebs, setCelebs] = useState(null);
+    const [fullbrand, setFullbrand] = useState(null);
     const [uiState, setUiState]= useState({
         showSeedOps: false,
         seedingSources: null,
@@ -33,7 +35,9 @@ function AdminPage(){
         brandLength: 0,
         celebLength: celebs?.totalCelebrities || 0,
         showBrands: false,
-        showCelebs: false
+        showCelebs: false,
+        showBrandAdd: false,
+        showBrandEdit: false,
         })
     
   const handleLogout = () => {
@@ -146,6 +150,29 @@ useEffect(() => {
         API_seedingCheck(`admin/seeding/history?page=1&pageSize=20`, token, setSeedHistory)
     }
 
+    const handleAddBrand = (formData) => {
+        API_adminAddBrand(token, formData, (data)=>{console.log(data)})
+        fetchAnalytics('brands');
+    }
+
+    const handleEdit = (brand) => {
+        setFullbrand(null);
+        
+        setUiState(p =>({...p,  showBrandEdit: true }))
+        // The endpoint does not return all the data
+        // API_adminBrandFetch(token, brand.id, setFullbrand)
+        setFullbrand(brand);
+        
+    }
+    const handleEditSubmit = (formData) => {
+        setUiState(p =>({...p,  showBrandEdit: false }))
+        API_adminBrandUpdate(token, fullbrand.id, formData,(data)=>{
+            setBrands(p=> (p.id == data.id ? data : p))
+            console.log(data)
+        } )
+        setFullbrand(null);
+    }
+
     if (!admin) {
         return (
             <div className="page-content admin"
@@ -252,12 +279,25 @@ useEffect(() => {
 
     {uiState.showBrands && (
         <><p>Brands:  {uiState.brandLength} items</p>
-        <div style={{
+
+        <button onClick={()=>setUiState(p => ({...p, showBrandAdd: !p.showBrandAdd}))}>
+            {!uiState.showBrandAdd ? 'Add new brand': 'Hide add form'}
+        </button>
+        {fullbrand && <button onClick={()=>{
+            uiState.showBrandEdit && setFullbrand(null);
+            setUiState(p => ({...p, showBrandEdit: !p.showBrandEdit}))}
+            }>
+            {!uiState.showBrandEdit? 'Show Edit brand form': 'Clear edit form'}
+        </button>}
+        {uiState.showBrandAdd && <AddBrandForm onSubmit={handleAddBrand} />}
+        {uiState.showBrandEdit && fullbrand && <AddBrandForm onSubmit={handleEditSubmit} formState={fullbrand} />}
+
+        {!uiState.showBrandEdit && <div style={{
             display: "grid",
             gridTemplateColumns: "repeat(3, 1fr)"
         }}>
-            {brands?.map((b) => <BrandCard key={b.id} brand={b} />)}
-        </div>
+            {brands?.map((b) => <BrandCard key={b.id} brand={b} handleEdit={handleEdit} />)}
+        </div>}
         </>
         )
     }

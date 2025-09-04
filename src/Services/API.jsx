@@ -288,6 +288,52 @@ export const API_findSuggestedUsers = async (bearer, alternatives, onSuccess) =>
     return data.data;
 }
 
+export const API_adminAddBrand = async (bearer, inputData, onSuccess) => {
+const res = await fetch(`${AZURE_API}/admin/brands`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${bearer}`
+      },
+        body: JSON.stringify(inputData),
+    });
+    if (!res.ok) throw new Error('Brand add failed');
+    
+    const data = await res.json();
+    onSuccess(data.data);
+    return data.data;
+}
+
+export const API_adminBrandFetch = async (bearer, brandId, onSuccess) => {
+  const res = await fetch(`${AZURE_API}/admin/brands/${brandId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${bearer}`
+      }
+    });
+    if (!res.ok) throw new Error('Brand fetch failed');
+    
+    const data = await res.json();
+    onSuccess(data.data);
+    return data.data;
+  }
+
+export const API_adminBrandUpdate = async (bearer, brandId, inputData, onSuccess) => {
+  const res = await fetch(`${AZURE_API}/admin/brands/${brandId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${bearer}`
+      },
+        body: JSON.stringify(inputData),
+    });
+    if (!res.ok) throw new Error('Brand Update failed');
+    
+    const data = await res.json();
+    onSuccess(data.data);
+    return data.data;
+}
 
 
 // Below: copied from Backend_Peter
