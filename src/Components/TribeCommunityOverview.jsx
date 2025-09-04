@@ -29,7 +29,11 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user, uiSt
         await API_userSafeFetchJson(token, "user/celebrities/liked", (data) => {
           if (!mounted) return;
           const items = Array.isArray(data) ? data : [];
-          setLikedCelebs(items.slice(0, limit));
+          const updated = items.map((celeb) => ({
+            ...celeb,
+            isLiked: true,
+          }));
+          setLikedCelebs(updated.slice(0, limit));
         });
       } catch (err) {
         if (mounted) {
