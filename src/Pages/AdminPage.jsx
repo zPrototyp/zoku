@@ -234,7 +234,7 @@ function AdminPage(){
         return (
             <div className="page-content admin"
             style={{
-                maxWidth: "700px",
+                maxWidth: "1000px",
                 margin: "0 auto",
                 padding: "20px",
                 fontFamily: "var(--fontNav)"
@@ -252,7 +252,7 @@ function AdminPage(){
         return(
         <div className="page-content admin"
         style={{
-            maxWidth: "700px",
+            maxWidth: "1000px",
             margin: "0 auto",
             padding: "20px",
             fontFamily: "var(--fontNav)"
@@ -363,7 +363,8 @@ function AdminPage(){
 
         {!uiState.showBrandEdit && <div style={{
             display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)"
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "0.5em"
         }}>
             {brands?.map((b) => <BrandCard key={b.id} brand={b} handleEdit={handleEdit} />)}
         </div>}
