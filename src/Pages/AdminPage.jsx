@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import LoginForm from "../Components/LoginForm";
 import { useAtom, useSetAtom } from "jotai";
 import { adminAtom } from "../Atoms/AdminAtom";
-import { API_logout, API_seeding, API_userSafeFetchJson, API_seedingCheck, API_seedingCancel, API_adminAddBrand, API_adminBrandUpdate, API_adminBrandFetch } from "../Services/API";
+import { API_logout, API_seeding, API_userSafeFetchJson, API_seedingCheck, API_seedingCancel, API_adminAddBrand, API_adminBrandUpdate, API_adminFetchUsers } from "../Services/API";
 import { authTokenAtom } from "../Atoms/AuthAtom";
 import { feedListAtom } from "../Atoms/FeedListAtom";
 import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
@@ -12,6 +12,7 @@ import CelebrityDashboard from "../Components/AdminCelebrities";
 import CelebrityUploader from "../Components/AdminCelebrityUploader";
 import { NavLink } from "react-router";
 import AddBrandForm from "../Components/AdminBrandAdd";
+import AdminUserCard from "../Components/AdminUserCard";
 
 function AdminPage(){
     const [admin, setAdmin] = useAtom(adminAtom);
@@ -21,6 +22,8 @@ function AdminPage(){
     const [result, setResult] = useState(null);
     const [brands, setBrands] = useState(null);
     const [celebs, setCelebs] = useState(null);
+    const [users, setUsers] = useState(null);
+    const [fullUser, setFullUser] = useState(null);
     const [fullbrand, setFullbrand] = useState(null);
     const [uiState, setUiState]= useState({
         showSeedOps: false,
@@ -38,6 +41,7 @@ function AdminPage(){
         showCelebs: false,
         showBrandAdd: false,
         showBrandEdit: false,
+        showUsers: false,
         })
     
   const handleLogout = () => {
@@ -52,26 +56,33 @@ function AdminPage(){
     window.location.href = "/zoku/"; // Redirect to home page
   };
 
-const memoizedLengths = useMemo(() => ({
-  brandLength: brands?.length || 0,
-  celebLength: celebs?.totalCelebrities || 0
-}), [brands?.length, celebs?.totalCelebrities]);
+    const memoizedLengths = useMemo(() => ({
+        brandLength: brands?.length || 0,
+        celebLength: celebs?.totalCelebrities || 0
+    }), [brands?.length, celebs?.totalCelebrities]);
 
-useEffect(() => {
-  const updates = {};
-  if (memoizedLengths.brandLength > 0) {
-    updates.brandLength = memoizedLengths.brandLength;
-  }
-  
-  if (memoizedLengths.celebLength > 0) {
-    updates.celebLength = memoizedLengths.celebLength;
-  }
-  
-  // Only update state if there are actual changes
-  if (Object.keys(updates).length > 0) {
-    setUiState(p => ({ ...p, ...updates }));
-  }
-}, [memoizedLengths.brandLength, memoizedLengths.celebLength, brands, celebs]);
+    useEffect(() => {
+        const updates = {};
+        if (memoizedLengths.brandLength > 0) {
+            updates.brandLength = memoizedLengths.brandLength;
+        }
+
+        if (memoizedLengths.celebLength > 0) {
+            updates.celebLength = memoizedLengths.celebLength;
+        }
+
+    // Only update state if there are actual changes
+        if (Object.keys(updates).length > 0) {
+            setUiState(p => ({ ...p, ...updates }));
+        }
+    }, [memoizedLengths.brandLength, memoizedLengths.celebLength, brands, celebs]);
+
+    useEffect(() => {
+    if (uiState.showUsers) {
+        // Fetch users!
+        API_adminFetchUsers(token, setUsers);
+    }
+    },[uiState.showUsers])
 
     const fetchSeedingSrc = () => {
         if (uiState.showSeedOps) {
@@ -157,10 +168,7 @@ useEffect(() => {
 
     const handleEdit = (brand) => {
         setFullbrand(null);
-        
         setUiState(p =>({...p,  showBrandEdit: true }))
-        // The endpoint does not return all the data
-        // API_adminBrandFetch(token, brand.id, setFullbrand)
         setFullbrand(brand);
         
     }
@@ -185,7 +193,6 @@ useEffect(() => {
                 Log in as administrator
                 <p>Fyll i dina uppgifter för att logga in.</p>
                 <LoginForm admin={true} setAdmin={setAdmin} />
-                
                 
                 <NavLink to="/"><button>Back to Zoku</button></NavLink>
 
@@ -220,6 +227,12 @@ useEffect(() => {
         >
             {uiState.showCelebs ? 'Hide Celeb Analytics': 'Show Celeb Analytics'}
             
+        </button>
+
+        <button
+            onClick={() => setUiState(p => ({...p, showUsers: !p.showUsers}))}
+        >
+            {uiState.showUsers ? 'Hide Users': 'Show Users'}
         </button>
 
 
@@ -309,6 +322,18 @@ useEffect(() => {
 
         </div>)
     }
+
+    {uiState.showUsers && (
+        <div>
+        <h2>Users in the system</h2>
+        {fullUser && console.log(fullUser)}
+        {users && users.map(u => <AdminUserCard key={u.id} user={u}  />)}
+
+        </div>
+    )
+
+    }
+
         <NavLink to="/"><button onClick={()=>handleLogout()}>Back to Zoku</button></NavLink>
         </div>)
     }

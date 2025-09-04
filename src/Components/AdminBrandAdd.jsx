@@ -14,21 +14,6 @@
 // }
 
 
-// {
-//   "name": "Rituals",
-//   "imageUrl": "https://www.rituals.com/on/demandware.static/-/Library-Sites-RitualsSharedLibrary/default/dw8c98d1e4/images/rituals-logo.png",
-//   "url": "https://www.rituals.com/se-se",
-//   "category": "home",
-//   "shortDescription": "Ett B Corp-certifierat premiumvarumärke inom livsstil som förvandlar vardagliga rutiner till meningsfulla, hållbara välmåenderitualer.",
-//   "longDescription": "Utifrån Schwartz värdemodell placerar sig Rituals tydligt närmare tradition än förändring, då varumärket bygger på uråldriga ritualer och kulturella traditioner som grund för sina produkter. Samtidigt finns en viss öppenhet för förändring genom innovation inom hållbarhet och refillkoncept. På skalan medkänsla kontra ambition lutar Rituals starkt åt medkänsla, med fokus på välbefinnande, omtanke, hållbarhet och sociala initiativ, även om global expansion visar på en underliggande ambition. Sammantaget framstår Rituals som ett varumärke som vill förena tidlösa traditioner med en modern, ansvarsfull livsstil där medkänsla är en central drivkraft.",
-//   "changeVsTradition": 40,
-//   "compassionVsAmbition": 80,
-//   "targetAgeMin": 25,
-//   "targetAgeMax": 55,
-//   "priceSegment": "Premium"
-// }
-
-
 import React, { useState, useMemo } from "react";
 import { brandCategories } from "../assets/uiData/brand_categories_se";
 
