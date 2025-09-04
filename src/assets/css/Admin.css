@@ -190,3 +190,22 @@ input.numeric {
   margin-left: 1em;
   width: 50px;
 }
+.admin-user-profile {
+  border: 1px dotted grey;
+  margin-bottom: 1em;
+}
+.page-content.admin button {
+  font-family: var(--fontNav);
+  font-size: 1em;
+}
+.admin-user-profile__basic-info > p {
+  display: inline-block;
+  margin-right: 1em;
+}
+.admin-user-profile__personality {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+.admin-personality-circles .secondary-card-circle {
+display: inline-block;
+}

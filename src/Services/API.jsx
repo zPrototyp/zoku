@@ -305,18 +305,19 @@ const res = await fetch(`${AZURE_API}/admin/brands`, {
 }
 
 export const API_adminBrandFetch = async (bearer, brandId, onSuccess) => {
-  const res = await fetch(`${AZURE_API}/admin/brands/${brandId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${bearer}`
-      }
-    });
-    if (!res.ok) throw new Error('Brand fetch failed');
+  // const res = await fetch(`${AZURE_API}/admin/brands/${brandId}`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: `Bearer ${bearer}`
+  //     }
+  //   });
+  //   if (!res.ok) throw new Error('Brand fetch failed');
     
-    const data = await res.json();
-    onSuccess(data.data);
-    return data.data;
+  //   const data = await res.json();
+  //   onSuccess(data.data);
+  //   return data.data;
+  alert('Code does work but sends no useful data - all commented out')
   }
 
 export const API_adminBrandUpdate = async (bearer, brandId, inputData, onSuccess) => {
@@ -334,6 +335,23 @@ export const API_adminBrandUpdate = async (bearer, brandId, inputData, onSuccess
     onSuccess(data.data);
     return data.data;
 }
+
+export const API_adminFetchUsers = async (bearer, onSuccess, url = null) => {
+  const res = await fetch(`${AZURE_API}/admin/users${url ? `/${url}`:'' }`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${bearer}`
+      }
+    });
+    if (!res.ok) throw new Error('Brand fetch failed');
+    
+    const data = await res.json();
+    onSuccess(data.data);
+    return data.data;
+}
+
+
 
 
 // Below: copied from Backend_Peter
