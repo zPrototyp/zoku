@@ -209,3 +209,10 @@ input.numeric {
 .admin-personality-circles .secondary-card-circle {
 display: inline-block;
 }
+.page-content.admin .user-card{
+  border: 1px solid grey;
+  display: flex;
+  flex-direction: row;
+  gap: 2em;
+  justify-content: center;
+}
