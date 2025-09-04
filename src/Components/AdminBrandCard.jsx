@@ -1,6 +1,6 @@
 import React from 'react';
 
-const BrandCard = ({ brand }) => {
+const BrandCard = ({ brand , handleEdit}) => {
   const {
     name,
     category,
@@ -22,7 +22,7 @@ const BrandCard = ({ brand }) => {
         <div className="progress-bar">
           <div className="progress-fill" style={{ width: `${value}%` }} />
         </div>
-        <div className="personality-value">{value}%</div>
+        <div className="personality-value">{value}</div>
       </div>
     ));
 
@@ -34,8 +34,12 @@ const BrandCard = ({ brand }) => {
       {imageUrl && <img src={imageUrl} alt={name} className="adminbrand-image" />}
 
       <div className="adminbrand-header">
-        <h2>{name} ({category})</h2>
-        <p className="adminbrand-description">{shortDescription}</p>
+        <h2>{name}
+          <button style={{margin:"0.5em", padding: "0.5em", fontSize:"10px", fontFamily: "var(--fontNav"}}
+          onClick={()=>handleEdit(brand)}
+          >Edit</button>
+        </h2>
+        <p className="adminbrand-description">({category}) {shortDescription}</p>
         {url && <a href={url} target="_blank" rel="noopener noreferrer">Visit Website</a>}
       </div>
 
