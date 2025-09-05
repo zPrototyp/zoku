@@ -8,7 +8,8 @@ import { API_logout, API_seeding,
     API_adminFetchUsers, API_adminFetchUserInteractions, 
     API_adminCurrentSessions,
     API_adminSettingsAutolike,
-    API_adminSettingsSetAutolike} from "../Services/API";
+    API_adminSettingsSetAutolike,
+    API_adminFetchUserShares} from "../Services/API";
 import { authTokenAtom } from "../Atoms/AuthAtom";
 import { feedListAtom } from "../Atoms/FeedListAtom";
 import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
@@ -31,6 +32,7 @@ function AdminPage(){
     const [celebs, setCelebs] = useState(null);
     const [users, setUsers] = useState(null);
     const [fullUser, setFullUser] = useState(null);
+    const [userShares, setUserShares] = useState(null);
     const [fullbrand, setFullbrand] = useState(null);
     const [uiState, setUiState]= useState({
         activeSessions: 0,
@@ -133,7 +135,7 @@ useEffect(() => {
         if (!confirmed) return; // user clicked cancel
 
         try {
-        let res = await API_adminSettingsSetAutolike(token, count, (data) => {
+        await API_adminSettingsSetAutolike(token, count, (data) => {
             setUiState((p) => ({ ...p, autolikes: data.count }));
         });
 
@@ -225,7 +227,9 @@ useEffect(() => {
     }
 
     const handleEdit = (brand) => {
+        
         console.log(brand)
+        
         setFullbrand(null);
         setUiState(p =>({...p,  showBrandEdit: true }))
         setFullbrand(brand);
@@ -242,6 +246,8 @@ useEffect(() => {
     const fetchUser = (userId) => {
         // console.log(userId);
         API_adminFetchUserInteractions(token, userId, setFullUser);
+        API_adminFetchUserShares(token, userId, setUserShares);
+        
         setUiState(p => ({...p, showFullUser: true}))
     }
 
@@ -401,7 +407,7 @@ useEffect(() => {
             }}>
             Clear user details & show all users
         </button>}
-        {fullUser && <UserInteractionCard user={fullUser} />}
+        {fullUser && <UserInteractionCard user={fullUser} userShares={userShares}/>}
         {!uiState.showFullUser && users && users.map(u => <AdminUserCard key={u.id} user={u} fetchUser={fetchUser} />)}
 
         </div>
