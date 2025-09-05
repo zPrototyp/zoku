@@ -102,7 +102,7 @@ export function UserInteractionCard({ user , userShares}) {
       <div className="user-card__brands">
         <strong>Profile shared: </strong>
         <ul>
-          {userShares.map(item => <li>{item.platform} x({item.shareCount}) {item.lastSharedAt} </li>)}
+          {userShares && userShares.length>0 && userShares.map(item => <li>{item.platform} x({item.shareCount}) {item.lastSharedAt} </li>)}
         </ul>
         <strong>Most recent Likes ({totalInteractions - 5} not shown):</strong>
         <ul className="user-card__brand-list">
