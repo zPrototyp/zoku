@@ -78,7 +78,7 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user, uiSt
   };
 
   return (
-    <div style={{ marginTop: "1.25rem", position: "relative" }}>
+    <div style={{ marginTop: "1.25rem", position: "relative" , maxWidth:"500px"}}>
       <style>{`
         .tribe-scroll { scrollbar-width: none; -ms-overflow-style: none; }
         .tribe-scroll::-webkit-scrollbar { display: none; }

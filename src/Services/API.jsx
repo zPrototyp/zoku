@@ -288,6 +288,23 @@ export const API_findSuggestedUsers = async (bearer, alternatives, onSuccess) =>
     return data.data;
 }
 
+export const API_fetchSuggestions = async (bearer, alternatives, onSuccess) => {
+  const res = await fetch(`${AZURE_API}/user/discovery/suggestions?count=${alternatives}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${bearer}`
+      }})
+      if (!res.ok) throw new Error('Failed to fetch suggestions');
+    
+    const data = await res.json();
+
+    onSuccess(data.data);
+        
+    return data.data;
+}
+
+
 export const API_adminAddBrand = async (bearer, inputData, onSuccess) => {
 const res = await fetch(`${AZURE_API}/admin/brands`, {
       method: 'POST',

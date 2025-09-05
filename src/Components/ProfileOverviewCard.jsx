@@ -118,7 +118,7 @@ function ProfileOverviewCard({
   return (
     <div
       className={`profile-circle-card ${className}`}
-      style={{ width: Math.max(size, 72), textAlign: "center", userSelect: "none" }}
+      style={{ textAlign: "center", userSelect: "none" }}
       onClick={onClick}
       role={onClick ? "button" : undefined}
       tabIndex={onClick ? 0 : undefined}

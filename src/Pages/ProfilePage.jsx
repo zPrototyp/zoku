@@ -12,7 +12,7 @@ import "../assets/css/App.css";
 import { FaPen, FaClock } from "react-icons/fa";
 import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
 import { testValuesAtom } from "../Atoms/TestValuesAtom";
-import { API_userSafeFetchJson } from "../Services/API";
+import { API_fetchSuggestions, API_userSafeFetchJson } from "../Services/API";
 import RandomBrand from "../Components/RandomBrand";
 import useMediaQuery from "../Components/MediaQuery";
 import TribeCommunityOverview from "../Components/TribeCommunityOverview";
@@ -40,6 +40,8 @@ function ProfilePage() {
     });
 
   const isComputer = useMediaQuery("(min-width: 1024px)")
+  const [test, setTest] = useState(null)
+  
 
   // On load fetch all the profile information
   useEffect(() => {
@@ -61,8 +63,9 @@ function ProfilePage() {
       setError("Kunde inte hämta historik: " + err.message);
       console.error("Fel vid hämtning av historik:", err);
     }
+
   }, [token]);
-  
+
   useEffect(() => {
     if (isComputer) {
       setUiStatus(prev => ({ ...prev, showBrandList: true }));

@@ -210,49 +210,54 @@ function ResultPage () {
 
    
         {/* Top 3 celebrity matches (from public controller) */}
-        {uiStatus.showBrandList && topCelebs.length > 0 && (
           <div className="result-celeb-matches">
-            <h2 style={{ marginTop: '1.5rem' }}>Topp 3 kändismatchningar</h2>
-            <div style={{ display: 'grid', gap: '1rem' }}>
-              {topCelebs.map((celeb) => (
-                <CelebrityCard
-                  key={celeb.id || celeb.name}
-                  celeb={celeb}
-                  user={result}
-                  celebBrands={celeb?.brands || []}
-                />
-              ))}
-            </div>
+            {uiStatus.showBrandList && topCelebs.length > 0 && (
+                <>
+                <h2 style={{ marginTop: '1.5rem' }}>Topp 3 kändismatchningar</h2>
+                <div style={{ display: 'grid', gap: '1rem' }}>
+                  {topCelebs.map((celeb) => (
+                    <CelebrityCard
+                      key={celeb.id || celeb.name}
+                      celeb={celeb}
+                      user={result}
+                      celebBrands={celeb?.brands || []}
+                    />
+                  ))}
+                </div>
+                </>
+            )}
+            {/* Optional: friendly empty state if no celebs */}
+            {uiStatus.showBrandList && topCelebs.length === 0 && (
+              <p style={{ opacity: 0.8, marginTop: '1rem' }}>
+                Inga kändismatchningar hittades för din profil ännu.
+              </p>
+            )}
           </div>
-        )}
 
-        {/* Optional: friendly empty state if no celebs */}
-        {uiStatus.showBrandList && topCelebs.length === 0 && (
-          <p style={{ opacity: 0.8, marginTop: '1rem' }}>
-            Inga kändismatchningar hittades för din profil ännu.
-          </p>
-        )}
+
 
         {/* Brand list */}
-        {uiStatus.showBrandList && feedList && feedList.length > 0 && (
           <div className='brand-list'>
-            <h2>Varumärken som matchar din personlighet</h2>
-            <BrandCards brandList={feedList} categorize={true} />
+        {uiStatus.showBrandList && feedList && feedList.length > 0 && (
+            <>
+              <h2>Varumärken som matchar din personlighet</h2>
+              <BrandCards brandList={feedList} categorize={true} />
+            </>
+          )}
+          {/* Optional: friendly empty state if no brands */}
+          {uiStatus.showBrandList && (!feedList || feedList.length === 0) && (
+            <p style={{ opacity: 0.8, marginTop: '1rem' }}>
+              Inga varumärken matchade just nu—prova igen senare.
+            </p>
+          )}
           </div>
-        )}
 
-        {/* Optional: friendly empty state if no brands */}
-        {uiStatus.showBrandList && (!feedList || feedList.length === 0) && (
-          <p style={{ opacity: 0.8, marginTop: '1rem' }}>
-            Inga varumärken matchade just nu—prova igen senare.
-          </p>
-        )}
       {uiStatus.showBrandList &&  
         <RandomBrand category="all" 
           bearer={sessionToken} 
           testValues={testValues} 
           currentBrandList={feedList} />
-        }
+      }
 
         <button
           onClick={() => navigate('/register', { state: result })}

@@ -32,14 +32,12 @@ const [formData, setFormData] = useState(() => ({
   category: "",
   shortDescription: "",
   longDescription: "",
-  changeVsTradition: 0,
-  compassionVsAmbition: 0,
+  changeVsTradition: formState?.brandPersonality?.changeVsTradition || 0,
+  compassionVsAmbition: formState?.brandPersonality?.changeVsTradition || 0,
   targetAgeMin: 0,
   targetAgeMax: 0,
   priceSegment: "Budget",
   ...formState, // overwrite defaults if formState has values
-  changeVsTradition: formState?.brandPersonality?.changeVsTradition,
-  compassionVsAmbition: formState?.brandPersonality?.changeVsTradition,
 }));
   const [errors, setErrors] = useState({});
 
