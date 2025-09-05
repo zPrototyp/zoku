@@ -10,19 +10,22 @@ import SecondaryPersonalityCard from "./SecondaryPersonalityCard";
 import CelebrityComparisonDial from "./CelebrityComparisonDial";
 import "../assets/css/CelebrityCard.css";
 import { calculateMatchPercentage } from "../Services/type-calculation.js";
+import { guestTokenAtom } from "../Atoms/GuestTokenAtom.jsx";
 
 const AZURE_API = import.meta.env.VITE_AZURE_API;
 
 function userProfileUrl(targetUserId) {
-  const base = (AZURE_API || "").replace(/\/+$/, "");
-  const hasApiV1 = /\/api\/v1\b/.test(base);
-  return hasApiV1
-    ? `${base}/user/discovery/profile/${targetUserId}`
-    : `${base}/api/v1/user/discovery/profile/${targetUserId}`;
+  // const base = (AZURE_API || "").replace(/\/+$/, "");
+  // const hasApiV1 = /\/api\/v1\b/.test(base);
+  // return hasApiV1
+  //   ? `${base}/user/discovery/profile/${targetUserId}`
+  //   : `${base}/api/v1/user/discovery/profile/${targetUserId}`;
+  return  `${AZURE_API}/user/discovery/profile/${targetUserId}`;
 }
 
 function UserCard({ user, viewer = null, onAfterFollow, onAfterUnfollow }) {
   const token = useAtomValue(authTokenAtom);
+  const sessionToken = useAtomValue(guestTokenAtom);
   const myProfileFromAtom = useAtomValue(valueProfileAtom);
   const [following, setFollowing] = useState(Boolean(user?.isFollowing));
 
@@ -37,9 +40,14 @@ function UserCard({ user, viewer = null, onAfterFollow, onAfterUnfollow }) {
 
   useEffect(() => {
     let mounted = true;
-    if (!token || !targetUserId) {
+    if (!targetUserId){
       setProfile(null);
-      return;
+      return
+    }
+    setProfile(user);
+    
+    if (!token ) {
+      // return;
     }
 
     const fetchProfile = async () => {
@@ -75,11 +83,13 @@ function UserCard({ user, viewer = null, onAfterFollow, onAfterUnfollow }) {
       }
     };
 
-    fetchProfile();
+    token && fetchProfile();
+    
+    
     return () => {
       mounted = false;
     };
-  }, [token, targetUserId]);
+  }, [token, sessionToken, targetUserId]);
 
   useEffect(() => {
     setFollowing(Boolean(user?.isFollowing));
@@ -163,13 +173,13 @@ function UserCard({ user, viewer = null, onAfterFollow, onAfterUnfollow }) {
   return (
     <div className="celebCard" style={{ position: "relative" }}>
       {/* Follow overlay  */}
-      <div
+      {token && <div
         style={{ position: "absolute", top: 8, right: 8, cursor: "pointer", zIndex: 2 }}
         onClick={toggleFollow}
         title={following ? "Sluta följa" : "Följ"}
       >
         {following ? <FaUserMinus /> : <FaUserPlus />}
-      </div>
+      </div>}
 
       {/* Header */}
       <div className="celebHeader" style={{ position: "relative" }}>

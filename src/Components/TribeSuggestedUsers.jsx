@@ -1,14 +1,19 @@
 // /user/discovery/compatible?minCompatibility=0.6&count=2
 
 import { useState, useEffect } from "react";
-import { API_findSuggestedUsers } from "../Services/API"
+import { API_fetchSuggestions, API_findSuggestedUsers } from "../Services/API"
 import UserCard from "./UserCard";
 
-const SuggestedUsers = ({token, user, setUiState = null}) =>{
+const SuggestedUsers = ({token = null, sessionToken = null, user, setUiState = null}) =>{
 const [suggestions, setSuggestions] = useState([])
     useEffect(() => {
         try {
-            API_findSuggestedUsers(token, 2, setSuggestions);
+            token && API_findSuggestedUsers(token, 2, setSuggestions);
+            sessionToken && API_fetchSuggestions(sessionToken, 2, user?.perimaryPersonality?.name ?? null, (data)=>{
+                const updated = data.map(item => item.personality);
+                setSuggestions(updated)
+            })
+
         }
         catch (error) {
             console.error("Error fetching feed list:", error);
@@ -22,16 +27,21 @@ const [suggestions, setSuggestions] = useState([])
 
     return (
         <>
-        <h3>Föreslagna användare</h3>
-        {suggestions.length > 0 ? (
+        <h3>Andra användare</h3>
+        {token && suggestions.length > 0 ? (
             suggestions.map(item => 
             <UserCard key={item.userId} user={item} viewer={user} />
             )
-        ) : (
+       ) : sessionToken && suggestions.length > 0 ? (
+            suggestions.map(item => {
+                return <UserCard key={item.userId} user={item} viewer={user} />;
+            })
+            ) : (
             <p>
-            Inga förslag hittades just nu – prova igen senare.
+                Inga gäst förslag hittades just nu – prova igen senare.
             </p>
-        )}
+            )}
+        
         </>
     )
 

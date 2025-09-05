@@ -14,7 +14,7 @@ import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
 import CelebrityComparisonDial from '../Components/CelebrityComparisonDial.jsx'
 import BrandCards from '../Components/BrandCards'
 import { calculateMatchPercentage } from '../Services/type-calculation.js'
-import { API_guestGetBrandMatches, API_guestGetPersonality } from '../Services/API.jsx'
+import { API_fetchSuggestions, API_guestGetBrandMatches, API_guestGetPersonality } from '../Services/API.jsx'
 import { CreateComparisonDials } from '../Components/CreateComparisonDials.jsx'
 import { ApiService, API_getCelebrities, API_getPopularCelebrities } from '../Services/API.jsx'
 import CelebrityCard from '../Components/CelebrityCard'
@@ -71,7 +71,9 @@ function ResultPage () {
     };
 
     fetchPersonalityAndBrands();
+    
   }, [testValues, sessionToken, setResult, setFeedList]);
+
 
   useEffect(() => {
     if (isComputer) {
@@ -208,33 +210,6 @@ function ResultPage () {
           </button>
         </div>
 
-   
-        {/* Top 3 celebrity matches (from public controller) */}
-          <div className="result-celeb-matches">
-            {uiStatus.showBrandList && topCelebs.length > 0 && (
-                <>
-                <h2 style={{ marginTop: '1.5rem' }}>Topp 3 kändismatchningar</h2>
-                <div style={{ display: 'grid', gap: '1rem' }}>
-                  {topCelebs.map((celeb) => (
-                    <CelebrityCard
-                      key={celeb.id || celeb.name}
-                      celeb={celeb}
-                      user={result}
-                      celebBrands={celeb?.brands || []}
-                    />
-                  ))}
-                </div>
-                </>
-            )}
-            {/* Optional: friendly empty state if no celebs */}
-            {uiStatus.showBrandList && topCelebs.length === 0 && (
-              <p style={{ opacity: 0.8, marginTop: '1rem' }}>
-                Inga kändismatchningar hittades för din profil ännu.
-              </p>
-            )}
-          </div>
-
-
 
         {/* Brand list */}
           <div className='brand-list'>
@@ -259,12 +234,56 @@ function ResultPage () {
           currentBrandList={feedList} />
       }
 
+  
+      {/* Top 3 celebrity matches (from public controller) */}
+      <div className="result-celeb-matches">
+        {uiStatus.showBrandList && topCelebs.length > 0 && (
+            <>
+            <h2 style={{ marginTop: '1.5rem' }}>Topp 3 kändismatchningar</h2>
+            <div style={{ display: 'grid', gap: '1rem' }}>
+              {topCelebs.map((celeb) => (
+                <CelebrityCard
+                  key={celeb.id || celeb.name}
+                  celeb={celeb}
+                  user={result}
+                  celebBrands={celeb?.brands || []}
+                />
+              ))}
+            </div>
+            </>
+        )}
+        {/* Optional: friendly empty state if no celebs */}
+        {uiStatus.showBrandList && topCelebs.length === 0 && (
+          <p style={{ opacity: 0.8, marginTop: '1rem' }}>
+            Inga kändismatchningar hittades för din profil ännu.
+          </p>
+        )}
+      </div>
+
+      {uiStatus.showBrandList && 
+        //   <SuggestedUsers sessionToken={sessionToken} user={result} />
+        // 
+        <div className="result-suggested-users">
+                      <button
+                className="btn-small"
+                onClick={() => setUiStatus((p) => ({ ...p, showSuggestedUsers: !p.showSuggestedUsers }))}
+              >
+                {uiStatus.showSuggestedUsers ? "Dölj förslag" : "Föreslå andra användare"}
+              </button>
+
+              {uiStatus.showSuggestedUsers && (
+                <SuggestedUsers sessionToken={sessionToken} user={result} setUiState={setUiStatus} />
+              )}
+              </div>
+      }
+
         <button
           onClick={() => navigate('/register', { state: result })}
           className='active btn-go-to-register'
         >
           Spara och fortsätt
         </button>
+
       </div>
       </div>
     </>

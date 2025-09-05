@@ -288,20 +288,22 @@ export const API_findSuggestedUsers = async (bearer, alternatives, onSuccess) =>
     return data.data;
 }
 
-export const API_fetchSuggestions = async (bearer, alternatives, onSuccess) => {
-  const res = await fetch(`${AZURE_API}/user/discovery/suggestions?count=${alternatives}`, {
+export const API_fetchSuggestions = async (bearer, alternatives, type, onSuccess) => {
+  // /guest/discovery/search?Page=1&PageSize=2
+  const res = await fetch(`${AZURE_API}/guest/discovery/search?Page=1&PageSize=${alternatives}${type?`&PersonalityType=${type}`:``}`, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${bearer}`
-      }})
+              "accept": "*/*",
+              "X-Session-Id": bearer,
+            },
+          })
       if (!res.ok) throw new Error('Failed to fetch suggestions');
     
     const data = await res.json();
-
-    onSuccess(data.data);
+           
+    onSuccess(data.data.items);
         
-    return data.data;
+    return data.data.items;
 }
 
 

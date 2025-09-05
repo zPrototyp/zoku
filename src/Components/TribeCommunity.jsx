@@ -9,6 +9,9 @@ function TribeCommunity({ token, user, title = "Tribes" }) {
   const [followingUsers, setFollowingUsers] = useState([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [uiState, setUiState] = useState({
+       showSuggestedUsers: false,
+  })
 
   const fetchData = async () => {
     if (!token) return;
@@ -160,7 +163,17 @@ function TribeCommunity({ token, user, title = "Tribes" }) {
         ) : (
           <>
           <p style={{ opacity: 0.75 }}>Du följer inga användare ännu.</p>
-          <SuggestedUsers token={token} user={user} setUiState={null} />
+                        <button
+                className="btn-small"
+                onClick={() => setUiState((p) => ({ ...p, showSuggestedUsers: !p.showSuggestedUsers }))}
+              >
+                {uiState.showSuggestedUsers ? "Dölj förslag" : "Föreslå andra användare"}
+              </button>
+
+              {uiState.showSuggestedUsers && (
+                <SuggestedUsers token={token} user={user} setUiState={setUiState} />
+              )}
+          {/* <SuggestedUsers token={token} user={user} setUiState={null} /> */}
           </>
         )}
       </div>
