@@ -258,11 +258,6 @@ function ResultPage () {
             Inga kändismatchningar hittades för din profil ännu.
           </p>
         )}
-      </div>
-
-      {uiStatus.showBrandList && 
-        //   <SuggestedUsers sessionToken={sessionToken} user={result} />
-        // 
         <div className="result-suggested-users">
                       <button
                 className="btn-small"
@@ -275,7 +270,9 @@ function ResultPage () {
                 <SuggestedUsers sessionToken={sessionToken} user={result} setUiState={setUiStatus} />
               )}
               </div>
-      }
+      </div>
+
+
 
         <button
           onClick={() => navigate('/register', { state: result })}

@@ -1067,14 +1067,6 @@ text-align: left;
     bottom: 30px;
   }
 
-  /* For result page - extra spanning */
-  .brand-list {
-    grid-row: 2/4;
-  }
-  .result-suggested-users {
-    grid-column: 2/3;
-    grid-row: 3/4;
-  }
 
 }
 /*************** End Desktop overrides (≥ 1024px) *****************/
