@@ -62,11 +62,17 @@ function AdminPage(){
         token && getAutoLikes();
         token && API_adminFetchUsers(token, (users) => 
             { setUsers(users.filter(user => user.email !== "admin@zoku.se"))});
-        token && users && setUiState((p)=>({
-            ...p,
-            userCount: users.length
-        }))
-    }, [token, users]);
+    }, [token]);
+
+    // update userCount whenever users changes
+useEffect(() => {
+  if (users) {
+    setUiState((p) => ({
+      ...p,
+      userCount: users.length
+    }));
+  }
+}, [users]);
 
     const getAutoLikes = () => {
         API_adminSettingsAutolike(token, (data)=>{setUiState(p => ({...p, autolikes: data.count}))})
@@ -219,6 +225,7 @@ function AdminPage(){
     }
 
     const handleEdit = (brand) => {
+        console.log(brand)
         setFullbrand(null);
         setUiState(p =>({...p,  showBrandEdit: true }))
         setFullbrand(brand);

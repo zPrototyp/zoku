@@ -41,9 +41,13 @@ function App() {
           <Route path="/register" element={<Register/>} />
 
           <Route path="/clear" element={<ClearAllAtoms />} />
+        
+        {/* <Route path="brand/{brandId}" element={<BrandPage brandId={brandId} />} /> */}
+        
         </Route>
         {/* Admin page not within the site Layout */}
         <Route path="/admin" element={<AdminPage />} />
+
       </Routes>
     </Router>
   );
