@@ -71,15 +71,13 @@ export default function AdminUserCard({ user, fetchUser }) {
 }
 
 
-
-export function UserInteractionCard({ user }) {
+export function UserInteractionCard({ user , userShares}) {
     
   if (!user) return <p>Loading...</p>;
 
-  const { userName, totalInteractions, brandInteractions, summary } = user;
-
+  const { userName, totalInteractions, brandInteractions, summary, shares } = user;
   // Show only top 5 brand interactions for compactness
-  const topBrands = brandInteractions || [];
+  const topBrands = brandInteractions.slice(0, 5) || [];
 
   return (
     <div className="user-card">
@@ -89,12 +87,24 @@ export function UserInteractionCard({ user }) {
       <div className="user-card__summary">
         <p><strong>Liked:</strong> {summary?.isLiked ? "Yes" : "No"}</p>
         <p><strong>Unliked:</strong> {summary?.isUnliked ? "Yes" : "No"}</p>
-        <p><strong>Total Shares:</strong> {summary?.totalShares || 0}</p>
+        <div>
+          <p><strong>Total Brand Shares:</strong> {summary?.totalShares || 0}</p>
+          {shares.length>0 && (
+            <ul>
+            {shares.map(item => <li>{item.brandName} {item.platform}</li>)}
+            </ul>
+          )
+          }
+        </div>
         <p><strong>View Count:</strong> {summary?.viewCount || 0}</p>
       </div>
       </div>
       <div className="user-card__brands">
-        <strong>Recent Likes:</strong>
+        <strong>Profile shared: </strong>
+        <ul>
+          {userShares.map(item => <li>{item.platform} x({item.shareCount}) {item.lastSharedAt} </li>)}
+        </ul>
+        <strong>Most recent Likes ({totalInteractions - 5} not shown):</strong>
         <ul className="user-card__brand-list">
           {topBrands.map((b) => (
             <li key={b.id} className="user-card__brand-item">

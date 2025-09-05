@@ -64,8 +64,7 @@ const copyImage = async (img) => {
 
     const shareInstagramStory = async () => {
 
-        const shareData = await API_shareProfile("Instagram", bearer, brand ? "Brand":"Personality");
-        
+        await API_shareProfile("Instagram", bearer, brand ? "Brand":"Personality", brand? brand.id || 0 : 0);
     
         const backgroundImageUrl = encodeURIComponent(
             sharedImage
@@ -89,7 +88,8 @@ const copyImage = async (img) => {
     
     async function handleFbShare(){
         // send to backend
-        const shareData = await API_shareProfile("Facebook", bearer, brand ? "Brand":"Personality", brand ? profile.id : 0);
+        
+        const shareData = await API_shareProfile("Facebook", bearer, brand ? "Brand":"Personality", brand ? brand.id || 0 : 0);
         const shareUrl = shareData.shareUrl;
         
         // console.log(shareData);

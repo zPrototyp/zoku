@@ -2,7 +2,7 @@ const AZURE_API = import.meta.env.VITE_AZURE_API;
 
 // Function to send share interaction to API can be used by guest or authenticated users
 export const API_shareProfile = async (platform, bearer, entity, entityId) => {
-console.log("Sharing to ", platform, entity, entityId);
+// console.log("Sharing to ", platform, entity, entityId);
     if (!bearer || !platform) return;
     try {
         const res = await fetch(`${AZURE_API}/share`, {
@@ -20,13 +20,64 @@ console.log("Sharing to ", platform, entity, entityId);
         });
 
         if (!res.ok) throw new Error("Failed to record interaction");
-
         const data = await res.json();
+      // Track the interaction
+        entity == 'brand' ? API_trackBrandInteraction(bearer, "share", entityId) :
+        API_shareTrack(bearer, entity, entityId, platform);
         return data.data;
     } catch (error) {
         console.error("Error recording sharing:", error);
-    }
+    } 
 };
+
+// Option 1
+export const API_trackBrandInteraction = async (bearer, interactionType, brandId) => {
+   if (!bearer) return;
+    try {
+        const res = await fetch(`${AZURE_API}/user/brands/interactions`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${bearer}`,
+            },
+            body: JSON.stringify({
+                brandId: brandId,
+                action: interactionType,
+            }),
+        });
+
+        if (!res.ok) throw new Error(`Failed to record interaction ${interactionType} of brand ${brandId}`);
+        const data = await res.json();
+        return data.data;
+    } catch (error) {
+        console.error(`Error recording ${interactionType} interaction:`, error);
+    }
+  }
+  // Option 2 for tracking
+  export const API_shareTrack = async (bearer, entity, entityId = 0, platform, method ="Link") =>{
+    // "entityType": "Brand",
+    // "platform": "Facebook",
+    // "entityId": 0,
+    // "method": "Link"
+    console.log('entity, id', entity, entityId)
+    const res = await fetch(`${AZURE_API}/share/track`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${bearer}`,
+            },
+            body: JSON.stringify({
+              entityType: entity,
+              platform: platform,
+              entityId: entityId,
+              method: method
+            }),
+        });
+
+        if (!res.ok) throw new Error(`Failed to record sharing of ${entity} ${entityId} to ${platform}`);
+        const data = await res.json();
+        return data.data;
+  }
 
 // Used to fetch personality for guests, and friend profiles.
 export const API_guestGetPersonality = async (bearer, testValues, onSuccess) => {
@@ -384,6 +435,21 @@ export const API_adminFetchUserInteractions = async (bearer, userId, onSuccess) 
     onSuccess(data.data);
     return data.data;
 }
+export const API_adminFetchUserShares = async (bearer, userId, onSuccess) => {
+    const res = await fetch(`${AZURE_API}/admin/analytics/shares/users/${userId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${bearer}`
+      }
+    });
+    if (!res.ok) throw new Error('Brand fetch failed');
+    
+    const data = await res.json();
+    onSuccess(data.data);
+    return data.data;
+}
+
 
 export const API_adminCurrentSessions = async (bearer, onSuccess) => {
     const res = await fetch(`${AZURE_API}/admin/analytics/sessions/active`, {
