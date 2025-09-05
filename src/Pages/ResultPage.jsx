@@ -263,7 +263,7 @@ function ResultPage () {
                 className="btn-small"
                 onClick={() => setUiStatus((p) => ({ ...p, showSuggestedUsers: !p.showSuggestedUsers }))}
               >
-                {uiStatus.showSuggestedUsers ? "Dölj förslag" : "Föreslå andra användare"}
+                {uiStatus.showSuggestedUsers ? "Dölj andra användare" : "Se andra användare"}
               </button>
 
               {uiStatus.showSuggestedUsers && (

@@ -1067,6 +1067,8 @@ text-align: left;
     bottom: 30px;
   }
 
-
+.result-suggested-users{
+  text-align: center;
+}
 }
 /*************** End Desktop overrides (≥ 1024px) *****************/
