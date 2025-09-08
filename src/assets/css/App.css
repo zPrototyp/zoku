@@ -465,7 +465,7 @@ ul.no-dots {
   margin: 0 auto;
   font-family: sans-serif;
 }
-.btn-show-matches{
+div.btn-show-matches{
   width: 100%;
   text-align: center;
   font-size: 40px;
