@@ -121,7 +121,7 @@ const grouped = useMemo(() => {
               <img className="expanded-feed_img" 
               src={activeModal.imageUrl ? activeModal.imageUrl :`dummy-brand_${activeModal.category}.jpg`} 
               alt={activeModal.name}/>
-            <ShareOverlay personality={user} profile={activeModal} brand={true}/>
+            <ShareOverlay personality={user} profile={activeModal} brand={brand}/>
             </div>
             <p><a href={activeModal.url}>{activeModal.name}</a>  / {activeModal.matchPercentage}% match</p>
             <p>{activeModal.description}</p>
