@@ -18,20 +18,8 @@
   border-radius: 12px;
 }
 
-/* Circle */
-.secondary-card-circle {
-  inline-size: var(--size);
-  block-size: var(--size);
-  display: flex;
-  place-items: center;
-  position: relative;
-  overflow: hidden;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.06);
-  backdrop-filter: blur(2px);
-  will-change: transform;
-  contain: layout paint;
-}
+/* Circle  defined in app.css*/
+
 
 /* Image */
 .profile-image {
