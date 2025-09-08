@@ -45,7 +45,7 @@ function AdminPage(){
         pendingSeeds: {},
         history: {},
         loading: false,
-        updateDate: new Date(now),
+        updateDate: new Date(),
         brandLength: 0,
         celebLength: celebs?.totalCelebrities || 0,
         showBrands: false,
@@ -60,11 +60,11 @@ function AdminPage(){
     
   
     useEffect(() => {
-        token && updateActiveSessions(); 
-        token && getAutoLikes();
-        token && API_adminFetchUsers(token, (users) => 
+        token && admin && updateActiveSessions(); 
+        token && admin && getAutoLikes();
+        token && admin && API_adminFetchUsers(token, (users) => 
             { setUsers(users.filter(user => user.email !== "admin@zoku.se"))});
-    }, [token]);
+    }, [token, admin]);
 
     // update userCount whenever users changes
 useEffect(() => {
