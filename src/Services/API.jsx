@@ -134,9 +134,7 @@ export const API_guestGetBrandMatches = async (bearer, testValues, onSuccess, ca
      if (res.status === 401) {
       console.warn("Not authorized – token might be invalid or expired");
       // here you can clear auth, redirect, or return a special value
-      clearAtoms();
-      window.location.href = "/zoku/"; // Redirect to home page
-      return null;
+
     }
 
 
