@@ -15,11 +15,6 @@ import { guestTokenAtom } from "../Atoms/GuestTokenAtom.jsx";
 const AZURE_API = import.meta.env.VITE_AZURE_API;
 
 function userProfileUrl(targetUserId) {
-  // const base = (AZURE_API || "").replace(/\/+$/, "");
-  // const hasApiV1 = /\/api\/v1\b/.test(base);
-  // return hasApiV1
-  //   ? `${base}/user/discovery/profile/${targetUserId}`
-  //   : `${base}/api/v1/user/discovery/profile/${targetUserId}`;
   return  `${AZURE_API}/user/discovery/profile/${targetUserId}`;
 }
 
@@ -47,7 +42,6 @@ function UserCard({ user, viewer = null, onAfterFollow, onAfterUnfollow }) {
     setProfile(user);
     
     if (!token ) {
-      // return;
     }
 
     const fetchProfile = async () => {

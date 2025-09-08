@@ -9,9 +9,7 @@ function TribeCommunity({ token, user, title = "Tribes" }) {
   const [followingUsers, setFollowingUsers] = useState([]);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [uiState, setUiState] = useState({
-       showSuggestedUsers: false,
-  })
+  const [uiState, setUiState] = useState({ showSuggestedUsers: false });
 
   const fetchData = async () => {
     if (!token) return;
@@ -20,20 +18,21 @@ function TribeCommunity({ token, user, title = "Tribes" }) {
 
     try {
       await API_userSafeFetchJson(token, "user/celebrities/liked", (data) => {
-      // Add isLiked: true to each item
-      const updated = data.map((celeb) => ({
-        ...celeb,
-        isLiked: true,
-      }));
-      setLikedCelebs(updated);
-    });
+        const updated = (Array.isArray(data) ? data : []).map((celeb) => ({
+          ...celeb,
+          isLiked: true,
+        }));
+        setLikedCelebs(updated);
+      });
     } catch (err) {
       console.error("Fel vid hämtning av gillade kändisar:", err);
       setError((prev) => prev || "Kunde inte hämta gillade kändisar");
     }
 
     try {
-      await API_userSafeFetchJson(token, "user/relationships/following", setFollowingUsers);
+      await API_userSafeFetchJson(token, "user/relationships/following", (data) => {
+        setFollowingUsers(Array.isArray(data) ? data : []);
+      });
     } catch (err) {
       console.error("Fel vid hämtning av följda användare:", err);
       setError((prev) => prev || "Kunde inte hämta följda användare");
@@ -43,53 +42,48 @@ function TribeCommunity({ token, user, title = "Tribes" }) {
   };
 
   useEffect(() => {
-    if (!token) return;
-    fetchData();
+    if (token) fetchData();
   }, [token]);
 
   const TribeGrid = ({ children }) => (
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(380px, 1fr))", gap: "1rem" }}>
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fill, minmax(380px, 1fr))",
+        gap: "1rem",
+      }}
+    >
       {children}
     </div>
   );
 
+  // Like/unlike
   const handleAfterUnlikeCeleb = (celeb) => {
-    const id = celeb?.id;
+    const id = celeb?.id || celeb?.celebrityId;
     setLikedCelebs((prev) => prev.filter((c) => (c.id || c.celebrityId) !== id));
   };
   const handleAfterLikeCeleb = (celeb) => {
     const id = celeb?.id;
     setLikedCelebs((prev) => {
-      const exists = prev.some((c) => (c.id || c.celebrityId) === id);
-      if (exists) return prev;
-      return [
-        {
-          id,
-          name: celeb?.name,
-          imageUrl: celeb?.imageUrl,
-          isLiked: true,
-        },
-        ...prev,
-      ];
+      if (prev.some((c) => (c.id || c.celebrityId) === id)) return prev;
+      return [{ ...celeb, isLiked: true }, ...prev];
     });
   };
-
-  const handleAfterUnfollowUser = (user) => {
-    const id = user?.id || user?.userId;
+  const handleAfterUnfollowUser = (unfollowed) => {
+    const id = unfollowed?.id || unfollowed?.userId;
     setFollowingUsers((prev) => prev.filter((u) => (u.id || u.userId) !== id));
   };
-  const handleAfterFollowUser = (user) => {
-    const id = user?.id || user?.userId;
+  const handleAfterFollowUser = (newUser) => {
+    const id = newUser?.id || newUser?.userId;
     setFollowingUsers((prev) => {
-      const exists = prev.some((u) => (u.id || u.userId) === id);
-      if (exists) return prev;
+      if (prev.some((u) => (u.id || u.userId) === id)) return prev;
       return [
         {
           id,
-          displayName: user?.displayName || user?.name,
-          username: user?.username,
-          avatarUrl: user?.avatarUrl || user?.photoUrl,
-          bio: user?.bio || user?.tagline,
+          displayName: newUser.displayName || newUser.name,
+          username: newUser.username,
+          avatarUrl: newUser.avatarUrl || newUser.photoUrl,
+          bio: newUser.bio || newUser.tagline,
           isFollowing: true,
         },
         ...prev,
@@ -99,46 +93,38 @@ function TribeCommunity({ token, user, title = "Tribes" }) {
 
   return (
     <div style={{ marginTop: "2rem" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: ".75rem" }}>
-        <h2 style={{ margin: 0 }}>{title}</h2>
-        {!!token && (
-          <button className="btn btnSlim" onClick={fetchData} aria-label="Uppdatera Tribes">
-            Uppdatera
-          </button>
-        )}
-      </div>
+    <div style={{ display: "flex", alignItems: "center", gap: ".75rem" }}>
+      <h2 style={{ margin: 0 }}>{title}</h2>
+    </div>
 
-      {error && <p style={{ color: "red", marginTop: ".5rem" }}>{error}</p>}
-      {isLoading && <p style={{ opacity: 0.75, marginTop: ".5rem" }}>Laddar Tribes...</p>}
+    {error && <p style={{ color: "red", marginTop: ".5rem" }}>{error}</p>}
+    {isLoading && <p style={{ opacity: 0.75, marginTop: ".5rem" }}>Laddar Tribes...</p>}
 
       {/* Liked Celebrities */}
       <div style={{ marginTop: "1rem", marginBottom: "1rem" }}>
         <h3 style={{ marginBottom: ".5rem" }}>Kändisar du gillar</h3>
-        {likedCelebs && likedCelebs.length > 0 ? (
+        {likedCelebs.length > 0 ? (
           <TribeGrid>
-            {likedCelebs.map((c) => {
-   
-              return (
-                <CelebrityCard
-                  key={c.id || c.name}
-                  celeb={c}
-                  user={user}
-                  celebBrands={[]}
-                  onAfterUnlike={handleAfterUnlikeCeleb}
-                  onAfterLike={handleAfterLikeCeleb}
-                />
-              );
-            })}
+            {likedCelebs.map((c) => (
+              <CelebrityCard
+                key={c.id || c.name}
+                celeb={c}
+                user={user}
+                celebBrands={[]}
+                onAfterUnlike={handleAfterUnlikeCeleb}
+                onAfterLike={handleAfterLikeCeleb}
+              />
+            ))}
           </TribeGrid>
         ) : (
-          <p style={{ opacity: 0.75 }}>Du har inte gillat några kändisar ännu.</p>
+          !isLoading && <p style={{ opacity: 0.75 }}>Du har inte gillat några kändisar ännu.</p>
         )}
       </div>
 
       {/* Following Users */}
       <div style={{ marginTop: "1rem" }}>
         <h3 style={{ marginBottom: ".5rem" }}>Användare du följer</h3>
-        {followingUsers && followingUsers.length > 0 ? (
+        {followingUsers.length > 0 ? (
           <TribeGrid>
             {followingUsers.map((u) => {
               const normalized = {
@@ -161,20 +147,22 @@ function TribeCommunity({ token, user, title = "Tribes" }) {
             })}
           </TribeGrid>
         ) : (
-          <>
-          <p style={{ opacity: 0.75 }}>Du följer inga användare ännu.</p>
-                        <button
+          !isLoading && (
+            <>
+              <p style={{ opacity: 0.75 }}>Du följer inga användare ännu.</p>
+              <button
                 className="btn-small"
-                onClick={() => setUiState((p) => ({ ...p, showSuggestedUsers: !p.showSuggestedUsers }))}
+                onClick={() =>
+                  setUiState((p) => ({ ...p, showSuggestedUsers: !p.showSuggestedUsers }))
+                }
               >
                 {uiState.showSuggestedUsers ? "Dölj förslag" : "Föreslå andra användare"}
               </button>
-
               {uiState.showSuggestedUsers && (
                 <SuggestedUsers token={token} user={user} setUiState={setUiState} />
               )}
-          {/* <SuggestedUsers token={token} user={user} setUiState={null} /> */}
-          </>
+            </>
+          )
         )}
       </div>
     </div>
