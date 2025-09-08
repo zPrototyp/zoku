@@ -10,6 +10,7 @@ import {valueProfiles} from '../assets/uiData/zoku_profiles_se.js';
 import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx';
 import { comparisonValueAtom } from '../Atoms/ComparisonValueAtom.jsx';
 
+function ClearAllAtoms() {
 const [profile, setProfile] = useAtom(valueProfileAtom);
 const [feed, setFeed] = useAtom(feedListAtom);
 const [testValue, setTestValue] = useAtom(testValuesAtom);
@@ -18,7 +19,6 @@ const [authToken, setAuthToken] = useAtom(authTokenAtom);
 const [comparisonProfile, setComparisonProfile] = useAtom(comparisonProfileAtom);
 const [friendValues, setFriendValues] = useAtom(comparisonValueAtom);
 
-function ClearAllAtoms() {
 
     const listOrder= [
       "Advocate",
@@ -92,14 +92,22 @@ function ClearAllAtoms() {
 
 }
 export const clearAtoms = () => {
-            setProfile(null);
-            setFeed(null);
-            setTestValue( null);
-            setGuestToken(null);
-            setAuthToken(null);
-            setComparisonProfile(null);
-            setFriendValues(null);
+  const [profile, setProfile] = useAtom(valueProfileAtom);
+  const [feed, setFeed] = useAtom(feedListAtom);
+  const [testValue, setTestValue] = useAtom(testValuesAtom);
+  const [guestToken, setGuestToken] = useAtom(guestTokenAtom);
+  const [authToken, setAuthToken] = useAtom(authTokenAtom);
+  const [comparisonProfile, setComparisonProfile] = useAtom(comparisonProfileAtom);
+  const [friendValues, setFriendValues] = useAtom(comparisonValueAtom);
 
-            console.log("All atoms cleared");
+  setProfile(null);
+  setFeed(null);
+  setTestValue( null);
+  setGuestToken(null);
+  setAuthToken(null);
+  setComparisonProfile(null);
+  setFriendValues(null);
+
+  console.log("All atoms cleared");
 }
 export default ClearAllAtoms;
