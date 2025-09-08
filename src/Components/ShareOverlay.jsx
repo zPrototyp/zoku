@@ -7,7 +7,7 @@ import { FaSquareFacebook , FaInstagram , FaTiktok } from "react-icons/fa6";
 import { useAtomValue } from "jotai";
 import { authTokenAtom } from "../Atoms/AuthAtom";
 import { guestTokenAtom } from "../Atoms/GuestTokenAtom";
-import { API_shareProfile } from "../Services/API";
+import { API_shareProfile, API_shareTrack } from "../Services/API";
 import OverlayModal from "./OverlayModal";
 import { valueProfiles } from "../assets/uiData/zoku_profiles_se";
 
@@ -120,6 +120,7 @@ export function ShareOverlay({personality, profile, testValues, brand}){
     }
 
     async function handleTikTokShare(){
+        API_shareTrack(bearer, brand ? 'Brand': 'Personality', brand ? brand.id : 0, "TikTok", "Link")
         copyImage(sharedImage);
         setExpanded(false);
     }
