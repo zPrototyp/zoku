@@ -12,11 +12,10 @@ import "../assets/css/App.css";
 import { FaPen, FaClock } from "react-icons/fa";
 import { valueProfileAtom } from "../Atoms/ValueProfileAtom";
 import { testValuesAtom } from "../Atoms/TestValuesAtom";
-import { API_fetchSuggestions, API_userSafeFetchJson } from "../Services/API";
+import { API_userSafeFetchJson } from "../Services/API";
 import RandomBrand from "../Components/RandomBrand";
 import useMediaQuery from "../Components/MediaQuery";
 import TribeCommunityOverview from "../Components/TribeCommunityOverview";
-import SuggestedUsers from "../Components/TribeSuggestedUsers";
 
 // import { comparisonValueAtom } from '../Atoms/ComparisonValueAtom.jsx'
 // import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx'
@@ -40,9 +39,7 @@ function ProfilePage() {
     });
 
   const isComputer = useMediaQuery("(min-width: 1024px)")
-  const [test, setTest] = useState(null)
   
-
   // On load fetch all the profile information
   useEffect(() => {
     setProfile(null);

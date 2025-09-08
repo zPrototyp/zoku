@@ -3,18 +3,16 @@ import { FaShareAlt } from "react-icons/fa";
 import "../assets/css/SharingOverlay.css";
 
 import { FaSquareFacebook , FaInstagram , FaTiktok } from "react-icons/fa6";
-import { useNavigate } from "react-router";
 
 import { useAtomValue } from "jotai";
 import { authTokenAtom } from "../Atoms/AuthAtom";
 import { guestTokenAtom } from "../Atoms/GuestTokenAtom";
-import { API_shareProfile } from "../Services/API";
+import { API_shareProfile, API_shareTrack } from "../Services/API";
 import OverlayModal from "./OverlayModal";
 import { valueProfiles } from "../assets/uiData/zoku_profiles_se";
 
 export function ShareOverlay({personality, profile, testValues, brand}){
     const [expanded, setExpanded] = useState(false);
-    const navigate = useNavigate();
     const url = "https://zprototyp.github.io/zoku";
     const token = useAtomValue(authTokenAtom);
     const sessionToken = useAtomValue(guestTokenAtom);
@@ -28,8 +26,8 @@ export function ShareOverlay({personality, profile, testValues, brand}){
 
     let sharedImage="";
     if (brand){
-        sharedImage = `${url}/${profile.imageUrl ? profile.imageUrl :`dummy-brand_${profile.category}.jpg`}`;
-                
+        sharedImage = `${url}/${profile.imageUrl ? profile.imageUrl :`dummy-brand_${brand.category}.jpg`}`;
+
     } else {    
         sharedImage =  `${url}/zoku_${personality.name}.png`;
     }
@@ -37,35 +35,55 @@ export function ShareOverlay({personality, profile, testValues, brand}){
 
     const copyText = async (text) => {
         try {
-        await navigator.clipboard.writeText(text);
-        alert("Text kopierad till urklipp!");
+            await navigator.clipboard.writeText(text);
+            alert("Text kopierad till urklipp!");
         } catch (err) {
-        console.error("Failed to copy: ", err);
+            console.error("Failed to copy: ", err);
         }
     };
 
-const copyImage = async (img) => {
-    try {
-      const response = await fetch(img); // image in public/wwwroot
-      const blob = await response.blob();
+    const copyImage = async (imgUrl) => {
+        try {
+            const img = new Image();
+            img.crossOrigin = "anonymous"; // needed if hosted elsewhere
+            img.src = imgUrl;
 
-      await navigator.clipboard.write([
-        new ClipboardItem({
-          [blob.type]: blob
-        })
-      ]);
+            await new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = reject;
+            });
 
-      alert("Image copied!");
-    } catch (err) {
-      console.error("Failed to copy image: ", err);
-    }
-  };
+            const canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+
+            const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+
+            await navigator.clipboard.write([
+            new ClipboardItem({ "image/png": blob })
+            ]);
+
+            alert("Bild kopierad till urklipp!");
+        } catch (err) {
+            console.error("Failed to copy image: ", err);
+        }
+    };
 
 
     const shareInstagramStory = async () => {
 
-        await API_shareProfile("Instagram", bearer, brand ? "Brand":"Personality", brand? brand.id || 0 : 0);
+        const shareData = await API_shareProfile("Instagram", bearer, brand ? "Brand":"Personality", brand? brand.id || 0 : 0);
     
+        const sharedText=shareData.shareText;
+        
+        const shareUrl=shareData.shareUrl;
+        
+        copyText(sharedText);
+        
+        copyImage(sharedImage);
+        
         const backgroundImageUrl = encodeURIComponent(
             sharedImage
         );
@@ -75,16 +93,13 @@ const copyImage = async (img) => {
         // Try to open Instagram Stories
         window.open(deepLink, "_blank");
 
-        console.log(sharedImage, deepLink)
+        // console.log(sharedImage, deepLink)
         // Fallback after 800ms
         setTimeout(() => {
              window.location.href = fallback;
         }, 800);
         setExpanded(false);
     };
-
-    
-
     
     async function handleFbShare(){
         // send to backend
@@ -96,13 +111,17 @@ const copyImage = async (img) => {
         copyText(shareData.shareText);
         const quote = shareData.shareText;
 
-        let fbUrl="";
-
-        fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+        let fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
             shareUrl
         )}&quote=${encodeURIComponent(quote)}`;
 
         window.open(fbUrl, "_blank", "width=600,height=900");
+        setExpanded(false);
+    }
+
+    async function handleTikTokShare(){
+        API_shareTrack(bearer, brand ? 'Brand': 'Personality', brand ? brand.id : 0, "TikTok", "Link")
+        copyImage(sharedImage);
         setExpanded(false);
     }
 
@@ -112,18 +131,26 @@ const copyImage = async (img) => {
         {expanded && (
             <div className="share-icons">
                 <FaSquareFacebook
-                    title="Dela på facebook"
+                    title="-Dela på facebook"
                     className="clickable-icon share-icon"
-                    onClick={() => handleFbShare()}
+                    onClick={() => {
+                        handleFbShare()
+                    }}
                     />
                 <FaInstagram
-                    title="Dela på instagram"
+                    title="-Dela på instagram"
                     className="clickable-icon share-icon"
-                    onClick={()=>shareInstagramStory()}
+                    onClick={()=>{
+                        shareInstagramStory()
+                    }}
                     />
                 <FaTiktok 
-                    title="Dela på TikTok"
-                    className="clickable-icon share-icon" />
+                    title="-Dela på TikTok"
+                    className="clickable-icon share-icon"
+                    onClick={()=>{
+                        handleTikTokShare()
+                    }}
+                     />
             </div>            
         ) }
         <FaShareAlt
@@ -176,7 +203,13 @@ const copyImage = async (img) => {
                 />
                 <FaTiktok 
                     title="Dela på TikTok"
-                    className="clickable-icon share-icon" />
+                    className="clickable-icon share-icon"
+                    onClick={()=> {
+                        copyText(`${shareText} - Vad är din kombination?`);
+                        copyImage(sharedImage);
+                        handleTikTokShare()
+                    }}
+                />
                 </div>
                 </div>
             );

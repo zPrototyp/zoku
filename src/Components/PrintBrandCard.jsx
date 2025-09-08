@@ -16,7 +16,7 @@ import { valueProfileAtom } from "../Atoms/ValueProfileAtom"
           <div className="expand-feed-brand">
               <button><MdKeyboardDoubleArrowDown onClick={() =>setActiveModal(brand)}/></button>
           </div>
-          <ShareOverlay personality={user} profile={brand} brand={true}/>
+          <ShareOverlay personality={user} profile={brand} brand={brand}/>
         </div>  
         )
   }

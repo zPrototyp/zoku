@@ -2,6 +2,9 @@
     font-family: var(--fontNav)
 }
 
+.page-content.admin {
+  
+}
 .admin-brand-panel {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

@@ -11,16 +11,15 @@ import { comparisonProfileAtom } from '../Atoms/ComparisonProfileAtom.jsx';
 import { comparisonValueAtom } from '../Atoms/ComparisonValueAtom.jsx';
 
 function ClearAllAtoms() {
-    const [profile, setProfile] = useAtom(valueProfileAtom);
-    const [feed, setFeed] = useAtom(feedListAtom);
-    const [testValue, setTestValue] = useAtom(testValuesAtom);
-    const [guestToken, setGuestToken] = useAtom(guestTokenAtom);
-    const[authToken, setAuthToken] = useAtom(authTokenAtom);
-    const [comparisonProfile, setComparisonProfile] = useAtom(comparisonProfileAtom);
-    const [friendValues, setFriendValues] = useAtom(comparisonValueAtom);
+const [profile, setProfile] = useAtom(valueProfileAtom);
+const [feed, setFeed] = useAtom(feedListAtom);
+const [testValue, setTestValue] = useAtom(testValuesAtom);
+const [guestToken, setGuestToken] = useAtom(guestTokenAtom);
+const [authToken, setAuthToken] = useAtom(authTokenAtom);
+const [comparisonProfile, setComparisonProfile] = useAtom(comparisonProfileAtom);
+const [friendValues, setFriendValues] = useAtom(comparisonValueAtom);
 
-    
-    
+
     const listOrder= [
       "Advocate",
       "Adventurer",
@@ -70,18 +69,7 @@ function ClearAllAtoms() {
       
       return (
         <div className="page-content" style={{width:"400px", overflow: "clip"}}>
-        <button onClick={() => {
-            setProfile(null);
-            setFeed(null);
-            setTestValue( null);
-            setGuestToken(null);
-            setAuthToken(null);
-            setComparisonProfile(null);
-            setFriendValues(null);
-
-            console.log("All atoms cleared");
-            
-        }}>
+        <button onClick={() => clearAtoms()}>
             Clear All Atoms
         </button>
             <p>Profile: <strong>{profile?.primaryPersonality?.name}</strong></p>
@@ -102,5 +90,24 @@ function ClearAllAtoms() {
         </div>
     )
 
+}
+export const clearAtoms = () => {
+  const [profile, setProfile] = useAtom(valueProfileAtom);
+  const [feed, setFeed] = useAtom(feedListAtom);
+  const [testValue, setTestValue] = useAtom(testValuesAtom);
+  const [guestToken, setGuestToken] = useAtom(guestTokenAtom);
+  const [authToken, setAuthToken] = useAtom(authTokenAtom);
+  const [comparisonProfile, setComparisonProfile] = useAtom(comparisonProfileAtom);
+  const [friendValues, setFriendValues] = useAtom(comparisonValueAtom);
+
+  setProfile(null);
+  setFeed(null);
+  setTestValue( null);
+  setGuestToken(null);
+  setAuthToken(null);
+  setComparisonProfile(null);
+  setFriendValues(null);
+
+  console.log("All atoms cleared");
 }
 export default ClearAllAtoms;

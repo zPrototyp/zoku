@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { API_addCelebrities } from '../Services/API';
-
+import "../assets/css/Admin.css";
 const ALLOWED_IMAGES = ['celebF.jpg', 'celebM.jpg'];
 
 const CelebrityUploader = ({bearer}) => {
@@ -92,7 +92,7 @@ const CelebrityUploader = ({bearer}) => {
     <div style={styles.container}>
       <h3>Upload Celebrities JSON</h3>
       <p>Must be of format:</p>
-<pre style={{ whiteSpace: 'pre-wrap', background: '#f5f5f5', padding: '1rem', borderRadius: '4px' }}>
+<pre style={{ whiteSpace: 'pre-wrap', background: '#f5f5f5', padding: '1rem', borderRadius: '4px', textAlign:'left' }}>
   {`[
   {
     "name": "Greta Thunberg",
