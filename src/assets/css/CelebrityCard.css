@@ -5,6 +5,7 @@
   padding: 12px;
   background: var(--highlightOp50);
   max-width: 720px;
+  width: 85%;
   margin: 0 auto 16px;
   overflow: hidden;
   display: flex;

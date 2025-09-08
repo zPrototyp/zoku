@@ -1,5 +1,5 @@
 .profile-circle-card {
-  --size: 96px;
+  
   --card-pad: 8px;
   display: grid;
   grid-auto-flow: row;

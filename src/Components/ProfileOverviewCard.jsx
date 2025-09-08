@@ -126,7 +126,6 @@ function ProfileOverviewCard({
   return (
     <div
       className={wrapperClass}
-      style={{ "--size": `${size}px` }}
       onClick={onClick}
       role={clickable ? "button" : undefined}
       tabIndex={clickable ? 0 : undefined}
