@@ -16,7 +16,6 @@ function getProfileSafe(type) {
 }
 
 export default function CelebrityCard({ celeb, user, celebBrands = [], onAfterUnlike, onAfterLike }) {
-  // console.log(celeb);
   const [expanded, setExpanded] = useState(false);
   const [showDial, setShowDial] = useState(false);
   const userToken = useAtomValue(authTokenAtom);
@@ -26,7 +25,6 @@ export default function CelebrityCard({ celeb, user, celebBrands = [], onAfterUn
   const imgSrc = celeb.imageUrl || celeb.imgUrl || null;
 
   const matchPct = useMemo(() => {
-    // console.log("my celeb", celeb);
     if (celeb.matchWithUser) return celeb.matchWithUser;
     if (celeb.coordinates != null){
       return (calculateMatchPercentage(celeb.coordinates, user))
@@ -34,15 +32,7 @@ export default function CelebrityCard({ celeb, user, celebBrands = [], onAfterUn
     if (celeb.changeVsTradition > 0 )
       return calculateMatchPercentage({changeVsTradition: celeb.changeVsTradition, compassionVsAmbition: celeb.compassionVsAmbition}, user);
     return 0;
-
-    //   const v =
-    //   typeof celeb.matchWithUser === "number"
-    //     ? celeb.matchWithUser
-    //     : celeb.matchPercentage;
-    // return Math.round(Number.isFinite(v) ? v : 0);
   }, [celeb.matchWithUser, celeb.matchPercentage]);
-
-
 
   const primary = celeb?.personalityProfile?.primary ?? null;
   const secondary = celeb?.personalityProfile?.secondary ?? null;

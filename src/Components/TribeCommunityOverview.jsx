@@ -70,11 +70,11 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user, uiSt
     return () => { mounted = false; };
   }, [token, limit]);
 
-  // Scroll one full card at a time (the visible width of the scroller)
+  // Scroll one full card at a time
   const scrollBy = (ref, dir = 1) => {
     const node = ref?.current;
     if (!node) return;
-    const step = node.clientWidth; // one viewport “page”
+    const step = node.clientWidth;
     node.scrollBy({ left: dir * step, behavior: "smooth" });
   };
 

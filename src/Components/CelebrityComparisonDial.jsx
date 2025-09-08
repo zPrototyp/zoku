@@ -40,7 +40,7 @@ export default function CelebrityComparisonDial({
   bLabel = "Vän",
   size = 300,
 }) {
-  // console.log(celeb);
+  
   const left = a ?? user ?? null;
   const right = b ?? celeb ?? null;
 
