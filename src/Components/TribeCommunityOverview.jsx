@@ -78,108 +78,108 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user, uiSt
     node.scrollBy({ left: dir * step, behavior: "smooth" });
   };
 
-   return (
-    <div className="tribe-overview">
-      <div className="tribe-header">
-        <h2>{title}</h2>
-        <button className="btn btnSlim" onClick={() => navigate("/community")}>
-          Gå till Community
-        </button>
-      </div>
-
-      {error && <p className="tribe-error">{error}</p>}
-      {isLoading && <p className="tribe-loading">Laddar...</p>}
-
-      {/* Liked celebrities */}
-      <div className="tribe-section">
-        <h3>Kändisar du gillar</h3>
-
-        {likedCelebs.length > 0 ? (
-          <div className="tribe-carousel">
-            <button
-              type="button"
-              aria-label="Scrolla vänster"
-              onClick={() => scrollBy(celebsRef, -1)}
-              className="btn btnSlim tribe-scroll-btn tribe-scroll-btn--left"
-            >
-              ‹
-            </button>
-
-            <div ref={celebsRef} className="tribe-scroll">
-              {likedCelebs.map((c) => (
-                <div key={c.id || c.name} className="tribe-slide">
-                  <ProfileOverviewCard entity={c} kind="celeb" size={112} />
-                </div>
-              ))}
-            </div>
-
-            <button
-              type="button"
-              aria-label="Scrolla höger"
-              onClick={() => scrollBy(celebsRef, 1)}
-              className="btn btnSlim tribe-scroll-btn tribe-scroll-btn--right"
-            >
-              ›
-            </button>
-          </div>
-        ) : (
-          !isLoading && <p className="tribe-loading">Inga kändisar ännu.</p>
-        )}
-      </div>
-
-      {/* Followed users */}
-      <div className="tribe-section">
-        <h3>Användare du följer</h3>
-
-        {followingUsers.length > 0 ? (
-          <div className="tribe-carousel">
-            <button
-              type="button"
-              aria-label="Scrolla vänster"
-              onClick={() => scrollBy(usersRef, -1)}
-              className="btn btnSlim tribe-scroll-btn tribe-scroll-btn--left"
-            >
-              ‹
-            </button>
-
-            <div ref={usersRef} className="tribe-scroll">
-              {followingUsers.map((u) => (
-                <div key={u.id || u.fullName} className="tribe-slide">
-                  <ProfileOverviewCard entity={u} kind="user" size={112} />
-                </div>
-              ))}
-            </div>
-
-            <button
-              type="button"
-              aria-label="Scrolla höger"
-              onClick={() => scrollBy(usersRef, 1)}
-              className="btn btnSlim tribe-scroll-btn tribe-scroll-btn--right"
-            >
-              ›
-            </button>
-          </div>
-        ) : (
-          !isLoading && (
-            <div className="tribe-empty">
-              <p>Du följer inga användare ännu.</p>
-
-              <button
-                className="btn-small"
-                onClick={() => setUiStatus((p) => ({ ...p, showSuggestedUsers: !p.showSuggestedUsers }))}
-              >
-                {uiStatus.showSuggestedUsers ? "Dölj förslag" : "Föreslå andra användare"}
-              </button>
-
-              {uiStatus.showSuggestedUsers && (
-                <SuggestedUsers token={token} user={user} setUiState={setUiStatus} />
-              )}
-            </div>
-          )
-        )}
-      </div>
+  return (
+  <div className="tribe-overview">
+    <div className="tribe-header">
+      <h2>{title}</h2>
+      <button className="btn btnSlim" onClick={() => navigate("/community")}>
+        Gå till Community
+      </button>
     </div>
-  );
-}
+
+    {error && <p className="tribe-error">{error}</p>}
+    {isLoading && <p className="tribe-loading">Laddar...</p>}
+
+    {/* Liked celebrities */}
+    <div className="tribe-section">
+      <h3>Kändisar du gillar</h3>
+
+      {likedCelebs.length > 0 ? (
+        <div className="tribe-carousel-grid">
+          <button
+            type="button"
+            aria-label="Scrolla vänster"
+            onClick={() => scrollBy(celebsRef, -1)}
+            className="tribe-scroll-btn prev"
+          >
+            ‹
+          </button>
+
+          <div ref={celebsRef} className="tribe-track">
+            {likedCelebs.map((c) => (
+              <div key={c.id || c.name} className="tribe-slide">
+                <ProfileOverviewCard entity={c} kind="celeb" size={112} />
+              </div>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            aria-label="Scrolla höger"
+            onClick={() => scrollBy(celebsRef, 1)}
+            className="tribe-scroll-btn next"
+          >
+            ›
+          </button>
+        </div>
+      ) : (
+        !isLoading && <p className="tribe-loading">Inga kändisar ännu.</p>
+      )}
+    </div>
+
+    {/* Followed users */}
+    <div className="tribe-section">
+      <h3>Användare du följer</h3>
+
+      {followingUsers.length > 0 ? (
+        <div className="tribe-carousel-grid">
+          <button
+            type="button"
+            aria-label="Scrolla vänster"
+            onClick={() => scrollBy(usersRef, -1)}
+            className="tribe-scroll-btn prev"
+          >
+            ‹
+          </button>
+
+          <div ref={usersRef} className="tribe-track">
+            {followingUsers.map((u) => (
+              <div key={u.id || u.fullName} className="tribe-slide">
+                <ProfileOverviewCard entity={u} kind="user" size={112} />
+              </div>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            aria-label="Scrolla höger"
+            onClick={() => scrollBy(usersRef, 1)}
+            className="tribe-scroll-btn next"
+          >
+            ›
+          </button>
+        </div>
+      ) : (
+        !isLoading && (
+          <div className="tribe-empty">
+            <p>Du följer inga användare ännu.</p>
+            <button
+              className="btn-small"
+              onClick={() =>
+                setUiStatus((p) => ({ ...p, showSuggestedUsers: !p.showSuggestedUsers }))
+              }
+            >
+              {uiStatus.showSuggestedUsers ? "Dölj förslag" : "Föreslå andra användare"}
+            </button>
+
+            {uiStatus.showSuggestedUsers && (
+              <SuggestedUsers token={token} user={user} setUiState={setUiStatus} />
+            )}
+          </div>
+        )
+      )}
+    </div>
+  </div>
+);}
 
 export default TribeCommunityOverview;

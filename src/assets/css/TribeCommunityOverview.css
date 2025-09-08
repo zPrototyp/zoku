@@ -1,80 +1,45 @@
-/* Wrapper */
-.tribe-overview {
-  margin-top: 1.25rem;
-  position: relative;
-  max-width: 500px;
-}
-
-/* Header row */
-.tribe-header {
-  display: flex;
+.tribe-carousel-grid {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 0.75rem;
-  justify-content: space-between;
+  gap: 0;
+  max-width: 90%;
+  margin: 0 auto;
 }
 
-.tribe-header h2 {
-  margin: 0;
-}
-
-/* Status text */
-.tribe-error {
-  color: red;
-  margin-top: 0.5rem;
-}
-
-.tribe-loading {
-  opacity: 0.75;
-  margin-top: 0.5rem;
-}
-
-/* Section wrapper */
-.tribe-section {
-  margin-top: 0.75rem;
-  position: relative;
-}
-
-.tribe-section h3 {
-  margin-bottom: 0.5rem;
-}
-
-/* Carousel shell */
-.tribe-carousel {
-  position: relative;
-  padding: 0 0.25rem;
-}
-
-/* Scroll buttons */
+/* Buttons */
 .tribe-scroll-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 2;
-  opacity: 0.9;
+  background-color: var(--darkContrast);
+  padding: 0 0.2em;
+  margin: 0;
+  font-size: 1.5em;
+  border: 0;
+  margin-bottom: 0.6em;
+  font-weight: 700;
+}
+.tribe-scroll-btn.prev { margin-right: 0.1em; }
+.tribe-scroll-btn.next { margin-left: 0.1em; }
+.tribe-scroll-btn.inactive {
+  background-color: var(--background);
+  color: var(--dark);
+  pointer-events: none;
 }
 
-.tribe-scroll-btn--left {
-  left: 0;
-}
-
-.tribe-scroll-btn--right {
-  right: 0;
-}
-
-/* Scroll track */
-.tribe-scroll {
+/* Track */
+.tribe-track {
+  max-width: 900px;
+  width: 100%;
+  text-align: center;
   display: flex;
   overflow-x: auto;
-  padding: 0.5rem 2.25rem;
   scroll-snap-type: x mandatory;
+  padding: 0.5rem 0;
   gap: 0;
+
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
-
-.tribe-scroll::-webkit-scrollbar {
-  display: none;
-}
+.tribe-track::-webkit-scrollbar { display: none; }
 
 /* Slide */
 .tribe-slide {
@@ -82,16 +47,14 @@
   min-width: 100%;
   max-width: 100%;
   scroll-snap-align: start;
-  display: grid;
-  place-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
-/* Empty state*/
-.tribe-empty {
-  margin-top: 0.75rem;
+.profile-circle-card {
+  inline-size: calc(var(--size, 96px) + 16px);
 }
 
-.tribe-empty p {
-  opacity: 0.75;
-  margin-bottom: 0.5rem;
-}
+.profile-image { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center; pointer-events: none; }
+.profile-mask  { width: 88%;  height: 88%;  display: block; object-fit: contain; object-position: center; pointer-events: none; }
