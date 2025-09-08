@@ -17,7 +17,7 @@ import "../assets/css/Admin.css";
 import BrandCard from "../Components/AdminBrandCard";
 import CelebrityDashboard from "../Components/AdminCelebrities";
 import CelebrityUploader from "../Components/AdminCelebrityUploader";
-import { NavLink } from "react-router";
+import { NavLink } from "react-router-dom";
 import AddBrandForm from "../Components/AdminBrandAdd";
 import AdminUserCard, { UserInteractionCard } from "../Components/AdminUserCard";
 import { NumberForm } from "../Components/AdminSettings";
@@ -45,7 +45,7 @@ function AdminPage(){
         pendingSeeds: {},
         history: {},
         loading: false,
-        updateDate: new Date,
+        updateDate: new Date(now),
         brandLength: 0,
         celebLength: celebs?.totalCelebrities || 0,
         showBrands: false,
@@ -227,10 +227,7 @@ useEffect(() => {
     }
 
     const handleEdit = (brand) => {
-        
-        console.log(brand)
-        
-        setFullbrand(null);
+        // console.log(brand)
         setUiState(p =>({...p,  showBrandEdit: true }))
         setFullbrand(brand);
         
@@ -238,7 +235,7 @@ useEffect(() => {
     const handleEditSubmit = (formData) => {
         setUiState(p =>({...p,  showBrandEdit: false }))
         API_adminBrandUpdate(token, fullbrand.id, formData,(data)=>{
-            setBrands(p=> (p.id == data.id ? data : p))
+            setBrands(prev => prev.map(b => (b.id === data.id ? data : b)));
             console.log(data)
         } )
         setFullbrand(null);
@@ -247,7 +244,6 @@ useEffect(() => {
         // console.log(userId);
         API_adminFetchUserInteractions(token, userId, setFullUser);
         API_adminFetchUserShares(token, userId, setUserShares);
-        
         setUiState(p => ({...p, showFullUser: true}))
     }
 
