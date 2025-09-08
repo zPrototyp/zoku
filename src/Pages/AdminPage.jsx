@@ -45,7 +45,7 @@ function AdminPage(){
         pendingSeeds: {},
         history: {},
         loading: false,
-        updateDate: new Date(now),
+        updateDate: new Date(),
         brandLength: 0,
         celebLength: celebs?.totalCelebrities || 0,
         showBrands: false,
