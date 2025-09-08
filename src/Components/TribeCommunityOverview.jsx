@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_userSafeFetchJson } from "../Services/API";
 import "../assets/css/CelebrityCard.css";
+import "../assets/css/TribeCommunityOverview.css";
 import SuggestedUsers from "./TribeSuggestedUsers";
 import ProfileOverviewCard from "./ProfileOverviewCard";
 
@@ -78,156 +79,107 @@ function TribeCommunityOverview({ token, title = "Tribes", limit = 6, user, uiSt
   };
 
   return (
-    <div style={{ marginTop: "1.25rem", position: "relative" , maxWidth:"500px"}}>
-      <style>{`
-        .tribe-scroll { scrollbar-width: none; -ms-overflow-style: none; }
-        .tribe-scroll::-webkit-scrollbar { display: none; }
-      `}</style>
-
-      <div style={{ display: "flex", alignItems: "center", gap: ".75rem", justifyContent: "space-between" }}>
-        <h2 style={{ margin: 0 }}>{title}</h2>
-        <button className="btn btnSlim" onClick={() => navigate("/community")}>
-          Gå till Community
-        </button>
-      </div>
-
-      {error && <p style={{ color: "red", marginTop: ".5rem" }}>{error}</p>}
-      {isLoading && <p style={{ opacity: 0.75, marginTop: ".5rem" }}>Laddar...</p>}
-
-      {/* Liked celebrities */}
-      <div style={{ marginTop: ".75rem", marginBottom: ".75rem", position: "relative" }}>
-        <h3 style={{ marginBottom: ".5rem" }}>Kändisar du gillar</h3>
-
-        {likedCelebs.length > 0 ? (
-          <div style={{ position: "relative", padding: "0 .25rem" }}>
-            <button
-              type="button"
-              aria-label="Scrolla vänster"
-              onClick={() => scrollBy(celebsRef, -1)}
-              className="btn btnSlim"
-              style={{ position: "absolute", left: 0, top: "50%", transform: "translateY(-50%)", zIndex: 2, opacity: 0.9 }}
-            >
-              ‹
-            </button>
-
-            <div
-              ref={celebsRef}
-              className="tribe-scroll"
-              style={{
-                display: "flex",
-                overflowX: "auto",
-                padding: "0.5rem 2.25rem",
-                scrollSnapType: "x mandatory",
-                gap: 0,                 // single-card viewport; no gaps between slides
-              }}
-            >
-              {likedCelebs.map((c) => (
-                <div
-                  key={c.id || c.name}
-                  style={{
-                    flex: "0 0 100%",    // show one card at a time
-                    minWidth: "100%",
-                    maxWidth: "100%",
-                    scrollSnapAlign: "start",
-                    display: "grid",
-                    placeItems: "center",
-                  }}
-                >
-                  <ProfileOverviewCard entity={c} kind="celeb" size={112} />
-                </div>
-              ))}
-            </div>
-
-            <button
-              type="button"
-              aria-label="Scrolla höger"
-              onClick={() => scrollBy(celebsRef, 1)}
-              className="btn btnSlim"
-              style={{ position: "absolute", right: 0, top: "50%", transform: "translateY(-50%)", zIndex: 2, opacity: 0.9 }}
-            >
-              ›
-            </button>
-          </div>
-        ) : (
-          !isLoading && <p style={{ opacity: 0.75 }}>Inga kändisar ännu.</p>
-        )}
-      </div>
-
-      {/* Followed users */}
-      <div style={{ marginTop: ".75rem", position: "relative" }}>
-        <h3 style={{ marginBottom: ".5rem" }}>Användare du följer</h3>
-
-        {followingUsers.length > 0 ? (
-          <div style={{ position: "relative", padding: "0 .25rem" }}>
-            <button
-              type="button"
-              aria-label="Scrolla vänster"
-              onClick={() => scrollBy(usersRef, -1)}
-              className="btn btnSlim"
-              style={{ position: "absolute", left: 0, top: "50%", transform: "translateY(-50%)", zIndex: 2, opacity: 0.9 }}
-            >
-              ‹
-            </button>
-
-            <div
-              ref={usersRef}
-              className="tribe-scroll"
-              style={{
-                display: "flex",
-                overflowX: "auto",
-                padding: "0.5rem 2.25rem",
-                scrollSnapType: "x mandatory",
-                gap: 0,
-              }}
-            >
-              {followingUsers.map((u) => (
-                <div
-                  key={u.id || u.fullName}
-                  style={{
-                    flex: "0 0 100%",
-                    minWidth: "100%",
-                    maxWidth: "100%",
-                    scrollSnapAlign: "start",
-                    display: "grid",
-                    placeItems: "center",
-                  }}
-                >
-                  <ProfileOverviewCard entity={u} kind="user" size={112} />
-                </div>
-              ))}
-            </div>
-
-            <button
-              type="button"
-              aria-label="Scrolla höger"
-              onClick={() => scrollBy(usersRef, 1)}
-              className="btn btnSlim"
-              style={{ position: "absolute", right: 0, top: "50%", transform: "translateY(-50%)", zIndex: 2, opacity: 0.9 }}
-            >
-              ›
-            </button>
-          </div>
-        ) : (
-          !isLoading && (
-            <div style={{ marginTop: ".75rem" }}>
-              <p style={{ opacity: 0.75, marginBottom: ".5rem" }}>Du följer inga användare ännu.</p>
-
-              <button
-                className="btn-small"
-                onClick={() => setUiStatus((p) => ({ ...p, showSuggestedUsers: !p.showSuggestedUsers }))}
-              >
-                {uiStatus.showSuggestedUsers ? "Dölj förslag" : "Föreslå andra användare"}
-              </button>
-
-              {uiStatus.showSuggestedUsers && (
-                <SuggestedUsers token={token} user={user} setUiState={setUiStatus} />
-              )}
-            </div>
-          )
-        )}
-      </div>
+  <div className="tribe-overview">
+    <div className="tribe-header">
+      <h2>{title}</h2>
+      <button className="btn btnSlim" onClick={() => navigate("/community")}>
+        Gå till Community
+      </button>
     </div>
-  );
-}
+
+    {error && <p className="tribe-error">{error}</p>}
+    {isLoading && <p className="tribe-loading">Laddar...</p>}
+
+    {/* Liked celebrities */}
+    <div className="tribe-section">
+      <h3>Kändisar du gillar</h3>
+
+      {likedCelebs.length > 0 ? (
+        <div className="tribe-carousel-grid">
+          <button
+            type="button"
+            aria-label="Scrolla vänster"
+            onClick={() => scrollBy(celebsRef, -1)}
+            className="tribe-scroll-btn prev"
+          >
+            ‹
+          </button>
+
+          <div ref={celebsRef} className="tribe-track">
+            {likedCelebs.map((c) => (
+              <div key={c.id || c.name} className="tribe-slide">
+                <ProfileOverviewCard entity={c} kind="celeb" size={112} />
+              </div>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            aria-label="Scrolla höger"
+            onClick={() => scrollBy(celebsRef, 1)}
+            className="tribe-scroll-btn next"
+          >
+            ›
+          </button>
+        </div>
+      ) : (
+        !isLoading && <p className="tribe-loading">Inga kändisar ännu.</p>
+      )}
+    </div>
+
+    {/* Followed users */}
+    <div className="tribe-section">
+      <h3>Användare du följer</h3>
+
+      {followingUsers.length > 0 ? (
+        <div className="tribe-carousel-grid">
+          <button
+            type="button"
+            aria-label="Scrolla vänster"
+            onClick={() => scrollBy(usersRef, -1)}
+            className="tribe-scroll-btn prev"
+          >
+            ‹
+          </button>
+
+          <div ref={usersRef} className="tribe-track">
+            {followingUsers.map((u) => (
+              <div key={u.id || u.fullName} className="tribe-slide">
+                <ProfileOverviewCard entity={u} kind="user" size={112} />
+              </div>
+            ))}
+          </div>
+
+          <button
+            type="button"
+            aria-label="Scrolla höger"
+            onClick={() => scrollBy(usersRef, 1)}
+            className="tribe-scroll-btn next"
+          >
+            ›
+          </button>
+        </div>
+      ) : (
+        !isLoading && (
+          <div className="tribe-empty">
+            <p>Du följer inga användare ännu.</p>
+            <button
+              className="btn-small"
+              onClick={() =>
+                setUiStatus((p) => ({ ...p, showSuggestedUsers: !p.showSuggestedUsers }))
+              }
+            >
+              {uiStatus.showSuggestedUsers ? "Dölj förslag" : "Föreslå andra användare"}
+            </button>
+
+            {uiStatus.showSuggestedUsers && (
+              <SuggestedUsers token={token} user={user} setUiState={setUiStatus} />
+            )}
+          </div>
+        )
+      )}
+    </div>
+  </div>
+);}
 
 export default TribeCommunityOverview;

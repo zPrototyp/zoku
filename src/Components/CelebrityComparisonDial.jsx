@@ -56,7 +56,7 @@ export default function CelebrityComparisonDial({
   const limit = radius - 20;
   const toPixel = (v) => ((v - 50) / 50) * limit + radius;
 
-  // ✅ Hooks always run
+  // Hooks always run
   const [leftPx, setLeftPx] = useState({ x: radius, y: radius });
   const [rightPx, setRightPx] = useState({ x: radius, y: radius });
 
@@ -71,7 +71,7 @@ export default function CelebrityComparisonDial({
   };
 
   useEffect(() => {
-    if (!hasLeft || !hasRight) return; // ✅ do nothing if missing coords
+    if (!hasLeft || !hasRight) return; // do nothing if missing coords
     const id = requestAnimationFrame(() => {
       setLeftPx(clampToCircle({ x: leftCoords.x, y: leftCoords.y }));
       setRightPx(clampToCircle({ x: rightCoords.x, y: rightCoords.y }));
@@ -84,7 +84,7 @@ export default function CelebrityComparisonDial({
 
   const labelStyle = { fontSize: 12, fill: "#333" };
 
-  // ✅ Conditional return AFTER hooks
+  // Conditional return AFTER hooks
   if (!hasLeft || !hasRight) {
     return <p style={{ color: "red" }}>Saknar koordinater för jämförelse.</p>;
   }
