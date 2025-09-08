@@ -105,8 +105,7 @@ export default function Tribes() {
                 <li key={i}>{item}</li>
               ))}
             </ul>
-            {/* <h3>{valueProfiles[activeModal].consumerHeader}</h3> */}
-            {/* <p>{valueProfiles[activeModal].consumerText}</p> */}
+
 
               {celebsByPersonality[activeModal] && <div>
                 <h3>En kändis som matchar {valueProfiles[activeModal].title}</h3>

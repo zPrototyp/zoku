@@ -76,12 +76,9 @@ const CelebrityUploader = ({bearer}) => {
         throw new Error(validationErrors.join('\n'));
       }
 
-      // Send to API
-      console.log(celebrityArray);
+      // Send to API      
       const response = await API_addCelebrities(bearer, celebrityArray)
-    //   if (!response.success) {
-    //     throw new Error(`API error: ${response.status} ${response.message}`);
-    //   }
+
       setStatusMessage('Celebrities uploaded successfully!');
     } catch (err) {
       setError(`Upload failed:\n${err.message}`);

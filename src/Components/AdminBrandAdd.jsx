@@ -1,19 +1,4 @@
 
-// {
-//   "name": "string",
-//   "imageUrl": "string",
-//   "url": "string",
-//   "category": "string",
-//   "shortDescription": "string",
-//   "longDescription": "string",
-//   "changeVsTradition": 0,
-//   "compassionVsAmbition": 0,
-//   "targetAgeMin": 0,
-//   "targetAgeMax": 0,
-//   "priceSegment": "Budget"
-// }
-
-
 import React, { useState, useMemo } from "react";
 import { brandCategories } from "../assets/uiData/brand_categories_se";
 
@@ -95,7 +80,6 @@ const [formData, setFormData] = useState(() => ({
     e.preventDefault();
     if (validate()) {
       onSubmit(formData);
-      console.log("Form submitted:", formData);
     }
   };
 

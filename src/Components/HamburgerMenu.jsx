@@ -24,14 +24,13 @@ const HamburgerMenu = () => {
   const handleLogout = () => {
     const loggedOut = API_logout(token);
     if (loggedOut) {
-      console.log("User logged out successfully");
+      setToken(null);
+      setFeedList(null);
+      setValueProfile(null);
+      
+      setIsOpen(false)
+      window.location.href = "/zoku/"; // Redirect to home page
     }
-    setToken(null);
-    setFeedList(null);
-    setValueProfile(null);
-
-    setIsOpen(false)
-    window.location.href = "/zoku/"; // Redirect to home page
   };
 
  return (

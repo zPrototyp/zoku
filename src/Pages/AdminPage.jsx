@@ -182,7 +182,6 @@ useEffect(() => {
         setUiState((prev) => ({...prev, seedResult: data}));
     }
     const setSeedExecuted = (data) => {
-        // if (data.status === 'completed') return;
         let now  = new Date;
         setUiState(prev => ({ 
             ...prev, 
@@ -191,7 +190,6 @@ useEffect(() => {
                 [data.operationId]: data, // will overwrite if it already exists
                 ...prev.pendingSeeds,
          } }));
-        // console.log(data);
     }
     const setSeedHistory = (data) => {
         setUiState(p => ({...p, pendingSeeds: {}}))
@@ -227,7 +225,6 @@ useEffect(() => {
     }
 
     const handleEdit = (brand) => {
-        // console.log(brand)
         setUiState(p =>({...p,  showBrandEdit: true }))
         setFullbrand(brand);
         
@@ -236,12 +233,10 @@ useEffect(() => {
         setUiState(p =>({...p,  showBrandEdit: false }))
         API_adminBrandUpdate(token, fullbrand.id, formData,(data)=>{
             setBrands(prev => prev.map(b => (b.id === data.id ? data : b)));
-            console.log(data)
         } )
         setFullbrand(null);
     }
     const fetchUser = (userId) => {
-        // console.log(userId);
         API_adminFetchUserInteractions(token, userId, setFullUser);
         API_adminFetchUserShares(token, userId, setUserShares);
         setUiState(p => ({...p, showFullUser: true}))

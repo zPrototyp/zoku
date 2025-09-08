@@ -93,7 +93,6 @@ export function ShareOverlay({personality, profile, testValues, brand}){
         // Try to open Instagram Stories
         window.open(deepLink, "_blank");
 
-        // console.log(sharedImage, deepLink)
         // Fallback after 800ms
         setTimeout(() => {
              window.location.href = fallback;
@@ -107,7 +106,6 @@ export function ShareOverlay({personality, profile, testValues, brand}){
         const shareData = await API_shareProfile("Facebook", bearer, brand ? "Brand":"Personality", brand ? brand.id : 0);
         const shareUrl = shareData.shareUrl;
         
-        // console.log(shareData);
         copyText(shareData.shareText);
         const quote = shareData.shareText;
 
