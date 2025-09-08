@@ -42,49 +42,34 @@ export function ShareOverlay({personality, profile, testValues, brand}){
         }
     };
 
-    // const copyImage = async (img) => {
-    //     try {
-    //         //   const response = await fetch(img); // image in public/wwwroot
-    //         const response = await fetch(img, { mode: "cors" }); 
-    //         const blob = await response.blob();
-    //         const type = blob.type || "image/png";
-
-    //         await navigator.clipboard.write([
-    //         new ClipboardItem({ [type]: blob })
-    //         ]);
-    //         alert("Bild kopierad till urklipp!");
-    //     } catch (err) {
-    //         console.error("Failed to copy image: ", err);
-    //     }
-    // };
     const copyImage = async (imgUrl) => {
-  try {
-    const img = new Image();
-    img.crossOrigin = "anonymous"; // needed if hosted elsewhere
-    img.src = imgUrl;
+        try {
+            const img = new Image();
+            img.crossOrigin = "anonymous"; // needed if hosted elsewhere
+            img.src = imgUrl;
 
-    await new Promise((resolve, reject) => {
-      img.onload = resolve;
-      img.onerror = reject;
-    });
+            await new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = reject;
+            });
 
-    const canvas = document.createElement("canvas");
-    canvas.width = img.width;
-    canvas.height = img.height;
-    const ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0);
+            const canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
 
-    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+            const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
 
-    await navigator.clipboard.write([
-      new ClipboardItem({ "image/png": blob })
-    ]);
+            await navigator.clipboard.write([
+            new ClipboardItem({ "image/png": blob })
+            ]);
 
-    alert("Bild kopierad till urklipp!");
-  } catch (err) {
-    console.error("Failed to copy image: ", err);
-  }
-};
+            alert("Bild kopierad till urklipp!");
+        } catch (err) {
+            console.error("Failed to copy image: ", err);
+        }
+    };
 
 
     const shareInstagramStory = async () => {
