@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useAtomValue } from "jotai";
 import { authTokenAtom } from "../Atoms/AuthAtom.jsx";
 import { ZokuMasks } from "../assets/uiData/PersonalityImages";
+import "../assets/css/ProfileOverviewCard.css";
 
 const AZURE_API = import.meta.env.VITE_AZURE_API;
 const toBase = () => (AZURE_API || "").replace(/\/+$/, "");
@@ -115,37 +116,40 @@ function ProfileOverviewCard({
        null)
     : null;
 
+  const clickable = Boolean(onClick);
+  const wrapperClass = [
+    "profile-circle-card",
+    clickable ? "is-clickable" : "",
+    className
+    ].filter(Boolean).join(" ");
+
   return (
     <div
-      className={`profile-circle-card ${className}`}
-      style={{ textAlign: "center", userSelect: "none" }}
+      className={wrapperClass}
+      style={{ "--size": `${size}px` }}
       onClick={onClick}
-      role={onClick ? "button" : undefined}
-      tabIndex={onClick ? 0 : undefined}
+      role={clickable ? "button" : undefined}
+      tabIndex={clickable ? 0 : undefined}
+      title={displayName}
     >
       {/* Circle */}
-      <div
-        className="secondary-card-circle"
-        style={{
-          width: size,
-          height: size,
-          margin: "0 auto",
-          display: "grid",
-          placeItems: "center",
-          position: "relative",
-          cursor: onClick ? "pointer" : "default",
-          overflow: "hidden",
-          borderRadius: "50%",
-          background: "rgba(255,255,255,0.06)",
-          backdropFilter: "blur(2px)",
-        }}
-      >
+      <div className="secondary-card-circle">
         {isCeleb ? (
-          celebPic ? (
+          (entity?.imageUrl ||
+           entity?.imgUrl ||
+           entity?.photoUrl ||
+           entity?.profileImageUrl ||
+           entity?.avatarUrl) ? (
             <img
-              src={celebPic}
+              src={
+                entity.imageUrl ||
+                entity.imgUrl ||
+                entity.photoUrl ||
+                entity.profileImageUrl ||
+                entity.avatarUrl
+              }
               alt={displayName}
-              style={{ width: "100%", height: "100%", objectFit: "cover", pointerEvents: "none" }}
+              className="profile-image"
               loading="lazy"
             />
           ) : null
@@ -154,15 +158,7 @@ function ProfileOverviewCard({
             <img
               src={userMaskUrl}
               alt={userType || "Mask"}
-              style={{
-                width: "88%",
-                height: "88%",
-                objectFit: "contain",
-                opacity: 1,
-                mixBlendMode: "normal",
-                filter: "none",
-                pointerEvents: "none",
-              }}
+              className="profile-mask"
               loading="lazy"
             />
           ) : null
@@ -170,17 +166,7 @@ function ProfileOverviewCard({
       </div>
 
       {/* Name */}
-      <div
-        title={displayName}
-        style={{
-          marginTop: 8,
-          fontSize: 14,
-          fontWeight: 600,
-          whiteSpace: "nowrap",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-        }}
-      >
+      <div className="profile-name">
         {displayName}
       </div>
     </div>
