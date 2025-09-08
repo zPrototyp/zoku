@@ -1,8 +1,9 @@
+import { clearAtoms } from "../Pages/ClearAllAtoms";
+
 const AZURE_API = import.meta.env.VITE_AZURE_API;
 
 // Function to send share interaction to API can be used by guest or authenticated users
 export const API_shareProfile = async (platform, bearer, entity, entityId) => {
-console.log("Sharing to ", platform, entity, entityId);
     if (!bearer || !platform) return;
     try {
         const res = await fetch(`${AZURE_API}/share`, {
@@ -55,11 +56,6 @@ export const API_trackBrandInteraction = async (bearer, interactionType, brandId
   }
   // Option 2 for tracking
   export const API_shareTrack = async (bearer, entity, entityId = 0, platform, method ="Link") =>{
-    // "entityType": "Brand",
-    // "platform": "Facebook",
-    // "entityId": 0,
-    // "method": "Link"
-    console.log('entity, id', entity, entityId)
     const res = await fetch(`${AZURE_API}/share/track`, {
             method: "POST",
             headers: {
@@ -135,6 +131,14 @@ export const API_guestGetBrandMatches = async (bearer, testValues, onSuccess, ca
         Authorization: `Bearer ${token}`,
       },
     });
+     if (res.status === 401) {
+      console.warn("Not authorized – token might be invalid or expired");
+      // here you can clear auth, redirect, or return a special value
+      clearAtoms();
+      window.location.href = "/zoku/"; // Redirect to home page
+      return null;
+    }
+
 
     if (!res.ok) throw new Error("Nätverksfel");
 

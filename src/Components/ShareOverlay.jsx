@@ -75,7 +75,7 @@ const copyImage = async (img) => {
         // Try to open Instagram Stories
         window.open(deepLink, "_blank");
 
-        console.log(sharedImage, deepLink)
+        // console.log(sharedImage, deepLink)
         // Fallback after 800ms
         setTimeout(() => {
              window.location.href = fallback;
