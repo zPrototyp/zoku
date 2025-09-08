@@ -369,7 +369,7 @@ useEffect(() => {
         <button onClick={()=>setUiState(p => ({...p, showBrandAdd: !p.showBrandAdd}))}>
             {!uiState.showBrandAdd ? 'Add new brand': 'Hide add form'}
         </button>
-        {fullbrand && <button onClick={()=>{
+        {fullbrand && <button className="active" onClick={()=>{
             uiState.showBrandEdit && setFullbrand(null);
             setUiState(p => ({...p, showBrandEdit: !p.showBrandEdit}))}
             }>
@@ -397,7 +397,8 @@ useEffect(() => {
     {uiState.showUsers && (
         <div>
         <h2>Users in the system</h2>
-        {fullUser && <button onClick={()=>{
+        {fullUser && <button className="active"
+            onClick={()=>{
             setFullUser(null);
             setUiState(p => ({...p, showFullUser: false}))
             }}>
