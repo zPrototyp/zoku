@@ -643,7 +643,6 @@ div.btn-show-matches{
   width: 100%;
   display: grid;
   grid-template-rows: auto auto;
-  /* grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); */
   grid-template-columns: 50% 50%;
   gap: 0;
   justify-content: center;
