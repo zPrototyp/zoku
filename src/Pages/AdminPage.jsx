@@ -60,11 +60,11 @@ function AdminPage(){
     
   
     useEffect(() => {
-        token && updateActiveSessions(); 
-        token && getAutoLikes();
-        token && API_adminFetchUsers(token, (users) => 
+        token && admin && updateActiveSessions(); 
+        token && admin && getAutoLikes();
+        token && admin && API_adminFetchUsers(token, (users) => 
             { setUsers(users.filter(user => user.email !== "admin@zoku.se"))});
-    }, [token]);
+    }, [token, admin]);
 
     // update userCount whenever users changes
 useEffect(() => {
