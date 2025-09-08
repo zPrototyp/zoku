@@ -122,7 +122,7 @@ export default function Tribes() {
               {/* If logged in - show link to compare yourself, if not - link to test */}
             <div>
                 <NavLink to="/test" className="nav-link">
-                    <button>Vad är din Zoku?</button>
+                    <button>{user ? 'Gör om mitt test':'Vad är din Zoku?'}</button>
                 </NavLink>
             </div>
           </div>
