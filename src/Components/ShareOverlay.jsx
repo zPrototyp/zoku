@@ -89,7 +89,7 @@ const copyImage = async (img) => {
     async function handleFbShare(){
         // send to backend
         
-        const shareData = await API_shareProfile("Facebook", bearer, brand ? "Brand":"Personality", brand ? brand.id || 0 : 0);
+        const shareData = await API_shareProfile("Facebook", bearer, brand ? "Brand":"Personality", brand ? brand.id : 0);
         const shareUrl = shareData.shareUrl;
         
         // console.log(shareData);
