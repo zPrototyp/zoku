@@ -59,7 +59,7 @@ function ResultPage () {
         setUiStatus(prev => ({ ...prev, isLoading: true, error: null }));
 
         await API_guestGetPersonality(sessionToken, testValues, setResult);
-        await API_guestGetBrandMatches(sessionToken, testValues, setFeedList, 'all', 4);
+        await API_guestGetBrandMatches(sessionToken, testValues, setFeedList, 'all', 3);
       } catch (err) {
         console.error('Error fetching data:', err);
         // setError('Kunde inte hämta resultat.');
