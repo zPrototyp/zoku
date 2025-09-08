@@ -1,6 +1,7 @@
 import React from 'react';
 
 const BrandCard = ({ brand , handleEdit}) => {
+  
   const {
     name,
     category,
