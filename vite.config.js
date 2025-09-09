@@ -4,5 +4,5 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   base: "/zoku/",
-  server: {proxy: {'/api': 'https://zokubackend-atd8fhadcvaaf0he.swedencentral-01.azurewebsites.net'}}
+  server: {proxy: {'/api': 'https://zokubackend-atd8fhadcvaaf0he.swedencentral-01.azurewebsites.net/v1'}}
 });
